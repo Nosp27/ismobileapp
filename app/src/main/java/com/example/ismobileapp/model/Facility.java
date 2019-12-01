@@ -1,6 +1,10 @@
 package com.example.ismobileapp.model;
 
 import android.graphics.drawable.Drawable;
+import com.example.ismobileapp.network.json.JSONField;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -15,8 +19,12 @@ public class Facility implements Entity, Serializable {
         return name;
     }
 
+    @JSONField
     private double[] coords;
+    @JSONField
     private String name;
+
+    public Facility(){}
 
     public Facility(String name, double[] coords){
         this.name = name;
