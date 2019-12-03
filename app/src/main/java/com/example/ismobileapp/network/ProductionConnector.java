@@ -75,7 +75,7 @@ public class ProductionConnector implements ApiConnector {
     }
 
     private JSONObject readJsonObject(JSONTokener tokener) {
-        if(tokener == null)
+        if (tokener == null)
             return null;
 
         try {
@@ -90,7 +90,7 @@ public class ProductionConnector implements ApiConnector {
     private List<JSONObject> readJsonAsList(JSONTokener tokener) {
         List<JSONObject> ret = new ArrayList<>();
 
-        if(tokener == null)
+        if (tokener == null)
             return ret;
         try {
             while (tokener.nextValue() != JSONObject.NULL) {
@@ -114,7 +114,7 @@ public class ProductionConnector implements ApiConnector {
 
     @Override
     public Region getRegion(int id) {
-        return JSONModeller.fromJSON(Region.class, readJsonObject(readFromApi(GET_REGION+"/"+id)));
+        return JSONModeller.fromJSON(Region.class, readJsonObject(readFromApi(GET_REGION + "/" + id)));
     }
 
     @Override

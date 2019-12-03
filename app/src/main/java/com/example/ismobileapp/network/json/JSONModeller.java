@@ -38,8 +38,8 @@ public class JSONModeller {
                 fieldName = fieldName.substring(fieldName.indexOf(" ") + 1);
                 map.put(fieldName, field.get(object));
             }
-            return new JSONObject("{\"city\":\"chicago\",\"name\":\"jon doe\",\"age\":\"22\"}");
-        } catch (IllegalAccessException | JSONException e) {
+            return new JSONObject(map);
+        } catch (IllegalAccessException e) {
             Log.e(TAG, e.toString());
             return null;
         }
