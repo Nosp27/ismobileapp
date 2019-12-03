@@ -1,10 +1,8 @@
 package com.example.ismobileapp;
 
 import android.content.Intent;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TabHost;
-import android.widget.TableLayout;
 import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -14,7 +12,8 @@ import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.callbacks.EntityListener;
 import com.example.ismobileapp.network.ApiConnector;
 import com.example.ismobileapp.network.MockConnector;
-import com.example.ismobileapp.viewmodel.EntityAdapter;
+import com.example.ismobileapp.viewmodel.EntityListAdapter;
+import com.example.ismobileapp.viewmodel.EntitySpinnerAdapter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -22,7 +21,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ActivityInvestingFacilities extends FragmentActivity implements OnMapReadyCallback {
@@ -81,10 +79,15 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     void initFacilities() {
         GridView grid = findViewById(R.id.viewFacilities);
         grid.setAdapter(
-                new EntityAdapter(grid.getContext(), R.layout.facility_list_item, new EntityListener() {
+                new EntityListAdapter(grid.getContext(), R.layout.facility_list_item, new EntityListener() {
                     @Override
                     public List<Entity> getEntities() {
                         return new ArrayList<>(facilities);
+                    }
+
+                    @Override
+                    public List<Entity> getSelectedEntities() {
+                        return null;
                     }
 
                     @Override

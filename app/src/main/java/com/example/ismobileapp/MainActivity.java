@@ -1,7 +1,7 @@
 package com.example.ismobileapp;
 
 import android.content.Intent;
-import android.widget.ListView;
+import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.ismobileapp.model.Category;
@@ -11,7 +11,7 @@ import com.example.ismobileapp.model.Region;
 import com.example.ismobileapp.model.callbacks.EntityListener;
 import com.example.ismobileapp.network.ApiConnector;
 import com.example.ismobileapp.network.MockConnector;
-import com.example.ismobileapp.viewmodel.EntityAdapter;
+import com.example.ismobileapp.viewmodel.EntitySpinnerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_criterias);
 
-        boolean debugmaps = true;
+        boolean debugmaps = false;
         if (debugmaps){
             selectRegions(null);
             return;
@@ -39,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
         regionListener = new RegionStoreListener();
         categoryListener = new CategoryStoreListener();
-        ListView listRegions = findViewById(R.id.listRegions);
-        listRegions.setAdapter(new EntityAdapter(listRegions.getContext(), regionListener));
+        Spinner listRegions = findViewById(R.id.listRegions);
+        listRegions.setAdapter(new EntitySpinnerAdapter(listRegions.getContext(), regionListener));
 
-        ListView listCategories = findViewById(R.id.listCategories);
-        listCategories.setAdapter(new EntityAdapter(listCategories.getContext(), categoryListener));
+        Spinner listCategories = findViewById(R.id.listCategories);
+        listCategories.setAdapter(new EntitySpinnerAdapter(listCategories.getContext(), categoryListener));
 
         (findViewById(R.id.btn_select_regions)).setOnClickListener((x) -> selectRegions(formCriteries()));
     }
@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Criteries formCriteries() {
         Criteries ret = new Criteries();
-        ret.regions = regionListener.selectedRegions.toArray(new Integer[0]);
-        ret.categories = categoryListener.selectedCategories.toArray(new String[0]);
+        ret.regions = regionListener.selectedRegions.stream().map(x->((Region)x).id).toArray(Integer[]::new);
+        ret.categories = categoryListener.selectedCategories.stream().map(Entity::getTitle).toArray(String[]::new);
         return ret;
     }
 
@@ -63,11 +63,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class RegionStoreListener implements EntityListener {
-        private List<Integer> selectedRegions;
+        private List<Entity> selectedRegions;
 
         @Override
         public List<Entity> getEntities() {
             return new ArrayList<>(connector.getAllRegions());
+        }
+
+        @Override
+        public List<Entity> getSelectedEntities() {
+            if(selectedRegions == null)
+                selectedRegions = new ArrayList<>();
+            return selectedRegions;
         }
 
         @Override
@@ -76,13 +83,13 @@ public class MainActivity extends AppCompatActivity {
             if (selectedRegions == null) {
                 selectedRegions = new ArrayList<>();
             }
-            selectedRegions.add(region.id);
+            selectedRegions.add(region);
         }
 
         @Override
         public void deselectEntity(Entity entity) {
             Region region = (Region) entity;
-            selectedRegions.remove(region.id);
+            selectedRegions.remove(region);
         }
     }
 
@@ -92,7 +99,14 @@ public class MainActivity extends AppCompatActivity {
             return new ArrayList<>(connector.getAllCategories());
         }
 
-        private List<String> selectedCategories;
+        private List<Entity> selectedCategories;
+
+        @Override
+        public List<Entity> getSelectedEntities() {
+            if(selectedCategories == null)
+                selectedCategories = new ArrayList<>();
+            return selectedCategories;
+        }
 
         @Override
         public void selectEntity(Entity entity) {
@@ -100,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             if (selectedCategories == null) {
                 selectedCategories = new ArrayList<>();
             }
-            selectedCategories.add(category.getTitle());
+            selectedCategories.add(category);
         }
 
         @Override

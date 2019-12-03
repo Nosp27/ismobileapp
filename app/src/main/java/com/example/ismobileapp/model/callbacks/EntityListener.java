@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface EntityListener {
     List<Entity> getEntities();
+    List<Entity> getSelectedEntities();
 
     void selectEntity(Entity entity);
     void deselectEntity(Entity entity);

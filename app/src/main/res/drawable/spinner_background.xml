@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item>
+                <shape>
+                    <stroke android:color="@color/colorShade"
+                            android:width="2sp"
+                    />
+                    <corners android:radius="2sp"/>
+                </shape>
+            </item>
+            <item android:drawable="@drawable/ic_arrow_drop_down_black_24dp"
+                  android:gravity="bottom|right"/>
+        </layer-list>
+    </item>
+</selector>

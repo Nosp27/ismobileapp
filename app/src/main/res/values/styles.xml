@@ -14,4 +14,8 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="spinner_style" parent="Base.Widget.AppCompat.ListView.DropDown">
+        <item name="android:popupBackground">#DF5A5A5A</item>
+        <item name="android:background">@drawable/spinner_background</item>
+    </style>
 </resources>
