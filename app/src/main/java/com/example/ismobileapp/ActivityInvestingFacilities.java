@@ -35,7 +35,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.loading_screen);
+        setContentView(R.layout.layout_loading);
         loadFacilities();
     }
 
@@ -86,7 +86,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     void initFacilities() {
         GridView grid = findViewById(R.id.viewFacilities);
         grid.setAdapter(
-                new EntityListAdapter(grid.getContext(), R.layout.facility_list_item, new EntityListener() {
+                new EntityListAdapter(grid.getContext(), R.layout.list_item_facility, new EntityListener() {
                     @Override
                     public List<Entity> getEntities() {
                         return new ArrayList<>(facilities);

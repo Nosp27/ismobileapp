@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -17,5 +18,13 @@
     <style name="spinner_style" parent="Base.Widget.AppCompat.ListView.DropDown">
         <item name="android:popupBackground">#DF5A5A5A</item>
         <item name="android:background">@drawable/spinner_background</item>
+    </style>
+
+    <style name="tag_cloud_button">
+        <item name="android:background">@drawable/tag_cloud_button</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">17dp</item>
+        <item name="android:layout_margin">25dp</item>
+        <item name="android:padding">3dp</item>
     </style>
 </resources>

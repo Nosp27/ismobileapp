@@ -19,7 +19,7 @@ public class EntitySpinnerAdapter extends BaseEntityAdapter {
     }
 
     public EntitySpinnerAdapter(Context context, EntityListener listener) {
-        this(context, R.layout.layout_list_regions, listener);
+        this(context, R.layout.list_item_criteria, listener);
     }
 
     @Override

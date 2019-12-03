@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         connector = new ProductionConnector();
-        setContentView(R.layout.loading_screen);
+        setContentView(R.layout.layout_loading);
         loadRegionsAndCategories();
     }
 
