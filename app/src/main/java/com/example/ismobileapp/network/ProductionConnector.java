@@ -1,11 +1,12 @@
 package com.example.ismobileapp.network;
 
-import android.util.JsonWriter;
-import com.example.ismobileapp.model.*;
+import com.example.ismobileapp.model.Category;
+import com.example.ismobileapp.model.Criteries;
+import com.example.ismobileapp.model.Facility;
+import com.example.ismobileapp.model.Region;
 import com.example.ismobileapp.network.json.JSONModeller;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 import org.json.JSONTokener;
 
 import java.io.*;
@@ -15,25 +16,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductionConnector implements ApiConnector {
-    private static final String SERVER = "";
+    static final String SERVER = "http://192.168.1.56:8080";
 
-    private static final String GET_ALL_REGIONS = "";
-    private static final String GET_REGION = "";
-    private static final String GET_ALL_CATEGORIES = "";
-    private static final String GET_CATEGORY = "";
+    static final String GET_ALL_REGIONS = "/regions";
+    static final String GET_REGION = "/region";
+    static final String GET_ALL_CATEGORIES = "/categories";
+    static final String GET_CRITERIZED_FACILITIES = "/facilities/";
 
     public ProductionConnector() {
-
     }
 
+    static HttpURLConnection setupConnection(URL url) throws IOException {
+        HttpURLConnection ret = ((HttpURLConnection) url.openConnection());
+        ret.setRequestProperty("Content-Type", "application/json");
+        return ret;
+    }
 
     private JSONTokener readFromApi(String suffix) {
+        return readFromApi(suffix, null);
+    }
+
+    private JSONTokener readFromApi(String suffix, String content) {
         HttpURLConnection connection;
         InputStream connInputStream;
 
         try {
-            URL a = new URL(SERVER + suffix);
-            connection = ((HttpURLConnection) a.openConnection());
+            URL url = new URL(SERVER + suffix);
+            connection = setupConnection(url);
+            if (content != null) {
+                connection.setRequestMethod("POST");
+                connection.getOutputStream().write(content.getBytes());
+            }
+            if(connection.getResponseCode() != 200)
+                throw new IOException("Unsuccessful response");
             connInputStream = connection.getInputStream();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -127,7 +142,13 @@ public class ProductionConnector implements ApiConnector {
 
     @Override
     public List<Facility> getCriterizedFacilities(Criteries criteries) {
-        JSONObject jsonRepr = JSONModeller.toJSON(criteries);
-        return null;
+        List<Facility> ret = new ArrayList<>();
+        JSONObject criteriesJson = JSONModeller.toJSON(criteries);
+        if (criteriesJson == null)
+            return ret;
+
+        for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_CRITERIZED_FACILITIES, criteriesJson.toString())))
+            ret.add(JSONModeller.fromJSON(Facility.class, regionJSON));
+        return ret;
     }
 }
