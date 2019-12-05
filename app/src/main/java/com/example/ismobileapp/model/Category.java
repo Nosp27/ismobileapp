@@ -1,16 +1,8 @@
 package com.example.ismobileapp.model;
 
 import android.graphics.drawable.Drawable;
-import com.example.ismobileapp.network.json.JSONField;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Category implements Entity {
-    @JSONField
     private String name;
 
     public Category() {

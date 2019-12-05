@@ -1,14 +1,11 @@
 package com.example.ismobileapp.model;
 
 import android.graphics.drawable.Drawable;
-import com.example.ismobileapp.network.json.JSONField;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Region implements Entity {
-    @JSONField
     public Integer id;
-    @JSONField
     public String name;
 
     public Region() {
