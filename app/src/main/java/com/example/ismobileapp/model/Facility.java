@@ -19,10 +19,11 @@ public class Facility implements Entity, Serializable {
         return name;
     }
 
-    @JSONField
+    private int _id;
     private double[] coords;
     @JSONField
     private String name;
+    private String description;
 
     public Facility(){}
 
