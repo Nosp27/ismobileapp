@@ -1,6 +1,7 @@
 package com.example.ismobileapp;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.widget.GridView;
 import android.widget.TabHost;
 import androidx.fragment.app.FragmentActivity;
@@ -11,6 +12,7 @@ import com.example.ismobileapp.model.Entity;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.callbacks.EntityListener;
 import com.example.ismobileapp.network.ApiConnector;
+import com.example.ismobileapp.network.FacilityLoadTask;
 import com.example.ismobileapp.network.MockConnector;
 import com.example.ismobileapp.viewmodel.EntityListAdapter;
 import com.example.ismobileapp.viewmodel.EntitySpinnerAdapter;
@@ -35,9 +37,13 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_investing_facilities);
-
+        setContentView(R.layout.loading_screen);
         loadFacilities();
+    }
+
+    void onLoadFacilities(List<Facility> loadedFacilities) {
+        setContentView(R.layout.activity_investing_facilities);
+        this.facilities = loadedFacilities;
         initFacilities();
 
         setTitle("Investment Opportunities");
@@ -63,9 +69,10 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     }
 
     void loadFacilities() {
+        FacilityLoadTask facilyLoadTask = new FacilityLoadTask(connector, this::onLoadFacilities);
         Intent intent = getIntent();
         Criteries criteries = (Criteries) intent.getSerializableExtra(MainActivity.MESSAGE_TAG);
-        facilities = connector.getCriterizedFacilities(criteries);
+        facilyLoadTask.execute(criteries);
     }
 
     void addMarkersForFacilities() {

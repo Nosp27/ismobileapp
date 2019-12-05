@@ -7,6 +7,8 @@ import com.example.ismobileapp.model.Region;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 
 public class MockConnector implements ApiConnector {
 
@@ -35,6 +37,11 @@ public class MockConnector implements ApiConnector {
 
     @Override
     public List<Facility> getCriterizedFacilities(Criteries criteries) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return Arrays.asList(
                 new Facility("Hse", new double[]{55.23, 34.33}),
                 new Facility("SAS", new double[]{15.11, 24.32})
