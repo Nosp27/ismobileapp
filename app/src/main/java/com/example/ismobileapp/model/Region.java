@@ -1,25 +1,28 @@
 package com.example.ismobileapp.model;
 
 import android.graphics.drawable.Drawable;
+import com.example.ismobileapp.network.json.JSONField;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Region implements Entity {
-    public Integer id;
-    public String name;
+    @JSONField
+    public Integer regionId;
+    @JSONField
+    public String regionName;
 
     public Region() {
     }
 
-    public Region(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public Region(int regionId, String name) {
+        this.regionId = regionId;
+        this.regionName = name;
     }
 
 
     @Override
     public String getTitle() {
-        return name;
+        return regionName;
     }
 
     @Override
@@ -37,8 +40,8 @@ public class Region implements Entity {
             return null;
         try {
             Region region = new Region();
-            region.id = regionJSON.getInt("id");
-            region.name = regionJSON.getString("name");
+            region.regionId = regionJSON.getInt("id");
+            region.regionName = regionJSON.getString("name");
             return region;
         } catch (JSONException e) {
             return null;

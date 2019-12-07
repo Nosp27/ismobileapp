@@ -1,8 +1,6 @@
 package com.example.ismobileapp.network.json;
 
-import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Criteries;
-import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.json.JSONException;
@@ -23,8 +21,8 @@ public class JSONModellerTest {
     @Test
     public void toJSON() {
         Region region = new Region();
-        region.id = 3;
-        region.name = "SAS";
+        region.regionId = 3;
+        region.regionName = "SAS";
         String actual = JSONModeller.toJSON(region).toString();
         Assert.assertEquals("{\"name\":\"SAS\",\"id\":3}", actual);
     }
@@ -35,8 +33,8 @@ public class JSONModellerTest {
         Region region = JSONModeller.fromJSON(Region.class, new JSONObject(json));
 
         Assert.assertNotNull(region);
-        Assert.assertEquals("SAS", region.name);
-        Assert.assertEquals(3, (int) region.id);
+        Assert.assertEquals("SAS", region.regionName);
+        Assert.assertEquals(3, (int) region.regionId);
     }
 
     @Test

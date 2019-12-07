@@ -17,7 +17,8 @@ public class JSONModeller {
         try {
             T ret = neededClass.newInstance();
             for (Field field : neededClass.getFields())
-                field.set(ret, jsonObject.get(field.getName()));
+                if (field.isAnnotationPresent(JSONField.class))
+                    field.set(ret, jsonObject.get(field.getName()));
             return ret;
         } catch (IllegalAccessException | InstantiationException | JSONException e) {
             Log.e(TAG, e.toString());
