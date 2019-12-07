@@ -12,7 +12,7 @@ import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.callbacks.EntityListener;
 import com.example.ismobileapp.network.ApiConnector;
 import com.example.ismobileapp.network.LoadTask;
-import com.example.ismobileapp.network.MockConnector;
+import com.example.ismobileapp.network.ProductionConnector;
 import com.example.ismobileapp.viewmodel.EntityListAdapter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,7 +29,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     public static final String FACILITY_TAG = "com.example.ismobileapp.ActivityInvestingFacilities.FACILITY";
 
     private GoogleMap mMap;
-    ApiConnector connector = new MockConnector();
+    ApiConnector connector = new ProductionConnector();
     List<Facility> facilities;
 
     @Override
@@ -76,8 +76,9 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
 
     void addMarkersForFacilities() {
         for (Facility f : facilities) {
-            double[] coords = f.getCoords();
-            LatLng position = new LatLng(coords[0], coords[1]);
+            if(f.getLat() == null && f.getLng() == null)
+                continue;
+            LatLng position = new LatLng(f.getLat(), f.getLng());
             mMap.addMarker(new MarkerOptions().position(position).title(f.getName()));
         }
     }

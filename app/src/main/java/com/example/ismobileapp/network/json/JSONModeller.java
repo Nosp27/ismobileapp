@@ -17,8 +17,13 @@ public class JSONModeller {
         try {
             T ret = neededClass.newInstance();
             for (Field field : neededClass.getFields())
-                if (field.isAnnotationPresent(JSONField.class))
-                    field.set(ret, jsonObject.get(field.getName()));
+                if (field.isAnnotationPresent(JSONField.class)) {
+                    Object field_value = jsonObject.get(field.getName());
+                    if (field_value == JSONObject.NULL)
+                        field.set(ret, null);
+                    else
+                        field.set(ret, jsonObject.get(field.getName()));
+                }
             return ret;
         } catch (IllegalAccessException | InstantiationException | JSONException e) {
             Log.e(TAG, e.toString());
@@ -30,6 +35,8 @@ public class JSONModeller {
         Map<String, Object> map = new HashMap<>();
         try {
             for (Field field : object.getClass().getFields()) {
+                if (!field.isAnnotationPresent(JSONField.class))
+                    continue;
                 String fieldName = field.getName();
                 fieldName = fieldName.substring(fieldName.indexOf(" ") + 1);
                 map.put(fieldName, field.get(object));

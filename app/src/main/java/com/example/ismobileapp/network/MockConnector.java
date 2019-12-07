@@ -43,8 +43,8 @@ public class MockConnector implements ApiConnector {
             e.printStackTrace();
         }
         return Arrays.asList(
-                new Facility("Hse", new double[]{55.23, 34.33}),
-                new Facility("SAS", new double[]{15.11, 24.32})
+                new Facility("Hse", new Double[]{55.23, 34.33}),
+                new Facility("SAS", new Double[]{15.11, 24.32})
         );
     }
 }

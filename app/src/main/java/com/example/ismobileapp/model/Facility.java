@@ -7,28 +7,45 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 public class Facility implements Entity, Serializable {
-    public double[] getCoords() {
-        return coords;
-    }
-
     public String getName() {
         return name;
     }
 
     @JSONField
-    private int _id;
-    @JSONField
-    private double[] coords;
-    @JSONField
-    private String name;
-    @JSONField
-    private String description;
+    public int _id;
 
-    public Facility(){}
+    public Double getLat() {
+        return lat;
+    }
 
-    public Facility(String name, double[] coords){
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    @JSONField
+    public Double lat;
+    @JSONField
+    public Double lng;
+    @JSONField
+    public String name;
+    @JSONField
+    public String description;
+
+    public Facility() {
+    }
+
+    public Facility(String name, Double[] coords) {
         this.name = name;
-        this.coords = coords;
+        this.lat = coords[0];
+        this.lng = coords[1];
     }
 
     @Override
@@ -38,7 +55,7 @@ public class Facility implements Entity, Serializable {
 
     @Override
     public String getSubtitle() {
-        return Arrays.toString(coords);
+        return Arrays.toString(new Double[]{lat, lng});
     }
 
     @Override
