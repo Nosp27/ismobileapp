@@ -5,10 +5,10 @@ import com.example.ismobileapp.model.Region;
 
 import java.util.List;
 
-public interface EntityListener {
-    List<Entity> getEntities();
-    List<Entity> getSelectedEntities();
+public interface EntityListener<T extends Entity> {
+    List<T> getEntities();
+    List<T> getSelectedEntities();
 
-    void selectEntity(Entity entity);
-    void deselectEntity(Entity entity);
+    void selectEntity(T entity);
+    void deselectEntity(T entity);
 }
