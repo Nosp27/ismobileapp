@@ -1,7 +1,6 @@
 package com.example.ismobileapp;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.widget.GridView;
 import android.widget.TabHost;
 import androidx.fragment.app.FragmentActivity;
@@ -12,10 +11,9 @@ import com.example.ismobileapp.model.Entity;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.callbacks.EntityListener;
 import com.example.ismobileapp.network.ApiConnector;
-import com.example.ismobileapp.network.FacilityLoadTask;
+import com.example.ismobileapp.network.LoadTask;
 import com.example.ismobileapp.network.MockConnector;
 import com.example.ismobileapp.viewmodel.EntityListAdapter;
-import com.example.ismobileapp.viewmodel.EntitySpinnerAdapter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -69,10 +67,11 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     }
 
     void loadFacilities() {
-        FacilityLoadTask facilyLoadTask = new FacilityLoadTask(connector, this::onLoadFacilities);
+        LoadTask<List<Facility>> facilityLoadTask =
+                new LoadTask<>(connector::getCriterizedFacilities, this::onLoadFacilities);
         Intent intent = getIntent();
         Criteries criteries = (Criteries) intent.getSerializableExtra(MainActivity.MESSAGE_TAG);
-        facilyLoadTask.execute(criteries);
+        facilityLoadTask.execute(criteries);
     }
 
     void addMarkersForFacilities() {

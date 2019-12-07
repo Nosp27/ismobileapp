@@ -5,6 +5,7 @@ import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
 import com.example.ismobileapp.network.json.JSONModeller;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -108,9 +109,9 @@ public class ProductionConnector implements ApiConnector {
         if (tokener == null)
             return ret;
         try {
-            while (tokener.nextValue() != JSONObject.NULL) {
-                ret.add((JSONObject) tokener.nextValue());
-            }
+            JSONArray nextTokens = ((JSONArray) tokener.nextValue());
+            for(int i = 0; i < nextTokens.length(); i++)
+                ret.add((JSONObject)nextTokens.get(i));
             return ret;
         } catch (JSONException e) {
             e.printStackTrace();
