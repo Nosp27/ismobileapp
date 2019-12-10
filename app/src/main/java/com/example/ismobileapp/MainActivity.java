@@ -11,6 +11,7 @@ import com.example.ismobileapp.model.Entity;
 import com.example.ismobileapp.model.Region;
 import com.example.ismobileapp.model.callbacks.EntityListener;
 import com.example.ismobileapp.network.ApiConnector;
+import com.example.ismobileapp.network.Connectors;
 import com.example.ismobileapp.network.LoadTask;
 import com.example.ismobileapp.network.ProductionConnector;
 import com.example.ismobileapp.viewmodel.EntitySpinnerAdapter;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        connector = new ProductionConnector();
+        connector = Connectors.getDefaultConnector();
         setContentView(R.layout.layout_loading);
         loadRegionsAndCategories();
     }

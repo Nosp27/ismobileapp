@@ -11,6 +11,7 @@ import com.example.ismobileapp.model.Entity;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.callbacks.EntityListener;
 import com.example.ismobileapp.network.ApiConnector;
+import com.example.ismobileapp.network.Connectors;
 import com.example.ismobileapp.network.LoadTask;
 import com.example.ismobileapp.network.ProductionConnector;
 import com.example.ismobileapp.viewmodel.EntityListAdapter;
@@ -29,7 +30,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     public static final String FACILITY_TAG = "com.example.ismobileapp.ActivityInvestingFacilities.FACILITY";
 
     private GoogleMap mMap;
-    ApiConnector connector = new ProductionConnector();
+    ApiConnector connector = Connectors.getDefaultConnector();
     List<Facility> facilities;
 
     @Override
