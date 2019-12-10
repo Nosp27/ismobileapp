@@ -44,7 +44,9 @@ public class JSONModellerTest {
         crit.regions = new Integer[]{1,2};
 
         class ApiCriteres implements Serializable {
+            @JSONField
             public List<String> categories = Arrays.asList("c1", "c2");
+            @JSONField
             public List<Integer> regions = Arrays.asList(1,2);
         }
 
