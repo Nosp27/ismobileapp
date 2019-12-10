@@ -18,8 +18,23 @@
     <style name="spinner_style" parent="Base.Widget.AppCompat.ListView.DropDown">
         <item name="android:popupBackground">#DF5A5A5A</item>
         <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_margin">5dp</item>
     </style>
-
+    <style name="label_style" parent="TextAppearance.AppCompat">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">12pt</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_alignParentStart">true</item>
+    </style>
+    <style name="confirm_button_style" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:textColor">@color/colorShade</item>
+        <item name="android:textSize">12pt</item>
+    </style>
     <style name="tag_cloud_button">
         <item name="android:background">@drawable/tag_cloud_button</item>
         <item name="android:layout_width">wrap_content</item>
