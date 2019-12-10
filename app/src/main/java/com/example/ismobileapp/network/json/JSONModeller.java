@@ -5,10 +5,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 public class JSONModeller {
     private static final String TAG = "JSONModeller";
@@ -21,13 +20,21 @@ public class JSONModeller {
                     Object field_value = jsonObject.get(field.getName());
                     if (field_value == JSONObject.NULL)
                         field.set(ret, null);
-                    else
+                    else {
                         field.set(ret, jsonObject.get(field.getName()));
+                        String processMethod = field.getAnnotation(JSONField.class).processResultMethod();
+                        if (!processMethod.isEmpty()) {
+                            Method process = neededClass.getMethod(processMethod);
+                            process.invoke(ret);
+                        }
+                    }
                 }
             return ret;
         } catch (IllegalAccessException | InstantiationException | JSONException e) {
             Log.e(TAG, e.toString());
             return null;
+        } catch (NoSuchMethodException | InvocationTargetException e) {
+            throw new RuntimeException(e);
         }
     }
 
