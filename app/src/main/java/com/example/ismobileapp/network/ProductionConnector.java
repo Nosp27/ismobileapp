@@ -13,6 +13,7 @@ import org.json.JSONTokener;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,9 +40,16 @@ public class ProductionConnector implements ApiConnector {
     }
 
     private JSONTokener readFromApi(String suffix, String content) {
-        HttpURLConnection connection;
-        InputStream connInputStream;
+        InputStream connInputStream = connectToApi(suffix, content);
+        try (InputStreamReader reader = new InputStreamReader(connInputStream)) {
+            return tokenize(reader);
+        } catch (IOException e) {
+        }
+        return null;
+    }
 
+    InputStream connectToApi(String suffix, String content) {
+        HttpURLConnection connection;
         try {
             URL url = new URL(SERVER + suffix);
             connection = setupConnection(url);
@@ -49,32 +57,12 @@ public class ProductionConnector implements ApiConnector {
                 connection.setRequestMethod("POST");
                 connection.getOutputStream().write(content.getBytes());
             }
-            if(connection.getResponseCode() != 200)
+            if (connection.getResponseCode() != 200)
                 throw new IOException("Unsuccessful response");
-            connInputStream = connection.getInputStream();
+            return connection.getInputStream();
         } catch (IOException ex) {
-            ex.printStackTrace();
-            // TODO: 01/12/2019 handle i/o exception
-            return null;
+            throw new RuntimeException(ex);
         }
-
-        try (InputStreamReader reader = new InputStreamReader(connInputStream)) {
-            return tokenize(reader);
-        } catch (IOException e) {
-            try {
-                connection.getResponseCode();
-                InputStream es = connection.getErrorStream();
-
-                // read the response body
-                byte[] buf = new byte[30];
-                while (es.read(buf) > 0) ;
-
-                // close the errorstream
-                es.close();
-            } catch (IOException ee) {
-            }
-        }
-        return null;
     }
 
 
@@ -111,8 +99,8 @@ public class ProductionConnector implements ApiConnector {
             return ret;
         try {
             JSONArray nextTokens = ((JSONArray) tokener.nextValue());
-            for(int i = 0; i < nextTokens.length(); i++)
-                ret.add((JSONObject)nextTokens.get(i));
+            for (int i = 0; i < nextTokens.length(); i++)
+                ret.add((JSONObject) nextTokens.get(i));
             return ret;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -155,12 +143,7 @@ public class ProductionConnector implements ApiConnector {
     }
 
     @Override
-    public byte[] loadImage(String key) throws IOException {
-        JSONTokener tokener = readFromApi(READ_IMAGE_SUFFIX + key);
-        try {
-            return ((JSONObject) tokener.nextValue()).get("imageBinary").toString().getBytes();
-        } catch (JSONException e) {
-            throw new IOException("Image was not loaded");
-        }
+    public InputStream loadImage(String key) throws IOException {
+        return connectToApi(READ_IMAGE_SUFFIX + key, null);
     }
 }
