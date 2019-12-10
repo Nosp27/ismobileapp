@@ -4,14 +4,14 @@
         <layer-list>
             <item>
                 <shape>
-                    <stroke android:color="@color/colorShade"
+                    <stroke android:color="@color/colorPrimaryDark"
                             android:width="2sp"
                     />
                     <corners android:radius="2sp"/>
                 </shape>
             </item>
             <item android:drawable="@drawable/ic_arrow_drop_down_black_24dp"
-                  android:gravity="bottom|right"/>
+                  android:gravity="center|right"/>
         </layer-list>
     </item>
 </selector>
