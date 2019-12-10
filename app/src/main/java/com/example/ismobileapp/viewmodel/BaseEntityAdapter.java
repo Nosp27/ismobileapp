@@ -20,9 +20,9 @@ import java.util.List;
 public abstract class BaseEntityAdapter extends ArrayAdapter<Entity> {
     protected int resource;
     protected List<Entity> entities;
-    protected EntityListener entityListener;
+    protected EntityListener<Entity> entityListener;
 
-    public BaseEntityAdapter(Context context, int resource, EntityListener listener) {
+    public BaseEntityAdapter(Context context, int resource, EntityListener<Entity> listener) {
         this(context, resource, listener, listener.getEntities());
     }
 
@@ -41,6 +41,8 @@ public abstract class BaseEntityAdapter extends ArrayAdapter<Entity> {
 
         ((TextView) convertView.findViewById(R.id.list_title)).setText(entity.getTitle());
         ((TextView) convertView.findViewById(R.id.list_subtitle)).setText(entity.getSubtitle());
+        if (entity.getImage() != null)
+            ((ImageView) convertView.findViewById(R.id.item_img)).setImageDrawable(entity.getImage());
 
         Drawable img = entity.getImage();
         if (img != null)
