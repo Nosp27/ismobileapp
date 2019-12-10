@@ -16,29 +16,34 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FacilityDetailed extends AppCompatActivity {
+    private Facility facility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facility_detailed);
 
-        Facility facility = (Facility) getIntent().getSerializableExtra(ActivityInvestingFacilities.FACILITY_TAG);
+        facility = (Facility) getIntent().getSerializableExtra(ActivityInvestingFacilities.FACILITY_TAG);
         if (facility == null)
             return;
         ((TextView) findViewById(R.id.facility_name)).setText(facility.getName());
-        GridLayout tagCloud = findViewById(R.id.tag_cloud);
+        createCategoryCloud();
+    }
+
+    private void createCategoryCloud() {
         List<Category> cats = Arrays.asList(
-                new Category("ASd"),
-                new Category("SASыыыыы"),
-                new Category("ASd"),
-                new Category("SAS"),
-                new Category("ASd")
+                new Category("Sample_University"),
+                new Category("Sample_Property"),
+                new Category("Sample_Research Center"),
+                new Category("Sample_Factory facility"),
+                new Category("Sample_Startup IT")
         );
+        GridLayout tagCloud = findViewById(R.id.tag_cloud);
         tagCloud.setUseDefaultMargins(true);
         List<Button> btns = cats.stream().map(
                 x -> createButton(x.getTitle(), tagCloud.getContext())).collect(Collectors.toList()
         );
-        for(Button b : btns) {
+        for (Button b : btns) {
             tagCloud.addView(b);
         }
     }
