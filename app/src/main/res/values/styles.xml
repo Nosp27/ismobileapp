@@ -20,6 +20,8 @@
         <item name="android:background">@drawable/spinner_background</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_margin">5dp</item>
+        <item name="android:divider">@color/colorBackground</item>
+        <item name="android:dividerHeight">5dp</item>
     </style>
     <style name="label_style" parent="TextAppearance.AppCompat">
         <item name="android:layout_height">wrap_content</item>
@@ -41,5 +43,8 @@
         <item name="android:layout_height">17dp</item>
         <item name="android:layout_margin">25dp</item>
         <item name="android:padding">3dp</item>
+    </style>
+    <style name="list_item_style">
+        <item name="android:background">@color/colorBackground</item>
     </style>
 </resources>
