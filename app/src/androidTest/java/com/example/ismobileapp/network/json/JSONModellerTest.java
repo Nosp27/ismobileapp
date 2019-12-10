@@ -24,12 +24,12 @@ public class JSONModellerTest {
         region.regionId = 3;
         region.regionName = "SAS";
         String actual = JSONModeller.toJSON(region).toString();
-        Assert.assertEquals("{\"name\":\"SAS\",\"id\":3}", actual);
+        Assert.assertEquals("{\"regionId\":3,\"regionName\":\"SAS\"}", actual);
     }
 
     @Test
     public void fromJSON() throws JSONException {
-        String json = "{\"name\":\"SAS\",\"id\":3}";
+        String json = "{\"regionName\":\"SAS\",\"regionId\":3}";
         Region region = JSONModeller.fromJSON(Region.class, new JSONObject(json));
 
         Assert.assertNotNull(region);
@@ -38,7 +38,7 @@ public class JSONModellerTest {
     }
 
     @Test
-    public void testMatchJson() {
+    public void testMatchJsonArrayAndList() {
         Criteries crit = new Criteries();
         crit.categories = new String[]{"c1", "c2"};
         crit.regions = new Integer[]{1,2};
