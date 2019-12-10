@@ -33,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
         loadRegionsAndCategories();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setContentView(R.layout.layout_loading);
+        loadRegionsAndCategories();
+    }
+
     private void onLoad(Pair<List<Region>, List<Category>> data) {
         setContentView(R.layout.activity_select_criterias);
 
