@@ -6,6 +6,7 @@ import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public interface ApiConnector {
@@ -13,5 +14,5 @@ public interface ApiConnector {
     Object getRegion(int id);
     List<Category> getAllCategories();
     List<Facility> getCriterizedFacilities(Criteries criteries);
-    byte[] loadImage(String key) throws IOException;
+    InputStream loadImage(String key) throws IOException;
 }
