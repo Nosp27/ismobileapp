@@ -23,6 +23,7 @@ public class ProductionConnector implements ApiConnector {
     static final String GET_REGION = "/region";
     static final String GET_ALL_CATEGORIES = "/categories";
     static final String GET_CRITERIZED_FACILITIES = "/facilities/";
+    static final String READ_IMAGE_SUFFIX = "/image/";
 
     public ProductionConnector() {
     }
@@ -151,5 +152,15 @@ public class ProductionConnector implements ApiConnector {
         for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_CRITERIZED_FACILITIES, criteriesJson.toString())))
             ret.add(JSONModeller.fromJSON(Facility.class, regionJSON));
         return ret;
+    }
+
+    @Override
+    public byte[] loadImage(String key) throws IOException {
+        JSONTokener tokener = readFromApi(READ_IMAGE_SUFFIX + key);
+        try {
+            return ((JSONObject) tokener.nextValue()).get("imageBinary").toString().getBytes();
+        } catch (JSONException e) {
+            throw new IOException("Image was not loaded");
+        }
     }
 }

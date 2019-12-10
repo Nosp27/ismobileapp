@@ -47,4 +47,10 @@ public class MockConnector implements ApiConnector {
                 new Facility("SAS", new Double[]{15.11, 24.32})
         );
     }
+
+    @Override
+    public byte[] loadImage(String key) {
+        return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEX/TQBcNTh/AAAAAXRSTlPM0jRW/QAAAApJREFUeJxjYgAAAAYAAzY3fKgAAAAASUVORK5CYII="
+                .getBytes();
+    }
 }
