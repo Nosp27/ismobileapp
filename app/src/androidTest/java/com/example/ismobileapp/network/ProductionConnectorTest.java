@@ -17,30 +17,12 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class ProductionConnectorTest {
     private static final String TAG = "ProductionConnectorTest";
-    private static boolean successfulPing = true;
-    private static ProductionConnector connector;
-
-    @BeforeClass
-    public static void ping() {
-        try {
-            connector = new ProductionConnector();
-            HttpURLConnection conn =
-                    ProductionConnector.setupConnection(
-                            new URL(ProductionConnector.SERVER + ProductionConnector.GET_ALL_REGIONS)
-                    );
-            if (conn.getResponseCode() == 200) {
-                successfulPing = true;
-                return;
-            }
-        } catch (IOException e) {
-        }
-        successfulPing = false;
-
-    }
+    private ProductionConnector connector;
 
     @Before
-    public void assumePinging() {
-        Assume.assumeTrue("Cannot connect to server", successfulPing);
+    public void assumePing() {
+        Assume.assumeTrue("Cannot connect to server", Connectors.pingServer());
+        connector = new ProductionConnector();
     }
 
     @Test

@@ -5,6 +5,7 @@ import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +63,6 @@ public class MockConnector implements ApiConnector {
                 99, 98, 0, 0, 0, 6, 0, 3, 54, 55,
                 124, -88, 0, 0, 0, 0, 73, 69, 78, 68, -82,
         };
-        return null;
+        return new ByteArrayInputStream(bts);
     }
 }

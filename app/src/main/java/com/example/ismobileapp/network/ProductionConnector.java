@@ -57,8 +57,9 @@ public class ProductionConnector implements ApiConnector {
                 connection.setRequestMethod("POST");
                 connection.getOutputStream().write(content.getBytes());
             }
-            if (connection.getResponseCode() != 200)
-                throw new IOException("Unsuccessful response");
+            int responseCode = connection.getResponseCode();
+            if (responseCode != 200)
+                throw new IOException("Unsuccessful response: " + responseCode);
             return connection.getInputStream();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
