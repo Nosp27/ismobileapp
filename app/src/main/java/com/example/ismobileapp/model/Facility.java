@@ -1,6 +1,7 @@
 package com.example.ismobileapp.model;
 
 import android.graphics.drawable.Drawable;
+import com.example.ismobileapp.cache.DrawablesCache;
 import com.example.ismobileapp.network.json.JSONField;
 
 import java.io.Serializable;
@@ -38,6 +39,8 @@ public class Facility implements Entity, Serializable {
     public String name;
     @JSONField
     public String description;
+    @JSONField(processResultMethod = "processImage")
+    String imageUrl;
 
     public Facility() {
     }
@@ -46,6 +49,7 @@ public class Facility implements Entity, Serializable {
         this.name = name;
         this.lat = coords[0];
         this.lng = coords[1];
+        this.imageUrl = "";
     }
 
     @Override
@@ -60,6 +64,10 @@ public class Facility implements Entity, Serializable {
 
     @Override
     public Drawable getImage() {
-        return null;
+        return DrawablesCache.processImage(imageUrl, _id + "_facility_image");
+    }
+
+    public void processImage() {
+        DrawablesCache.processImage(imageUrl, _id + "_facility_image");
     }
 }
