@@ -1,7 +1,7 @@
 package com.example.ismobileapp.network;
 
 public class Connectors {
-    private static boolean debugMode = true;
+    private static boolean debugMode = false;
     private static ApiConnector defaultConnector;
 
     public static ApiConnector getDefaultConnector() {

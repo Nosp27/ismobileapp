@@ -5,6 +5,7 @@ import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -49,8 +50,18 @@ public class MockConnector implements ApiConnector {
     }
 
     @Override
-    public byte[] loadImage(String key) {
-        return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEX/TQBcNTh/AAAAAXRSTlPM0jRW/QAAAApJREFUeJxjYgAAAAYAAzY3fKgAAAAASUVORK5CYII="
-                .getBytes();
+    public InputStream loadImage(String key) {
+        byte[] bts = new byte[]{
+                -119, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0,
+                13, 73, 72, 68, 82, 0, 0, 0, 1, 0,
+                0, 0, 1, 1, 3, 0, 0, 0, 37, -37,
+                86, -54, 0, 0, 0, 3, 80, 76, 84, 69,
+                -1, 77, 0, 92, 53, 56, 127, 0, 0, 0,
+                1, 116, 82, 78, 83, -52, -46, 52, 86, -3,
+                0, 0, 0, 10, 73, 68, 65, 84, 120, -100,
+                99, 98, 0, 0, 0, 6, 0, 3, 54, 55,
+                124, -88, 0, 0, 0, 0, 73, 69, 78, 68, -82,
+        };
+        return null;
     }
 }
