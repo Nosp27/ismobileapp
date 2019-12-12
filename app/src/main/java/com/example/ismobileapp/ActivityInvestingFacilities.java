@@ -15,10 +15,9 @@ import com.example.ismobileapp.network.Connectors;
 import com.example.ismobileapp.network.LoadTask;
 import com.example.ismobileapp.network.ProductionConnector;
 import com.example.ismobileapp.viewmodel.EntityListAdapter;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -76,12 +75,23 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     }
 
     void addMarkersForFacilities() {
+        LatLngBounds.Builder builder = LatLngBounds.builder();
         for (Facility f : facilities) {
-            if(f.getLat() == null && f.getLng() == null)
+            if (f.getLat() == null && f.getLng() == null)
                 continue;
             LatLng position = new LatLng(f.getLat(), f.getLng());
+            builder.include(position);
             mMap.addMarker(new MarkerOptions().position(position).title(f.getName()));
         }
+
+        CameraUpdate camUpdate;
+        if (facilities.size() > 1)
+            camUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(), 500,900,10);
+        else {
+            Facility facility = facilities.get(0);
+            camUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(facility.lat, facility.lng), 10f);
+        }
+        mMap.moveCamera(camUpdate);
     }
 
     void initFacilities() {
@@ -131,6 +141,5 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         addMarkersForFacilities();
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
