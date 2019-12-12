@@ -31,6 +31,7 @@ public class ProductionConnector implements ApiConnector {
 
     static HttpURLConnection setupConnection(URL url) throws IOException {
         HttpURLConnection ret = ((HttpURLConnection) url.openConnection());
+        ret.setConnectTimeout(150);
         ret.setRequestProperty("Content-Type", "application/json");
         return ret;
     }
