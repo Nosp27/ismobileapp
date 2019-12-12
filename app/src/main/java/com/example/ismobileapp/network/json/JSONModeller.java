@@ -1,12 +1,11 @@
 package com.example.ismobileapp.network.json;
 
 import android.util.Log;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.*;
 
 public class JSONModeller {
@@ -21,7 +20,12 @@ public class JSONModeller {
                     if (field_value == JSONObject.NULL)
                         field.set(ret, null);
                     else {
-                        field.set(ret, jsonObject.get(field.getName()));
+                        if (field_value instanceof JSONArray)
+                            field_value = fromJSON(field.getType().getComponentType(), (JSONArray) field_value);
+                        else if (field_value instanceof JSONObject && ((JSONObject) field_value).length() > 1)
+                            field_value = fromJSON(field.getType(), (JSONObject) field_value);
+
+                        field.set(ret, field_value);
                         String processMethod = field.getAnnotation(JSONField.class).processResultMethod();
                         if (!processMethod.isEmpty()) {
                             Method process = neededClass.getMethod(processMethod);
@@ -34,6 +38,19 @@ public class JSONModeller {
             Log.e(TAG, e.toString());
             return null;
         } catch (NoSuchMethodException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T[] fromJSON(Class<T> neededClass, JSONArray jsonArray) {
+        try {
+            T[] ret = (T[]) Array.newInstance(neededClass, jsonArray.length());
+            for (int i = 0; i < ret.length; ++i) {
+                Object element = jsonArray.get(i);
+                ret[i] = fromJSON(neededClass, (JSONObject) element);
+            }
+            return ret;
+        } catch (JSONException e) {
             throw new RuntimeException(e);
         }
     }

@@ -5,7 +5,9 @@ import com.example.ismobileapp.cache.DrawablesCache;
 import com.example.ismobileapp.network.json.JSONField;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Facility implements Entity, Serializable {
     public String getName() {
@@ -40,7 +42,11 @@ public class Facility implements Entity, Serializable {
     @JSONField
     public String description;
     @JSONField(processResultMethod = "processImage")
-    String imageUrl;
+    public String imageUrl;
+    @JSONField
+    public Region region;
+    @JSONField
+    public Category[] categories;
 
     public Facility() {
     }

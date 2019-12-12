@@ -1,6 +1,7 @@
 package com.example.ismobileapp.network.json;
 
 import com.example.ismobileapp.model.Criteries;
+import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.json.JSONException;
@@ -19,7 +20,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class JSONModellerTest {
     @Test
-    public void toJSON() {
+    public void toJSONRegion() {
         Region region = new Region();
         region.regionId = 3;
         region.regionName = "SAS";
@@ -28,13 +29,40 @@ public class JSONModellerTest {
     }
 
     @Test
-    public void fromJSON() throws JSONException {
+    public void fromJSONRegion() throws JSONException {
         String json = "{\"regionName\":\"SAS\",\"regionId\":3}";
         Region region = JSONModeller.fromJSON(Region.class, new JSONObject(json));
 
         Assert.assertNotNull(region);
         Assert.assertEquals("SAS", region.regionName);
         Assert.assertEquals(3, (int) region.regionId);
+    }
+
+    @Test
+    public void fromJSONCategory() throws JSONException {
+        String json =
+                "    {\n" +
+                "        \"_id\": 1,\n" +
+                "        \"name\": \"HSE\",\n" +
+                "        \"description\": \"HSE Shabla\",\n" +
+                "        \"lat\": 55.754096,\n" +
+                "        \"lng\": 37.649238,\n" +
+                "        \"imageUrl\": \"image_hse\",\n" +
+                "        \"categories\": [\n" +
+                "            {\n" +
+                "                \"catName\": \"Research\",\n" +
+                "                \"imageUrl\": null\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"region\": {\n" +
+                "            \"regionId\": 0,\n" +
+                "            \"regionName\": \"Moscow\",\n" +
+                "            \"imageUrl\": null\n" +
+                "        }\n" +
+                "    }\n";
+        Facility facility = JSONModeller.fromJSON(Facility.class, new JSONObject(json));
+        Assert.assertNotNull(facility.region);
+        Assert.assertNotNull(facility.categories);
     }
 
     @Test
