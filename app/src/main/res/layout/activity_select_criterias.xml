@@ -21,6 +21,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_select_regions"
             app:layout_constraintStart_toStartOf="@id/tv_select_regions"
             style="@style/spinner_style"
+            android:dropDownWidth="300dp"
     />
 
     <TextView
@@ -38,6 +39,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_select_categories"
             app:layout_constraintStart_toStartOf="@id/tv_select_categories"
             style="@style/spinner_style"
+            android:dropDownWidth="300dp"
     />
 
     <Button
