@@ -40,7 +40,6 @@ public abstract class BaseEntityAdapter extends ArrayAdapter<Entity> {
         Entity entity = entities.get(position);
 
         ((TextView) convertView.findViewById(R.id.list_title)).setText(entity.getTitle());
-        ((TextView) convertView.findViewById(R.id.list_subtitle)).setText(entity.getSubtitle());
         if (entity.getImage() != null)
             ((ImageView) convertView.findViewById(R.id.item_img)).setImageDrawable(entity.getImage());
 
