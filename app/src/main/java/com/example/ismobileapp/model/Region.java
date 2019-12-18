@@ -4,7 +4,9 @@ import android.graphics.drawable.Drawable;
 import com.example.ismobileapp.cache.DrawablesCache;
 import com.example.ismobileapp.network.json.JSONField;
 
-public class Region implements Entity {
+import java.io.Serializable;
+
+public class Region implements Entity, Serializable {
     @JSONField
     public Integer regionId;
     @JSONField

@@ -4,7 +4,9 @@ import android.graphics.drawable.Drawable;
 import com.example.ismobileapp.cache.DrawablesCache;
 import com.example.ismobileapp.network.json.JSONField;
 
-public class Category implements Entity {
+import java.io.Serializable;
+
+public class Category implements Entity, Serializable {
     @JSONField
     String catName;
     @JSONField(processResultMethod = "processImage")
