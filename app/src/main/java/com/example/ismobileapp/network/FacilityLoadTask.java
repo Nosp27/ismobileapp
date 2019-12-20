@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -18,7 +19,11 @@ public class FacilityLoadTask extends AsyncTask<Criteries, Integer, List<Facilit
 
     @Override
     protected List<Facility> doInBackground(Criteries... criteries) {
-        return connector.getCriterizedFacilities(criteries[0]);
+        try {
+            return connector.getCriterizedFacilities(criteries[0]);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @Override

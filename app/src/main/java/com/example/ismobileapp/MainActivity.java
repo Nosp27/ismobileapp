@@ -1,7 +1,9 @@
 package com.example.ismobileapp;
 
 import android.content.Intent;
+import android.util.Log;
 import android.util.Pair;
+import android.widget.Button;
 import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,10 +18,12 @@ import com.example.ismobileapp.network.LoadTask;
 import com.example.ismobileapp.network.ProductionConnector;
 import com.example.ismobileapp.viewmodel.EntitySpinnerAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     public static final String MESSAGE_TAG = "com.example.ismobileapp.MainActivity.MESSAGE";
 
     ApiConnector connector;
@@ -42,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onLoad(Pair<List<Region>, List<Category>> data) {
+        if (data == null) {
+            // exception occurred
+            showErrorScreen();
+            return;
+        }
         setContentView(R.layout.activity_select_criterias);
 
         regionListener = new StoreListener<>(data.first);
@@ -55,12 +64,30 @@ public class MainActivity extends AppCompatActivity {
         (findViewById(R.id.btn_select_regions)).setOnClickListener((x) -> selectRegions(formCriteries()));
     }
 
+    private void showErrorScreen() {
+        setContentView(R.layout.error_screen);
+        Button retryBtn = findViewById(R.id.retry_button);
+        retryBtn.setOnClickListener(e -> loadRegionsAndCategories());
+    }
+
     private void loadRegionsAndCategories() {
         LoadTask<Pair<List<Region>, List<Category>>> loadRegionsTask = new LoadTask<>(
-                c -> new Pair<>(connector.getAllRegions(), connector.getAllCategories()),
+                this::loadRegionsAndCategoriesCallback,
                 this::onLoad
         );
         loadRegionsTask.execute(new Criteries());
+    }
+
+    /**
+     * Do not call from main thread
+     */
+    private Pair<List<Region>, List<Category>> loadRegionsAndCategoriesCallback(Criteries... crits) {
+        try {
+            return new Pair<>(connector.getAllRegions(), connector.getAllCategories());
+        } catch (IOException e) {
+            Log.e(TAG, "loadFacilitiesCallback: loadRegionsAndCategoriesCallback", e);
+            return null;
+        }
     }
 
     private Criteries formCriteries() {
