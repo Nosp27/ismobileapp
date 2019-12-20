@@ -26,12 +26,14 @@ public class ProductionConnector implements ApiConnector {
     static final String GET_CRITERIZED_FACILITIES = "/facilities/";
     static final String READ_IMAGE_SUFFIX = "/image/";
 
+    private static final int TIMEOUT = 1000;
+
     public ProductionConnector() {
     }
 
     static HttpURLConnection setupConnection(URL url) throws IOException {
         HttpURLConnection ret = ((HttpURLConnection) url.openConnection());
-        ret.setConnectTimeout(150);
+        ret.setConnectTimeout(TIMEOUT);
         ret.setRequestProperty("Content-Type", "application/json");
         return ret;
     }
