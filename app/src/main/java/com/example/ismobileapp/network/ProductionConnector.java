@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductionConnector implements ApiConnector {
-    static final String SERVER = "http://192.168.1.56:8080";
+    static final String SERVER = "http://192.168.88.233:8080";
 
     static final String GET_ALL_REGIONS = "/regions";
     static final String GET_REGION = "/region";
