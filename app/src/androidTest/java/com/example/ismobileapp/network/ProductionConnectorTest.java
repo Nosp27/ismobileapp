@@ -26,19 +26,19 @@ public class ProductionConnectorTest {
     }
 
     @Test
-    public void testGetRegions() {
+    public void testGetRegions() throws IOException {
         List<Region> actual = connector.getAllRegions();
         Assert.assertNotNull(actual);
     }
 
     @Test
-    public void getAllCategories() {
+    public void getAllCategories() throws IOException {
         List<Category> actual = connector.getAllCategories();
         Assert.assertNotNull(actual);
     }
 
     @Test
-    public void getCriterizedFacilities() {
+    public void getCriterizedFacilities() throws IOException {
         List<Facility> actual = connector.getCriterizedFacilities(new Criteries());
         Assert.assertNotNull(actual);
     }

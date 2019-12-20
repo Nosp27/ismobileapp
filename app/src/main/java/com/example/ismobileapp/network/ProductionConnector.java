@@ -38,11 +38,11 @@ public class ProductionConnector implements ApiConnector {
         return ret;
     }
 
-    private JSONTokener readFromApi(String suffix) {
+    private JSONTokener readFromApi(String suffix) throws IOException {
         return readFromApi(suffix, null);
     }
 
-    private JSONTokener readFromApi(String suffix, String content) {
+    private JSONTokener readFromApi(String suffix, String content) throws IOException {
         InputStream connInputStream = connectToApi(suffix, content);
         try (InputStreamReader reader = new InputStreamReader(connInputStream)) {
             return tokenize(reader);
@@ -51,22 +51,18 @@ public class ProductionConnector implements ApiConnector {
         return null;
     }
 
-    InputStream connectToApi(String suffix, String content) {
+    InputStream connectToApi(String suffix, String content) throws IOException {
         HttpURLConnection connection;
-        try {
-            URL url = new URL(SERVER + suffix);
-            connection = setupConnection(url);
-            if (content != null) {
-                connection.setRequestMethod("POST");
-                connection.getOutputStream().write(content.getBytes());
-            }
-            int responseCode = connection.getResponseCode();
-            if (responseCode != 200)
-                throw new IOException("Unsuccessful response: " + responseCode);
-            return connection.getInputStream();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        URL url = new URL(SERVER + suffix);
+        connection = setupConnection(url);
+        if (content != null) {
+            connection.setRequestMethod("POST");
+            connection.getOutputStream().write(content.getBytes());
         }
+        int responseCode = connection.getResponseCode();
+        if (responseCode != 200)
+            throw new IOException("Unsuccessful response: " + responseCode);
+        return connection.getInputStream();
     }
 
 
@@ -114,7 +110,7 @@ public class ProductionConnector implements ApiConnector {
     }
 
     @Override
-    public List<Region> getAllRegions() {
+    public List<Region> getAllRegions() throws IOException {
         List<Region> ret = new ArrayList<>();
         for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_ALL_REGIONS)))
             ret.add(JSONModeller.fromJSON(Region.class, regionJSON));
@@ -122,12 +118,12 @@ public class ProductionConnector implements ApiConnector {
     }
 
     @Override
-    public Region getRegion(int id) {
+    public Region getRegion(int id) throws IOException {
         return JSONModeller.fromJSON(Region.class, readJsonObject(readFromApi(GET_REGION + "/" + id)));
     }
 
     @Override
-    public List<Category> getAllCategories() {
+    public List<Category> getAllCategories() throws IOException {
         List<Category> ret = new ArrayList<>();
         for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_ALL_CATEGORIES)))
             ret.add(JSONModeller.fromJSON(Category.class, regionJSON));
@@ -135,7 +131,7 @@ public class ProductionConnector implements ApiConnector {
     }
 
     @Override
-    public List<Facility> getCriterizedFacilities(Criteries criteries) {
+    public List<Facility> getCriterizedFacilities(Criteries criteries) throws IOException {
         List<Facility> ret = new ArrayList<>();
         JSONObject criteriesJson = JSONModeller.toJSON(criteries);
         if (criteriesJson == null)

@@ -1,6 +1,8 @@
 package com.example.ismobileapp;
 
 import android.content.Intent;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TabHost;
 import androidx.fragment.app.FragmentActivity;
@@ -20,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +42,17 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
         loadFacilities();
     }
 
+    private void showErrorScreen() {
+        setContentView(R.layout.error_screen);
+        Button retryBtn = findViewById(R.id.retry_button);
+        retryBtn.setOnClickListener(e -> loadFacilities());
+    }
+
     void onLoadFacilities(List<Facility> loadedFacilities) {
+        if (loadedFacilities == null) {
+            showErrorScreen();
+            return;
+        }
         setContentView(R.layout.activity_investing_facilities);
         this.facilities = loadedFacilities;
         initFacilities();
@@ -68,10 +81,19 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
 
     void loadFacilities() {
         LoadTask<List<Facility>> facilityLoadTask =
-                new LoadTask<>(connector::getCriterizedFacilities, this::onLoadFacilities);
+                new LoadTask<>(this::loadFacilitiesCallback, this::onLoadFacilities);
         Intent intent = getIntent();
         Criteries criteries = (Criteries) intent.getSerializableExtra(MainActivity.MESSAGE_TAG);
         facilityLoadTask.execute(criteries);
+    }
+
+    private List<Facility> loadFacilitiesCallback(Criteries... criterias) {
+        try {
+            return connector.getCriterizedFacilities(criterias[0]);
+        } catch (IOException e) {
+            Log.e(TAG, "loadFacilitiesCallback: loadFacilitiesCallback", e);
+            return null;
+        }
     }
 
     void addMarkersForFacilities() {
@@ -86,10 +108,13 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
 
         CameraUpdate camUpdate;
         if (facilities.size() > 1)
-            camUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(), 500,900,10);
-        else {
+            camUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(), 500, 900, 10);
+        else if (!facilities.isEmpty()){
             Facility facility = facilities.get(0);
             camUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(facility.lat, facility.lng), 10f);
+        }
+        else {
+            return;
         }
         mMap.moveCamera(camUpdate);
     }

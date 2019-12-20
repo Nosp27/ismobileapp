@@ -10,9 +10,9 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface ApiConnector {
-    List<Region> getAllRegions();
-    Object getRegion(int id);
-    List<Category> getAllCategories();
-    List<Facility> getCriterizedFacilities(Criteries criteries);
+    List<Region> getAllRegions() throws IOException;
+    Object getRegion(int id) throws IOException;
+    List<Category> getAllCategories() throws IOException;
+    List<Facility> getCriterizedFacilities(Criteries criteries) throws IOException;
     InputStream loadImage(String key) throws IOException;
 }
