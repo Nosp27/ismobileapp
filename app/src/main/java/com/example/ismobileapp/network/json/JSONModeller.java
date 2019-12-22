@@ -59,7 +59,8 @@ public class JSONModeller {
     public static JSONObject toJSON(Object object) {
         Map<String, Object> map = new HashMap<>();
         try {
-            for (Field field : object.getClass().getFields()) {
+            for (Field field : object.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
                 if (!field.isAnnotationPresent(JSONField.class))
                     continue;
                 String fieldName = field.getName();
