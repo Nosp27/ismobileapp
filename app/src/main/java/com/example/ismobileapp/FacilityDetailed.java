@@ -8,10 +8,6 @@ import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Facility;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class FacilityDetailed extends AppCompatActivity {
     private Facility facility;
 
@@ -24,26 +20,21 @@ public class FacilityDetailed extends AppCompatActivity {
         if (facility == null)
             return;
         ((TextView) findViewById(R.id.facility_name)).setText(facility.getName());
-        ((ImageView)findViewById(R.id.detailed_facility_image)).setImageDrawable(facility.getImage());
+        ((ImageView) findViewById(R.id.detailed_facility_image)).setImageDrawable(facility.getImage());
         ((TextView) findViewById(R.id.facility_description)).setText(facility.getDescription());
         createCategoryCloud();
     }
 
     private void createCategoryCloud() {
-        List<String> cats = Arrays.asList(
-                "Sample_University",
-                "Sample_Property",
-                "Sample_Research Center",
-                "Sample_Factory facility",
-                "Sample_Startup IT"
-        );
+        if(facility.getCategories() == null)
+            return;
+
         GridLayout tagCloud = findViewById(R.id.tag_cloud);
         tagCloud.setUseDefaultMargins(true);
-        List<Button> btns = cats.stream().map(
-                x -> createButton(x, tagCloud.getContext())).collect(Collectors.toList()
-        );
-        for (Button b : btns) {
-            tagCloud.addView(b);
+
+        for (Category cat : facility.getCategories()) {
+            Button btn = createButton(cat.getTitle(), tagCloud.getContext());
+            tagCloud.addView(btn);
         }
     }
 
