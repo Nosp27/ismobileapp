@@ -10,15 +10,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class ProductionConnector implements ApiConnector {
-    static final String SERVER = "http://192.168.1.56:8080";
+    static final List<String> SERVER_ENDPOINTS = Arrays.asList(
+            "http://192.168.1.56:8080",
+            "http://192.168.88.233:8080"
+    );
+    private static String server;
 
     static final String GET_ALL_REGIONS = "/regions";
     static final String GET_REGION = "/region";
@@ -29,6 +35,31 @@ public class ProductionConnector implements ApiConnector {
     private static final int TIMEOUT = 1000;
 
     public ProductionConnector() {
+    }
+
+    static String getServerAddress() throws IOException {
+        if (server == null)
+            server = figureOutIpAddress();
+        return server;
+    }
+
+    private static String figureOutIpAddress() throws IOException {
+        Iterator<String> endpointIterator = SERVER_ENDPOINTS.iterator();
+        String possibleAddress = endpointIterator.next();
+        for (; ; ) {
+            try {
+                HttpURLConnection connection = setupConnection(new URL(possibleAddress + "/regions"));
+                if (connection.getResponseCode() == 200) {
+                    connection.disconnect();
+                    return possibleAddress;
+                } else
+                    throw new IOException("Unexpected response code");
+            } catch (IOException e) {
+                if (!endpointIterator.hasNext())
+                    throw e;
+                possibleAddress = endpointIterator.next();
+            }
+        }
     }
 
     static HttpURLConnection setupConnection(URL url) throws IOException {
@@ -53,7 +84,7 @@ public class ProductionConnector implements ApiConnector {
 
     InputStream connectToApi(String suffix, String content) throws IOException {
         HttpURLConnection connection;
-        URL url = new URL(SERVER + suffix);
+        URL url = new URL(getServerAddress() + suffix);
         connection = setupConnection(url);
         if (content != null) {
             connection.setRequestMethod("POST");
