@@ -14,8 +14,9 @@ public class JSONModeller {
     public static <T> T fromJSON(Class<T> neededClass, JSONObject jsonObject) {
         try {
             T ret = neededClass.newInstance();
-            for (Field field : neededClass.getFields())
+            for (Field field : neededClass.getDeclaredFields())
                 if (field.isAnnotationPresent(JSONField.class)) {
+                    field.setAccessible(true);
                     Object field_value = jsonObject.get(field.getName());
                     if (field_value == JSONObject.NULL)
                         field.set(ret, null);

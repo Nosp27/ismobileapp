@@ -16,7 +16,7 @@ public class RegionTest {
         Assume.assumeTrue(Connectors.pingServer());
         Connectors.setDebugMode(false);
         Region region = new Region(1, "test region");
-        region.imageUrl = "image_sample";
+        region.setImageUrl("image_sample");
         region.processImage();
         Assert.assertNotNull(region.getImage());
     }
@@ -25,7 +25,7 @@ public class RegionTest {
     public void testLoadImageInDebug() {
         Connectors.setDebugMode(true);
         Region region = new Region(1, "test region");
-        region.imageUrl = "";
+        region.setImageUrl("");
         region.processImage();
         Assert.assertNotNull(region.getImage());
     }

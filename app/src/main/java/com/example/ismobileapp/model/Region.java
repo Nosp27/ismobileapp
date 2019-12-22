@@ -8,11 +8,11 @@ import java.io.Serializable;
 
 public class Region implements Entity, Serializable {
     @JSONField
-    public Integer regionId;
+    private Integer regionId;
     @JSONField
-    public String regionName;
+    private String regionName;
     @JSONField(processResultMethod = "processImage")
-    String imageUrl;
+    private String imageUrl;
 
     public Region() {
     }
@@ -23,6 +23,27 @@ public class Region implements Entity, Serializable {
         this.imageUrl = "";
     }
 
+    public Integer getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Integer regionId) {
+        this.regionId = regionId;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
+    //package-private accessor, only for testing for now
+    String getImageUrl() {
+        return imageUrl;
+    }
+
+    //package-private accessor, only for testing for now
+    void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     @Override
     public String getTitle() {
