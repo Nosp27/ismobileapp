@@ -22,8 +22,8 @@ public class JSONModellerTest {
     @Test
     public void toJSONRegion() {
         Region region = new Region();
-        region.regionId = 3;
-        region.regionName = "SAS";
+        region.setRegionId(3);
+        region.setRegionName("SAS");
         String actual = JSONModeller.toJSON(region).toString();
         Assert.assertEquals("{\"regionId\":3,\"regionName\":\"SAS\"}", actual);
     }
@@ -34,8 +34,8 @@ public class JSONModellerTest {
         Region region = JSONModeller.fromJSON(Region.class, new JSONObject(json));
 
         Assert.assertNotNull(region);
-        Assert.assertEquals("SAS", region.regionName);
-        Assert.assertEquals(3, (int) region.regionId);
+        Assert.assertEquals("SAS", region.getTitle());
+        Assert.assertEquals(3, (int) region.getRegionId());
     }
 
     @Test
@@ -61,8 +61,8 @@ public class JSONModellerTest {
                 "        }\n" +
                 "    }\n";
         Facility facility = JSONModeller.fromJSON(Facility.class, new JSONObject(json));
-        Assert.assertNotNull(facility.region);
-        Assert.assertNotNull(facility.categories);
+        Assert.assertNotNull(facility.getRegion());
+        Assert.assertNotNull(facility.getCategories());
     }
 
     @Test

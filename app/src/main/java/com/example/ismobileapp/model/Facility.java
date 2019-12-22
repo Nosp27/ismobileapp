@@ -15,7 +15,40 @@ public class Facility implements Entity, Serializable {
     }
 
     @JSONField
-    public int _id;
+    private int _id;
+
+    @JSONField
+    private Double lat;
+    @JSONField
+    private Double lng;
+    @JSONField
+    private String name;
+    @JSONField
+    private String description;
+    @JSONField(processResultMethod = "processImage")
+    private String imageUrl;
+    @JSONField
+    private Region region;
+    @JSONField
+    private Category[] categories;
+
+    public Facility() {
+    }
+
+    public Facility(String name, Double[] coords) {
+        this.name = name;
+        this.lat = coords[0];
+        this.lng = coords[1];
+        this.imageUrl = "";
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Double getLat() {
         return lat;
@@ -33,29 +66,20 @@ public class Facility implements Entity, Serializable {
         this.lng = lng;
     }
 
-    @JSONField
-    public Double lat;
-    @JSONField
-    public Double lng;
-    @JSONField
-    public String name;
-    @JSONField
-    public String description;
-    @JSONField(processResultMethod = "processImage")
-    public String imageUrl;
-    @JSONField
-    public Region region;
-    @JSONField
-    public Category[] categories;
-
-    public Facility() {
+    public Region getRegion() {
+        return region;
     }
 
-    public Facility(String name, Double[] coords) {
-        this.name = name;
-        this.lat = coords[0];
-        this.lng = coords[1];
-        this.imageUrl = "";
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public Category[] getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Category[] categories) {
+        this.categories = categories;
     }
 
     @Override

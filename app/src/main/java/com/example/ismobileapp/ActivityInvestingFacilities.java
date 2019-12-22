@@ -111,7 +111,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
             camUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(), 500, 900, 10);
         else if (!facilities.isEmpty()){
             Facility facility = facilities.get(0);
-            camUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(facility.lat, facility.lng), 10f);
+            camUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(facility.getLat(), facility.getLng()), 10f);
         }
         else {
             return;
