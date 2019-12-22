@@ -25,6 +25,7 @@ public class FacilityDetailed extends AppCompatActivity {
             return;
         ((TextView) findViewById(R.id.facility_name)).setText(facility.getName());
         ((ImageView)findViewById(R.id.detailed_facility_image)).setImageDrawable(facility.getImage());
+        ((TextView) findViewById(R.id.facility_description)).setText(facility.getDescription());
         createCategoryCloud();
     }
 
