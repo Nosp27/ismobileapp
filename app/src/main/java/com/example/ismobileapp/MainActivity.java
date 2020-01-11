@@ -1,12 +1,12 @@
 package com.example.ismobileapp;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.Button;
 import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Entity;
@@ -15,7 +15,6 @@ import com.example.ismobileapp.model.callbacks.EntityListener;
 import com.example.ismobileapp.network.ApiConnector;
 import com.example.ismobileapp.network.Connectors;
 import com.example.ismobileapp.network.LoadTask;
-import com.example.ismobileapp.network.ProductionConnector;
 import com.example.ismobileapp.viewmodel.EntitySpinnerAdapter;
 
 import java.io.IOException;

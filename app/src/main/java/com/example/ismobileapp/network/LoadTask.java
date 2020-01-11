@@ -2,11 +2,8 @@ package com.example.ismobileapp.network;
 
 import android.os.AsyncTask;
 import com.example.ismobileapp.model.Criteries;
-import com.example.ismobileapp.model.Facility;
 
-import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.function.Function;
 
 public class LoadTask<T> extends AsyncTask<Criteries, Integer, T> {

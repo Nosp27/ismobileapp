@@ -2,7 +2,6 @@ package com.example.ismobileapp;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.widget.*;
 import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Facility;

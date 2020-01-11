@@ -1,17 +1,17 @@
 package com.example.ismobileapp.network;
 
-import android.util.Log;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
