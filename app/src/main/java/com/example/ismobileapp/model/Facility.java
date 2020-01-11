@@ -26,7 +26,7 @@ public class Facility implements Entity, Serializable {
     @JSONField
     private String description;
     @JSONField(processResultMethod = "processImage")
-    private String imageUrl;
+    private Integer imageId;
     @JSONField
     private Region region;
     @JSONField
@@ -39,7 +39,7 @@ public class Facility implements Entity, Serializable {
         this.name = name;
         this.lat = coords[0];
         this.lng = coords[1];
-        this.imageUrl = "";
+        this.imageId = null;
     }
 
     public String getDescription() {
@@ -94,10 +94,10 @@ public class Facility implements Entity, Serializable {
 
     @Override
     public Drawable getImage() {
-        return DrawablesCache.processImage(imageUrl, _id + "_facility_image");
+        return DrawablesCache.processImage(imageId, _id + "_facility_image");
     }
 
     public void processImage() {
-        DrawablesCache.processImage(imageUrl, _id + "_facility_image");
+        DrawablesCache.processImage(imageId, _id + "_facility_image");
     }
 }

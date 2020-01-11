@@ -174,7 +174,7 @@ public class ProductionConnector implements ApiConnector {
     }
 
     @Override
-    public InputStream loadImage(String key) throws IOException {
+    public InputStream loadImage(Integer key) throws IOException {
         return connectToApi(READ_IMAGE_SUFFIX + key, null);
     }
 }

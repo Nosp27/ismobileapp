@@ -8,5 +8,5 @@ public class Criteries implements Serializable {
     @JSONField
     public Integer[] regions;
     @JSONField
-    public String[] categories;
+    public Integer[] categories;
 }

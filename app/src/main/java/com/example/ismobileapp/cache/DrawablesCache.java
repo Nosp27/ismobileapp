@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DrawablesCache {
-    static Map<String, Drawable> cacheMap;
+    static Map<Integer, Drawable> cacheMap;
 
     private static void init() {
         if (cacheMap == null) {
@@ -18,29 +18,29 @@ public class DrawablesCache {
         }
     }
 
-    public static Drawable getFromCache(String key) {
+    public static Drawable getFromCache(int key) {
         init();
         if (cacheMap.containsKey(key))
             return cacheMap.get(key);
         return null;
     }
 
-    public static void putToCache(String key, Drawable drawable) {
+    public static void putToCache(Integer key, Drawable drawable) {
         init();
         if (key != null)
             cacheMap.put(key, drawable);
     }
 
-    public static Drawable processImage(String imageUrl, String imageName) {
-        if (imageUrl == null)
+    public static Drawable processImage(Integer imageId, String imageName) {
+        if (imageId == null)
             return null;
         Drawable ret;
-        ret = getFromCache(imageUrl);
+        ret = getFromCache(imageId);
         if (ret != null)
             return ret;
-        try (InputStream is = Connectors.getDefaultConnector().loadImage(imageUrl)) {
+        try (InputStream is = Connectors.getDefaultConnector().loadImage(imageId)) {
             ret = Drawable.createFromStream(is, imageName);
-            putToCache(imageUrl, ret);
+            putToCache(imageId, ret);
             return ret;
         } catch (IOException e) {
             throw new RuntimeException(e);

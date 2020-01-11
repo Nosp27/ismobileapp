@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     private Criteries formCriteries() {
         Criteries ret = new Criteries();
         ret.regions = regionListener.selectedEntities.stream().map(Region::getRegionId).toArray(Integer[]::new);
-        ret.categories = categoryListener.selectedEntities.stream().map(Entity::getTitle).toArray(String[]::new);
+        ret.categories = categoryListener.selectedEntities.stream().map(Category::getCatId).toArray(Integer[]::new);
         return ret;
     }
 

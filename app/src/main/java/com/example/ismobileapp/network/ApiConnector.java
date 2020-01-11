@@ -14,5 +14,5 @@ public interface ApiConnector {
     Object getRegion(int id) throws IOException;
     List<Category> getAllCategories() throws IOException;
     List<Facility> getCriterizedFacilities(Criteries criteries) throws IOException;
-    InputStream loadImage(String key) throws IOException;
+    InputStream loadImage(Integer key) throws IOException;
 }

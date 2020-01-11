@@ -51,7 +51,7 @@ public class MockConnector implements ApiConnector {
     }
 
     @Override
-    public InputStream loadImage(String key) {
+    public InputStream loadImage(Integer key) {
         byte[] bts = new byte[]{
                 -119, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0,
                 13, 73, 72, 68, 82, 0, 0, 0, 1, 0,

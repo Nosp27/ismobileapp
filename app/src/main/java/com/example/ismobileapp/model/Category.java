@@ -8,16 +8,26 @@ import java.io.Serializable;
 
 public class Category implements Entity, Serializable {
     @JSONField
+    Integer catId;
+    @JSONField
     String catName;
     @JSONField(processResultMethod = "processImage")
-    String imageUrl;
+    Integer imageId;
 
     public Category() {
     }
 
     public Category(String name) {
         this.catName = name;
-        this.imageUrl = "";
+        this.imageId = null;
+    }
+
+    public Integer getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Integer catId) {
+        this.catId = catId;
     }
 
     @Override
@@ -37,10 +47,10 @@ public class Category implements Entity, Serializable {
 
     @Override
     public Drawable getImage() {
-        return DrawablesCache.processImage(imageUrl, catName + "_category_image");
+        return DrawablesCache.processImage(imageId, catName + "_category_image");
     }
 
     public void processImage() {
-        DrawablesCache.processImage(imageUrl, catName + "_category_image");
+        DrawablesCache.processImage(imageId, catName + "_category_image");
     }
 }
