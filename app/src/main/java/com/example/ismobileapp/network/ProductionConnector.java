@@ -21,7 +21,8 @@ import java.util.List;
 public class ProductionConnector implements ApiConnector {
     static final List<String> SERVER_ENDPOINTS = Arrays.asList(
             "http://192.168.1.56:8080",
-            "http://192.168.88.233:8080"
+            "http://192.168.88.233:8080",
+            "http://192.168.4.113:8080"
     );
     private static String server;
 
