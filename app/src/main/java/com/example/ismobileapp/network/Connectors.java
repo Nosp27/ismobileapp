@@ -11,7 +11,7 @@ public class Connectors {
     public static ResourceSupplier getDefaultConnector() {
         if (defaultConnector == null)
             if (debugMode)
-                defaultConnector = new MockConnector();
+                defaultConnector = new StubConnector();
             else
                 defaultConnector = new ProductionConnector();
         return defaultConnector;
