@@ -12,7 +12,7 @@ import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Entity;
 import com.example.ismobileapp.model.Region;
 import com.example.ismobileapp.model.callbacks.EntityListener;
-import com.example.ismobileapp.network.ApiConnector;
+import com.example.ismobileapp.resourceSupplier.ResourceSupplier;
 import com.example.ismobileapp.network.Connectors;
 import com.example.ismobileapp.network.LoadTask;
 import com.example.ismobileapp.viewmodel.EntitySpinnerAdapter;
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public static final String MESSAGE_TAG = "com.example.ismobileapp.MainActivity.MESSAGE";
 
-    ApiConnector connector;
+    ResourceSupplier connector;
     private StoreListener<Region> regionListener;
     private StoreListener<Category> categoryListener;
 

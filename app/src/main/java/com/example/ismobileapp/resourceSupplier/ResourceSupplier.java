@@ -1,4 +1,4 @@
-package com.example.ismobileapp.network;
+package com.example.ismobileapp.resourceSupplier;
 
 import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Criteries;
@@ -9,9 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public interface ApiConnector {
+public interface ResourceSupplier {
     List<Region> getAllRegions() throws IOException;
-    Object getRegion(int id) throws IOException;
     List<Category> getAllCategories() throws IOException;
     List<Facility> getCriterizedFacilities(Criteries criteries) throws IOException;
     InputStream loadImage(Integer key) throws IOException;

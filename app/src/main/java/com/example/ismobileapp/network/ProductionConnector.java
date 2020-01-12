@@ -5,6 +5,7 @@ import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
 import com.example.ismobileapp.network.json.JSONModeller;
+import com.example.ismobileapp.resourceSupplier.ResourceSupplier;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class ProductionConnector implements ApiConnector {
+public class ProductionConnector implements ResourceSupplier {
     static final List<String> SERVER_ENDPOINTS = Arrays.asList(
             "http://192.168.1.56:8080",
             "http://192.168.88.233:8080",
@@ -146,11 +147,6 @@ public class ProductionConnector implements ApiConnector {
         for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_ALL_REGIONS)))
             ret.add(JSONModeller.fromJSON(Region.class, regionJSON));
         return ret;
-    }
-
-    @Override
-    public Region getRegion(int id) throws IOException {
-        return JSONModeller.fromJSON(Region.class, readJsonObject(readFromApi(GET_REGION + "/" + id)));
     }
 
     @Override

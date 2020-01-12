@@ -1,12 +1,14 @@
 package com.example.ismobileapp.network;
 
+import com.example.ismobileapp.resourceSupplier.ResourceSupplier;
+
 import java.io.IOException;
 
 public class Connectors {
     private static boolean debugMode = false;
-    private static ApiConnector defaultConnector;
+    private static ResourceSupplier defaultConnector;
 
-    public static ApiConnector getDefaultConnector() {
+    public static ResourceSupplier getDefaultConnector() {
         if (defaultConnector == null)
             if (debugMode)
                 defaultConnector = new MockConnector();

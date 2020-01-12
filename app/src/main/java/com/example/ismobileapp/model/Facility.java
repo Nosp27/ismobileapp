@@ -40,6 +40,11 @@ public class Facility implements Entity, Serializable {
         this.imageId = null;
     }
 
+    @Override
+    public Integer getId() {
+        return _id;
+    }
+
     public String getDescription() {
         return description;
     }

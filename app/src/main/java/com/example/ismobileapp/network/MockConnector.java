@@ -4,13 +4,14 @@ import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
+import com.example.ismobileapp.resourceSupplier.ResourceSupplier;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-public class MockConnector implements ApiConnector {
+public class MockConnector implements ResourceSupplier {
 
     @Override
     public List<Region> getAllRegions() {
@@ -19,11 +20,6 @@ public class MockConnector implements ApiConnector {
                 new Region(2, "Balashikha"),
                 new Region(3, "SPB")
         );
-    }
-
-    @Override
-    public Object getRegion(int id) {
-        return null;
     }
 
     @Override

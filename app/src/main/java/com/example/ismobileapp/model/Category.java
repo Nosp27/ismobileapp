@@ -22,6 +22,11 @@ public class Category implements Entity, Serializable {
         this.imageId = null;
     }
 
+    @Override
+    public Integer getId() {
+        return getCatId();
+    }
+
     public Integer getCatId() {
         return catId;
     }

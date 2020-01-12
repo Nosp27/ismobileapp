@@ -23,6 +23,11 @@ public class Region implements Entity, Serializable {
         this.imageId = null;
     }
 
+    @Override
+    public Integer getId() {
+        return getRegionId();
+    }
+
     public Integer getRegionId() {
         return regionId;
     }
