@@ -30,19 +30,15 @@ public class DrawablesCache {
             cacheMap.put(key, drawable);
     }
 
-    public static Drawable processImage(Integer imageId, String imageName) {
+    public static Drawable processImage(Integer imageId) throws IOException {
         if (imageId == null)
             return null;
         Drawable ret;
         ret = getFromCache(imageId);
         if (ret != null)
             return ret;
-        try (InputStream is = Connectors.getDefaultConnector().loadImage(imageId)) {
-            ret = Drawable.createFromStream(is, imageName);
+            ret = Connectors.getDefaultConnector().loadImage(imageId);
             putToCache(imageId, ret);
             return ret;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

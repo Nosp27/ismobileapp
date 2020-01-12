@@ -1,20 +1,14 @@
 package com.example.ismobileapp.model;
 
 import android.graphics.drawable.Drawable;
-import com.example.ismobileapp.cache.DrawablesCache;
 import com.example.ismobileapp.network.json.JSONField;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
 public class Facility implements Entity, Serializable {
-    public String getName() {
-        return name;
-    }
-
     @JSONField
     private int _id;
-
     @JSONField
     private Double lat;
     @JSONField
@@ -23,12 +17,14 @@ public class Facility implements Entity, Serializable {
     private String name;
     @JSONField
     private String description;
-    @JSONField(processResultMethod = "processImage")
+    @JSONField
     private Integer imageId;
     @JSONField
     private Region region;
     @JSONField
     private Category[] categories;
+
+    private Drawable image;
 
     public Facility() {
     }
@@ -45,44 +41,28 @@ public class Facility implements Entity, Serializable {
         return _id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getDescription() {
+        return description;
     }
 
     public Double getLat() {
         return lat;
     }
 
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
-
     public Double getLng() {
         return lng;
-    }
-
-    public void setLng(Double lng) {
-        this.lng = lng;
     }
 
     public Region getRegion() {
         return region;
     }
 
-    public void setRegion(Region region) {
-        this.region = region;
-    }
-
     public Category[] getCategories() {
         return categories;
-    }
-
-    public void setCategories(Category[] categories) {
-        this.categories = categories;
     }
 
     @Override
@@ -97,10 +77,14 @@ public class Facility implements Entity, Serializable {
 
     @Override
     public Drawable getImage() {
-        return DrawablesCache.processImage(imageId, _id + "_facility_image");
+        return image;
     }
 
-    public void processImage() {
-        DrawablesCache.processImage(imageId, _id + "_facility_image");
+    public Integer getImageId() {
+        return imageId;
+    }
+
+    public void setImage(Drawable image) {
+        this.image = image;
     }
 }

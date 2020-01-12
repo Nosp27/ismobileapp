@@ -1,5 +1,6 @@
 package com.example.ismobileapp.network;
 
+import android.graphics.drawable.Drawable;
 import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
@@ -46,7 +47,7 @@ public class StubConnector implements ResourceSupplier {
     }
 
     @Override
-    public InputStream loadImage(Integer key) {
+    public Drawable loadImage(Integer key) {
         byte[] bts = new byte[]{
                 -119, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0,
                 13, 73, 72, 68, 82, 0, 0, 0, 1, 0,
@@ -58,6 +59,6 @@ public class StubConnector implements ResourceSupplier {
                 99, 98, 0, 0, 0, 6, 0, 3, 54, 55,
                 124, -88, 0, 0, 0, 0, 73, 69, 78, 68, -82,
         };
-        return new ByteArrayInputStream(bts);
+        return Drawable.createFromStream(new ByteArrayInputStream(bts), null);
     }
 }

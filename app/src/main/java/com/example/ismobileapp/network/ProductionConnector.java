@@ -1,5 +1,6 @@
 package com.example.ismobileapp.network;
 
+import android.graphics.drawable.Drawable;
 import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
@@ -35,7 +36,7 @@ public class ProductionConnector implements ResourceSupplier {
 
     private static final int TIMEOUT = 1000;
 
-    public ProductionConnector() {
+    public ProductionConnector() throws IOException {
     }
 
     static String getServerAddress() throws IOException {
@@ -170,7 +171,7 @@ public class ProductionConnector implements ResourceSupplier {
     }
 
     @Override
-    public InputStream loadImage(Integer key) throws IOException {
-        return connectToApi(READ_IMAGE_SUFFIX + key, null);
+    public Drawable loadImage(Integer key) throws IOException {
+        return Drawable.createFromStream(connectToApi(READ_IMAGE_SUFFIX + key, null), null);
     }
 }
