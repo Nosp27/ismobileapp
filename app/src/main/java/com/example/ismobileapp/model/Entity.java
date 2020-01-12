@@ -7,4 +7,6 @@ public interface Entity {
     String getTitle();
     String getSubtitle();
     Drawable getImage();
+    Integer getImageId();
+    void setImage(Drawable image);
 }

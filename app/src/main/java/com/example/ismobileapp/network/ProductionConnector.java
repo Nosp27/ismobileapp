@@ -1,10 +1,7 @@
 package com.example.ismobileapp.network;
 
 import android.graphics.drawable.Drawable;
-import com.example.ismobileapp.model.Category;
-import com.example.ismobileapp.model.Criteries;
-import com.example.ismobileapp.model.Facility;
-import com.example.ismobileapp.model.Region;
+import com.example.ismobileapp.model.*;
 import com.example.ismobileapp.network.json.JSONModeller;
 import com.example.ismobileapp.resourceSupplier.ResourceSupplier;
 import org.json.JSONArray;
@@ -147,6 +144,8 @@ public class ProductionConnector implements ResourceSupplier {
         List<Region> ret = new ArrayList<>();
         for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_ALL_REGIONS)))
             ret.add(JSONModeller.fromJSON(Region.class, regionJSON));
+        addImagesForEntities(ret);
+
         return ret;
     }
 
@@ -155,6 +154,8 @@ public class ProductionConnector implements ResourceSupplier {
         List<Category> ret = new ArrayList<>();
         for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_ALL_CATEGORIES)))
             ret.add(JSONModeller.fromJSON(Category.class, regionJSON));
+        addImagesForEntities(ret);
+
         return ret;
     }
 
@@ -167,11 +168,21 @@ public class ProductionConnector implements ResourceSupplier {
 
         for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_CRITERIZED_FACILITIES, criteriesJson.toString())))
             ret.add(JSONModeller.fromJSON(Facility.class, regionJSON));
+        addImagesForEntities(ret);
+
         return ret;
+    }
+
+    private void addImagesForEntities(List<? extends Entity> list) throws IOException {
+        for (Entity entity : list) {
+            entity.setImage(loadImage(entity.getImageId()));
+        }
     }
 
     @Override
     public Drawable loadImage(Integer key) throws IOException {
+        if (key == null)
+            return null;
         return Drawable.createFromStream(connectToApi(READ_IMAGE_SUFFIX + key, null), null);
     }
 }

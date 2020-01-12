@@ -1,18 +1,19 @@
 package com.example.ismobileapp.model;
 
 import android.graphics.drawable.Drawable;
-import com.example.ismobileapp.cache.DrawablesCache;
 import com.example.ismobileapp.network.json.JSONField;
 
 import java.io.Serializable;
 
 public class Category implements Entity, Serializable {
     @JSONField
-    Integer catId;
+    private Integer catId;
     @JSONField
-    String catName;
-    @JSONField(processResultMethod = "processImage")
-    Integer imageId;
+    private String catName;
+    @JSONField
+    private Integer imageId;
+
+    Drawable image;
 
     public Category() {
     }
@@ -31,10 +32,6 @@ public class Category implements Entity, Serializable {
         return catId;
     }
 
-    public void setCatId(Integer catId) {
-        this.catId = catId;
-    }
-
     @Override
     public String toString() {
         return catName;
@@ -51,11 +48,17 @@ public class Category implements Entity, Serializable {
     }
 
     @Override
-    public Drawable getImage() {
-        return DrawablesCache.processImage(imageId, catName + "_category_image");
+    public void setImage(Drawable image) {
+        this.image = image;
     }
 
-    public void processImage() {
-        DrawablesCache.processImage(imageId, catName + "_category_image");
+    @Override
+    public Integer getImageId() {
+        return imageId;
+    }
+
+    @Override
+    public Drawable getImage() {
+        return image;
     }
 }

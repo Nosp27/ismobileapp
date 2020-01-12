@@ -11,8 +11,10 @@ public class Region implements Entity, Serializable {
     private Integer regionId;
     @JSONField
     private String regionName;
-    @JSONField(processResultMethod = "processImage")
+    @JSONField
     private Integer imageId;
+
+    private Drawable image;
 
     public Region() {
     }
@@ -40,8 +42,7 @@ public class Region implements Entity, Serializable {
         this.regionName = regionName;
     }
 
-    //package-private accessor, only for testing for now
-    Integer getImageId() {
+    public Integer getImageId() {
         return imageId;
     }
 
@@ -61,11 +62,12 @@ public class Region implements Entity, Serializable {
     }
 
     @Override
-    public Drawable getImage() {
-        return DrawablesCache.processImage(imageId, regionName + "_region_image");
+    public void setImage(Drawable image) {
+        this.image = image;
     }
 
-    public void processImage() {
-        DrawablesCache.processImage(imageId, regionName + "_region_image");
+    @Override
+    public Drawable getImage() {
+        return image;
     }
 }

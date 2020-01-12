@@ -20,7 +20,7 @@ public class ProductionConnectorTest {
     private ProductionConnector connector;
 
     @Before
-    public void assumePing() {
+    public void assumePing() throws IOException {
         Assume.assumeTrue("Cannot connect to server", Connectors.pingServer());
         connector = new ProductionConnector();
     }
