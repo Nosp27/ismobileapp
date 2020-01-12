@@ -4,6 +4,7 @@ import com.example.ismobileapp.model.Category;
 import com.example.ismobileapp.model.Criteries;
 import com.example.ismobileapp.model.Facility;
 import com.example.ismobileapp.model.Region;
+import com.example.ismobileapp.resourceSupplier.ResourceSupplier;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
