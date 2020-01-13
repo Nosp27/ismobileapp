@@ -26,13 +26,13 @@
         </service>
 
         <activity
-                android:name=".FacilityDetailed"
+                android:name="com.pashikhmin.ismobileapp.FacilityDetailed"
                 android:label="@string/title_activity_facility_detailed"
-                android:parentActivityName=".ActivityInvestingFacilities"
+                android:parentActivityName="com.pashikhmin.ismobileapp.ActivityInvestingFacilities"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.example.ismobileapp.ActivityInvestingFacilities"/>
+                    android:value="com.example.ismobileapp.com.pashikhmin.ismobileapp.ActivityInvestingFacilities"/>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -47,16 +47,16 @@
                 android:value="AIzaSyDUlt02tC7dKLOEYUc-eB7GznBjRYDDtDU"/>
 
         <activity
-                android:name=".ActivityInvestingFacilities"
+                android:name="com.pashikhmin.ismobileapp.ActivityInvestingFacilities"
                 android:label="@string/title_activity_investing_facilities">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.example.ismobileapp.MainActivity"/>
+                    android:value="com.example.ismobileapp.com.pashikhmin.ismobileapp.MainActivity"/>
             <meta-data
                     android:name="com.google.android.gms.version"
                     android:value="@integer/google_play_services_version"/>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.pashikhmin.ismobileapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
