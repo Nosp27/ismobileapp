@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.ismobileapp">
+          xmlns:tools="http://schemas.android.com/tools" package="com.example.ismobileapp">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -19,11 +19,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            android:usesCleartextTraffic="true">
-        <service
-                android:name=".cache.CachingService"
-                android:exported="false">
-        </service>
+            android:usesCleartextTraffic="true" tools:ignore="GoogleAppIndexingWarning">
 
         <activity
                 android:name="com.pashikhmin.ismobileapp.FacilityDetailed"
@@ -32,7 +28,7 @@
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.example.ismobileapp.com.pashikhmin.ismobileapp.ActivityInvestingFacilities"/>
+                    android:value="com.pashikhmin.ismobileapp.ActivityInvestingFacilities"/>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -51,7 +47,7 @@
                 android:label="@string/title_activity_investing_facilities">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.example.ismobileapp.com.pashikhmin.ismobileapp.MainActivity"/>
+                    android:value="com.pashikhmin.ismobileapp.MainActivity"/>
             <meta-data
                     android:name="com.google.android.gms.version"
                     android:value="@integer/google_play_services_version"/>

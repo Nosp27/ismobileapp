@@ -33,7 +33,7 @@
               android:layout_height="wrap_content"
               android:text="location"
               android:layout_below="@+id/list_title"
-              android:layout_toRightOf="@id/item_img"
+              android:layout_toEndOf="@id/item_img"
               android:layout_marginTop="5dp"
               android:layout_marginStart="5dp"
               android:textColor="@color/colorPrimaryDark"
