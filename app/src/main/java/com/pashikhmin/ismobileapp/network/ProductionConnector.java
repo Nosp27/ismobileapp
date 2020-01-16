@@ -1,7 +1,6 @@
 package com.pashikhmin.ismobileapp.network;
 
 import android.graphics.drawable.Drawable;
-import com.example.ismobileapp.model.*;
 import com.pashikhmin.ismobileapp.model.*;
 import com.pashikhmin.ismobileapp.network.json.JSONModeller;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;

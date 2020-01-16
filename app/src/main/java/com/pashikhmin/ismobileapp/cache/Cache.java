@@ -2,7 +2,6 @@ package com.pashikhmin.ismobileapp.cache;
 
 import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
-import com.example.ismobileapp.model.*;
 import com.pashikhmin.ismobileapp.model.*;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 
