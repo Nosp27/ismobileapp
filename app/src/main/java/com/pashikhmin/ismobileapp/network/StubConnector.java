@@ -16,16 +16,16 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider {
 
     private BinaryDataProvider binaryDataProvider;
 
-    StubConnector() {
+    protected StubConnector() {
         setBinaryDataProvider(this);
     }
 
     @Override
     public List<Region> getAllRegions() {
         return Arrays.asList(
-                new Region(1, "Moscow"),
-                new Region(2, "Balashikha"),
-                new Region(3, "SPB")
+                new Region(0, "Moscow"),
+                new Region(1, "Balashikha"),
+                new Region(2, "SPB")
         );
     }
 
@@ -33,9 +33,9 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider {
     @Override
     public List<Category> getAllCategories() {
         return Arrays.asList(
-                new Category("Property"),
-                new Category("IT Industry"),
-                new Category("Factories")
+                new Category(0, "Property"),
+                new Category(1, "IT Industry"),
+                new Category(2, "Factories")
         );
     }
 

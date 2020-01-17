@@ -17,9 +17,9 @@ public class Cache implements ResourceSupplier, BinaryDataProvider {
 
     private ResourceSupplier connector;
 
-    private CachedEntities<Region> cachedRegions;
-    private CachedEntities<Category> cachedCategories;
-    private CachedEntities<Drawable> cachedDrawables;
+    CachedEntities<Region> cachedRegions;
+    CachedEntities<Category> cachedCategories;
+    CachedEntities<Drawable> cachedDrawables;
 
     private BinaryDataProvider loadBinaryDataProvider;
     private final BinaryDataProvider cacheBinaryDataProvider = this;
@@ -101,7 +101,7 @@ public class Cache implements ResourceSupplier, BinaryDataProvider {
         cacheWarmFlag.set(false);
     }
 
-    private class CachedEntities<T> {
+    class CachedEntities<T> {
         private SparseArray<T> cacheMap;
 
         CachedEntities() {

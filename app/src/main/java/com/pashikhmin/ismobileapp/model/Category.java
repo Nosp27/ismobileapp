@@ -21,7 +21,8 @@ public class Category implements Entity, Serializable {
     public Category() {
     }
 
-    public Category(String name) {
+    public Category(Integer id, String name) {
+        catId = id;
         this.catName = name;
         this.imageId = null;
     }
