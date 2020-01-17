@@ -32,7 +32,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     public static final String FACILITY_TAG = "com.example.ismobileapp.ActivityInvestingFacilities.FACILITY";
 
     private GoogleMap mMap;
-    ResourceSupplier connector = Connectors.getDefaultConnector();
+    ResourceSupplier connector = Connectors.getDefaultCachedConnector();
     List<Facility> facilities;
 
     @Override

@@ -28,16 +28,4 @@ public class DrawablesCache {
         if (key != null)
             cacheMap.put(key, drawable);
     }
-
-    public static Drawable processImage(Integer imageId) throws IOException {
-        if (imageId == null)
-            return null;
-        Drawable ret;
-        ret = getFromCache(imageId);
-        if (ret != null)
-            return ret;
-            ret = Connectors.getDefaultConnector().loadImage(imageId);
-            putToCache(imageId, ret);
-            return ret;
-    }
 }

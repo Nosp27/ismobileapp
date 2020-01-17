@@ -3,6 +3,7 @@ package com.pashikhmin.ismobileapp.network;
 import android.graphics.drawable.Drawable;
 import com.pashikhmin.ismobileapp.model.*;
 import com.pashikhmin.ismobileapp.network.json.JSONModeller;
+import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +18,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class ProductionConnector implements ResourceSupplier {
+public class ProductionConnector implements ResourceSupplier, BinaryDataProvider {
     static final List<String> SERVER_ENDPOINTS = Arrays.asList(
             "http://192.168.1.56:8080",
             "http://192.168.88.233:8080",
@@ -33,7 +34,18 @@ public class ProductionConnector implements ResourceSupplier {
 
     private static final int TIMEOUT = 1000;
 
+    private BinaryDataProvider binaryDataProvider;
+
     public ProductionConnector() throws IOException {
+        setBinaryDataProvider(this);
+    }
+
+    public BinaryDataProvider getBinaryDataProvider() {
+        return binaryDataProvider;
+    }
+
+    public void setBinaryDataProvider(BinaryDataProvider binaryDataProvider) {
+        this.binaryDataProvider = binaryDataProvider;
     }
 
     static String getServerAddress() throws IOException {
@@ -175,7 +187,7 @@ public class ProductionConnector implements ResourceSupplier {
 
     private void addImagesForEntities(List<? extends Entity> list) throws IOException {
         for (Entity entity : list) {
-            entity.setImage(loadImage(entity.getImageId()));
+            entity.setImage(getBinaryDataProvider().loadImage(entity.getImageId()));
         }
     }
 
