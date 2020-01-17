@@ -23,16 +23,13 @@ public class CachingTask {
 
     private void asyncProcess() {
         try {
-            supplier.warmUpCaches();
             while (true) {
                 synchronized (supplier) {
                     supplier.wait(timeout);
                 }
-                supplier.warmUpCaches();
+                supplier.resetCaches();
             }
         } catch (InterruptedException ignore) {
-        } catch (IOException e) {
-            Log.e(TAG, "Cache task. Cannot warm up caches", e);
         }
     }
 

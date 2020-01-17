@@ -5,13 +5,20 @@ import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Facility;
 import com.pashikhmin.ismobileapp.model.Region;
+import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.List;
 
-public class StubConnector implements ResourceSupplier {
+public class StubConnector implements ResourceSupplier, BinaryDataProvider {
+
+    private BinaryDataProvider binaryDataProvider;
+
+    StubConnector() {
+        setBinaryDataProvider(this);
+    }
 
     @Override
     public List<Region> getAllRegions() {
@@ -43,6 +50,16 @@ public class StubConnector implements ResourceSupplier {
                 new Facility("Hse", new Double[]{55.23, 34.33}),
                 new Facility("SAS", new Double[]{15.11, 24.32})
         );
+    }
+
+    @Override
+    public BinaryDataProvider getBinaryDataProvider() {
+        return binaryDataProvider;
+    }
+
+    @Override
+    public void setBinaryDataProvider(BinaryDataProvider provider) {
+        this.binaryDataProvider = provider;
     }
 
     @Override

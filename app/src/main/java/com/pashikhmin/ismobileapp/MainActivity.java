@@ -26,14 +26,18 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public static final String MESSAGE_TAG = "com.example.ismobileapp.MainActivity.MESSAGE";
 
-    ResourceSupplier connector;
+    private ResourceSupplier connector;
     private StoreListener<Region> regionListener;
     private StoreListener<Category> categoryListener;
 
+    /**
+     * initialize Resource connector
+     * load regions and categories
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        connector = Connectors.getDefaultConnector();
+        connector = Connectors.getDefaultCachedConnector();
         setContentView(R.layout.layout_loading);
         loadRegionsAndCategories();
     }
@@ -79,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Async method
      * Do not call from main thread
      */
     private Pair<List<Region>, List<Category>> loadRegionsAndCategoriesCallback(Criteries... crits) {

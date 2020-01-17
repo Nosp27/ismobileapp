@@ -13,5 +13,6 @@ public interface ResourceSupplier {
     List<Region> getAllRegions() throws IOException;
     List<Category> getAllCategories() throws IOException;
     List<Facility> getCriterizedFacilities(Criteries criteries) throws IOException;
-    Drawable loadImage(Integer key) throws IOException;
+    BinaryDataProvider getBinaryDataProvider();
+    void setBinaryDataProvider(BinaryDataProvider provider);
 }

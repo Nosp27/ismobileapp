@@ -10,7 +10,7 @@ public class Connectors {
     private static boolean cachingEnabled = true;
     private static ResourceSupplier defaultConnector;
 
-    public static ResourceSupplier getDefaultConnector() {
+    public static ResourceSupplier getDefaultCachedConnector() {
         if (defaultConnector == null)
             if (debugMode)
                 defaultConnector = new StubConnector();
