@@ -8,6 +8,7 @@ import android.widget.*;
 import androidx.fragment.app.FragmentActivity;
 import com.example.ismobileapp.R;
 import com.pashikhmin.ismobileapp.map.FacilityInfoWindowAdapter;
+import com.pashikhmin.ismobileapp.map.MapTool;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Entity;
 import com.pashikhmin.ismobileapp.model.Facility;
@@ -26,12 +27,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityInvestingFacilities extends FragmentActivity implements OnMapReadyCallback {
+public class ActivityInvestingFacilities extends FragmentActivity {
 
     private static final String TAG = "ActivityInvestingFacilities";
     public static final String FACILITY_TAG = "com.example.ismobileapp.ActivityInvestingFacilities.FACILITY";
 
-    private GoogleMap mMap;
+    private MapTool mapTool;
     ResourceSupplier connector = Connectors.getDefaultCachedConnector();
     List<Facility> facilities;
 
@@ -39,6 +40,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_loading);
+        mapTool = new MapTool(this);
         loadFacilities();
     }
 
@@ -76,7 +78,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(map -> mapTool.initializeMap(map, facilities));
     }
 
     void loadFacilities() {
@@ -96,29 +98,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
         }
     }
 
-    void addMarkersForFacilities() {
-        LatLngBounds.Builder builder = LatLngBounds.builder();
-        for (Facility f : facilities) {
-            if (f.getLat() == null && f.getLng() == null)
-                continue;
-            LatLng position = new LatLng(f.getLat(), f.getLng());
-            builder.include(position);
-            Marker addedMarker = mMap.addMarker(new MarkerOptions().position(position).title(f.getName()));
-            addedMarker.setTag(f);
-        }
 
-        CameraUpdate camUpdate;
-        if (facilities.size() > 1)
-            camUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(), 500, 900, 10);
-        else if (!facilities.isEmpty()){
-            Facility facility = facilities.get(0);
-            camUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(facility.getLat(), facility.getLng()), 10f);
-        }
-        else {
-            return;
-        }
-        mMap.moveCamera(camUpdate);
-    }
 
     void initFacilities() {
         GridView grid = findViewById(R.id.viewFacilities);
@@ -152,36 +132,5 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
         Intent intent = new Intent(this, FacilityDetailed.class);
         intent.putExtra(FACILITY_TAG, f);
         startActivity(intent);
-    }
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        addMarkersForFacilities();
-        mMap.setInfoWindowAdapter(new FacilityInfoWindowAdapter(this));
-        mMap.setOnMarkerClickListener(marker -> {
-            Facility attachedFacility = (Facility)marker.getTag();
-            LinearLayout linearLayout = findViewById(R.id.tabWithMap);
-            if(linearLayout.getChildCount() > 1)
-            linearLayout.removeView(linearLayout.findViewById(R.id.facility_brief));
-            View facility_brief_view = getLayoutInflater().inflate(
-                    R.layout.layout_facility_brief, linearLayout, false
-            );
-            ((TextView) facility_brief_view.findViewById(R.id.title)).setText(attachedFacility.getName());
-            ((TextView) facility_brief_view.findViewById(R.id.facility_region)).setText(
-                    attachedFacility.getRegion().getTitle()
-            );
-            linearLayout.addView(facility_brief_view);
-            return false;
-        });
     }
 }
