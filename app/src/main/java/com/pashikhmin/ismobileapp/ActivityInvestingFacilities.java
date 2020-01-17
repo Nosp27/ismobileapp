@@ -2,12 +2,16 @@ package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.TabHost;
+import android.view.View;
+import android.widget.*;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.example.ismobileapp.R;
+import com.pashikhmin.ismobileapp.map.FacilityInfoFragment;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Entity;
 import com.pashikhmin.ismobileapp.model.Facility;
@@ -167,5 +171,20 @@ public class ActivityInvestingFacilities extends FragmentActivity implements OnM
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         addMarkersForFacilities();
+        mMap.setOnMarkerClickListener(marker -> {
+            Facility attachedFacility = (Facility)marker.getTag();
+            LinearLayout linearLayout = findViewById(R.id.tabWithMap);
+            if(linearLayout.getChildCount() > 1)
+            linearLayout.removeView(linearLayout.findViewById(R.id.facility_brief));
+            View facility_brief_view = getLayoutInflater().inflate(
+                    R.layout.layout_facility_brief, linearLayout, false
+            );
+            ((TextView) facility_brief_view.findViewById(R.id.title)).setText(attachedFacility.getName());
+            ((TextView) facility_brief_view.findViewById(R.id.facility_region)).setText(
+                    attachedFacility.getRegion().getTitle()
+            );
+            linearLayout.addView(facility_brief_view);
+            return false;
+        });
     }
 }
