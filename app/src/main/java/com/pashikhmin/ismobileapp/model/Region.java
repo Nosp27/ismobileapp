@@ -1,8 +1,11 @@
 package com.pashikhmin.ismobileapp.model;
 
 import android.graphics.drawable.Drawable;
+import com.pashikhmin.ismobileapp.network.Connectors;
 import com.pashikhmin.ismobileapp.network.json.JSONField;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 public class Region implements Entity, Serializable {
@@ -13,7 +16,7 @@ public class Region implements Entity, Serializable {
     @JSONField
     private Integer imageId;
 
-    private Drawable image;
+    private transient Drawable image;
 
     public Region() {
     }
@@ -68,5 +71,10 @@ public class Region implements Entity, Serializable {
     @Override
     public Drawable getImage() {
         return image;
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        image = Connectors.getDefaultCachedConnector().getBinaryDataProvider().loadImage(imageId);
     }
 }

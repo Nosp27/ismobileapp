@@ -8,7 +8,9 @@ import java.io.IOException;
 public class Connectors {
     private static boolean debugMode = false;
     private static boolean cachingEnabled = true;
+
     private static ResourceSupplier defaultConnector;
+    private static ResourceSupplier cachedConnector;
 
     public static ResourceSupplier getDefaultCachedConnector() {
         if (defaultConnector == null)
@@ -21,14 +23,18 @@ public class Connectors {
                     throw new RuntimeException(e);
                 }
             }
-        if (cachingEnabled)
-            defaultConnector = new CachingTask(defaultConnector).getResourceSupplier();
+        if (cachingEnabled) {
+            if(cachedConnector == null)
+                cachedConnector = new CachingTask(defaultConnector).getResourceSupplier();
+            return cachedConnector;
+        }
         return defaultConnector;
     }
 
     public static void setDebugMode(boolean debugMode) {
         Connectors.debugMode = debugMode;
         defaultConnector = null;
+        cachedConnector = null;
     }
 
     public static boolean pingServer() {
