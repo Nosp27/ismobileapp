@@ -22,10 +22,11 @@ public class Cache implements ResourceSupplier, BinaryDataProvider {
     private CachedEntities<Drawable> cachedDrawables;
 
     private BinaryDataProvider loadBinaryDataProvider;
+    private final BinaryDataProvider cacheBinaryDataProvider = this;
 
     @Override
     public BinaryDataProvider getBinaryDataProvider() {
-        return loadBinaryDataProvider;
+        return cacheBinaryDataProvider;
     }
 
     @Override
