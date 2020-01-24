@@ -59,12 +59,12 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
         String possibleAddress = endpointIterator.next();
         for (; ; ) {
             try {
-                HttpURLConnection connection = setupConnection(new URL(possibleAddress + "/regions"));
+                HttpURLConnection connection = setupConnection(new URL(possibleAddress + "/ping"));
                 if (connection.getResponseCode() == 200) {
                     connection.disconnect();
                     return possibleAddress;
                 } else
-                    throw new IOException("Unexpected response code");
+                    throw new IOException("Unexpected response code: " + connection.getResponseCode());
             } catch (IOException e) {
                 if (!endpointIterator.hasNext())
                     throw e;
