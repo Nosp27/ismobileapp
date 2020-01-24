@@ -17,7 +17,9 @@ public class LoadTask<T> extends AsyncTask<Criteries, Integer, T> {
 
     @Override
     protected T doInBackground(Criteries... criteries) {
-        return task.apply(criteries[0]);
+        if (criteries != null && criteries.length > 0)
+            return task.apply(criteries[0]);
+        return task.apply(null);
     }
 
     @Override
