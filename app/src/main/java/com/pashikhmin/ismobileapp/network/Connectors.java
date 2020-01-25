@@ -12,6 +12,16 @@ public class Connectors {
     private static ResourceSupplier defaultConnector;
     private static ResourceSupplier cachedConnector;
 
+    private static String authenticityToken;
+
+    public static String getAuthenticityToken() {
+        return authenticityToken;
+    }
+
+    public static void setAuthenticityToken(String authenticityToken) {
+        Connectors.authenticityToken = authenticityToken;
+    }
+
     public static ResourceSupplier getDefaultCachedConnector() {
         if (defaultConnector == null)
             if (debugMode)

@@ -1,4 +1,4 @@
-package com.pashikhmin.ismobileapp.network;
+package com.pashikhmin.ismobileapp.network.loadTask;
 
 import android.os.AsyncTask;
 import com.pashikhmin.ismobileapp.model.Criteries;

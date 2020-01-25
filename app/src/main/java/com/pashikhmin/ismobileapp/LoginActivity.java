@@ -1,65 +1,47 @@
 package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.util.Log;
-import android.webkit.WebView;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.CookieManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.ismobileapp.R;
-import com.pashikhmin.ismobileapp.network.LoadTask;
-import com.pashikhmin.ismobileapp.network.LoginConnector;
-import com.pashikhmin.ismobileapp.network.LoginWebClient;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    private final Object lock = new Object();
+    private WebView webView;
+    private boolean jsOn = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-//        LoadTask<?> loadTask = new LoadTask<>(x -> asyncLogin(), x -> {this.finishActivity(0);});
-//        loadTask.execute();
-        loginInWebView();
+        CookieManager.getInstance().removeAllCookies(null);
+        webView = findViewById(R.id.webview);
+        webView.getSettings().setJavaScriptEnabled(true);
+        findViewById(R.id.secure_ping_btn).setOnClickListener(e -> loginInWebView());
+        findViewById(R.id.switch_js_btn).setOnClickListener(e -> switchJs());
+        findViewById(R.id.to_app).setOnClickListener(e -> toApp());
+    }
+
+    private void toApp() {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("token", CookieManager.getInstance().getCookie("http://192.168.1.56:8080"));
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 
     private void loginInWebView() {
-        WebView webView = ((WebView) findViewById(R.id.webview));
-        webView.loadUrl("http://192.168.43.56:8080/secure_ping");
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl("http://192.168.1.56:8080/secure_ping");
     }
 
-    private Object asyncLogin() {
-        LoginConnector lc = new LoginConnector();
-        try {
-            Uri formUrl = lc.validateCredentialsUrl();
-            Intent intent = new Intent(Intent.ACTION_VIEW, formUrl);
-            startActivityForResult(intent, 1);
-            synchronized (lock) {
-                lock.wait();
-            }
-
-            if (!lc.validCredentials())
-                throw new RuntimeException("Credentials are not validating");
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        synchronized (lock) {
-            lock.notifyAll();
-        }
+    private void switchJs() {
+        jsOn = !jsOn;
+        webView.getSettings().setJavaScriptEnabled(jsOn);
+        String newMessage = "Switch " + (jsOn ? "OFF" : "ON") + " JS";
+        ((Button) findViewById(R.id.switch_js_btn)).setText(newMessage);
     }
 }

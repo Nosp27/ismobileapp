@@ -1,7 +1,11 @@
 package com.pashikhmin.ismobileapp.network;
 
+import android.app.AuthenticationRequiredException;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.text.TextUtils;
 import com.pashikhmin.ismobileapp.model.*;
+import com.pashikhmin.ismobileapp.network.exceptions.LoginRequiredException;
 import com.pashikhmin.ismobileapp.network.json.JSONModeller;
 import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
@@ -11,17 +15,13 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.net.*;
+import java.util.*;
 
 public class ProductionConnector implements ResourceSupplier, BinaryDataProvider {
     static final List<String> SERVER_ENDPOINTS = Arrays.asList(
-            "http://192.168.88.233:8080",
-            "http://192.168.43.56:8080"
+            "http://192.168.43.56:8080",
+            "http://192.168.1.56:8080"
     );
     private static String server;
 
@@ -75,7 +75,11 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
     static HttpURLConnection setupConnection(URL url) throws IOException {
         HttpURLConnection ret = ((HttpURLConnection) url.openConnection());
         ret.setConnectTimeout(TIMEOUT);
+        ret.setRequestProperty("Accept", "application/json");
         ret.setRequestProperty("Content-Type", "application/json");
+        if(Connectors.getAuthenticityToken() != null) {
+            ret.setRequestProperty("Cookie", Connectors.getAuthenticityToken());
+        }
         return ret;
     }
 
@@ -87,22 +91,34 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
         InputStream connInputStream = connectToApi(suffix, content);
         try (InputStreamReader reader = new InputStreamReader(connInputStream)) {
             return tokenize(reader);
+        } catch (LoginRequiredException e) {
+            throw e;
         } catch (IOException e) {
         }
         return null;
     }
 
     InputStream connectToApi(String suffix, String content) throws IOException {
-        HttpURLConnection connection;
-        URL url = new URL(getServerAddress() + suffix);
-        connection = setupConnection(url);
-        if (content != null) {
-            connection.setRequestMethod("POST");
-            connection.getOutputStream().write(content.getBytes());
+        HttpURLConnection connection = null;
+        int responseCode;
+        URL url;
+        do {
+            if (connection != null) {
+                url = new URL(connection.getHeaderField("Location"));
+            } else
+                url = new URL(getServerAddress() + suffix);
+            connection = setupConnection(url);
+            if (content != null) {
+                connection.setRequestMethod("POST");
+                connection.getOutputStream().write(content.getBytes());
+            }
+            responseCode = connection.getResponseCode();
+        } while (responseCode / 100 == 3);
+        if (connection.getHeaderField("Content-Type").contains("text/html") || responseCode == 403) {
+            throw new LoginRequiredException();
         }
-        int responseCode = connection.getResponseCode();
         if (responseCode != 200)
-            throw new IOException("Unsuccessful response: " + responseCode);
+            throw new ConnectException("Unsuccessful response: " + responseCode);
         return connection.getInputStream();
     }
 
@@ -116,7 +132,6 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return new JSONTokener(sb.toString());
     }
 

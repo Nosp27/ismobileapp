@@ -3,25 +3,20 @@ package com.pashikhmin.ismobileapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.*;
 import androidx.fragment.app.FragmentActivity;
 import com.example.ismobileapp.R;
-import com.pashikhmin.ismobileapp.map.FacilityInfoWindowAdapter;
 import com.pashikhmin.ismobileapp.map.MapTool;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Entity;
 import com.pashikhmin.ismobileapp.model.Facility;
 import com.pashikhmin.ismobileapp.model.callbacks.EntityListener;
+import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import com.pashikhmin.ismobileapp.network.Connectors;
-import com.pashikhmin.ismobileapp.network.LoadTask;
+import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
 import com.pashikhmin.ismobileapp.viewmodel.EntityListAdapter;
 import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,11 +45,13 @@ public class ActivityInvestingFacilities extends FragmentActivity {
         retryBtn.setOnClickListener(e -> loadFacilities());
     }
 
-    void onLoadFacilities(List<Facility> loadedFacilities) {
-        if (loadedFacilities == null) {
+    void onLoadFacilities(LoadTaskResult<List<Facility>> res) {
+        if (!res.successful()) {
             showErrorScreen();
             return;
         }
+
+        List<Facility> loadedFacilities = res.getResult();
         setContentView(R.layout.activity_investing_facilities);
         this.facilities = loadedFacilities;
         initFacilities();
@@ -94,7 +91,7 @@ public class ActivityInvestingFacilities extends FragmentActivity {
             return connector.getCriterizedFacilities(criterias[0]);
         } catch (IOException e) {
             Log.e(TAG, "loadFacilitiesCallback: loadFacilitiesCallback", e);
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

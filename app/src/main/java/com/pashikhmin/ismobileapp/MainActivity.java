@@ -6,6 +6,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Button;
 import android.widget.Spinner;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.Category;
@@ -13,9 +14,11 @@ import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Entity;
 import com.pashikhmin.ismobileapp.model.Region;
 import com.pashikhmin.ismobileapp.model.callbacks.EntityListener;
+import com.pashikhmin.ismobileapp.network.exceptions.LoginRequiredException;
+import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import com.pashikhmin.ismobileapp.network.Connectors;
-import com.pashikhmin.ismobileapp.network.LoadTask;
+import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
 import com.pashikhmin.ismobileapp.viewmodel.EntitySpinnerAdapter;
 
 import java.io.IOException;
@@ -39,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         connector = Connectors.getDefaultCachedConnector();
         setContentView(R.layout.layout_loading);
-        loadRegionsAndCategories();
     }
 
     @Override
@@ -49,14 +51,16 @@ public class MainActivity extends AppCompatActivity {
         loadRegionsAndCategories();
     }
 
-    private void onLoad(Pair<List<Region>, List<Category>> data) {
-        if (data == null) {
+    private void onLoad(LoadTaskResult<Pair<List<Region>, List<Category>>> res) {
+        if (!res.successful()) {
             // exception occurred
-            showErrorScreen();
+            onLoadError(res.getError());
             return;
         }
-        setContentView(R.layout.activity_select_criterias);
 
+        Pair<List<Region>, List<Category>> data = res.getResult();
+
+        setContentView(R.layout.activity_select_criterias);
         regionListener = new StoreListener<>(data.first);
         categoryListener = new StoreListener<>(data.second);
         Spinner listRegions = findViewById(R.id.listRegions);
@@ -82,6 +86,14 @@ public class MainActivity extends AppCompatActivity {
         loadRegionsTask.execute(new Criteries());
     }
 
+    private void onLoadError(Throwable throwable) {
+        if (throwable instanceof LoginRequiredException || throwable.getCause() instanceof LoginRequiredException) {
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivityForResult(loginIntent, 1);
+        } else
+            showErrorScreen();
+    }
+
     /**
      * Async method
      * Do not call from main thread
@@ -91,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             return new Pair<>(connector.getAllRegions(), connector.getAllCategories());
         } catch (IOException e) {
             Log.e(TAG, "loadFacilitiesCallback: loadRegionsAndCategoriesCallback", e);
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
@@ -106,6 +118,16 @@ public class MainActivity extends AppCompatActivity {
         Intent showFacilitiesIntent = new Intent(this, ActivityInvestingFacilities.class);
         showFacilitiesIntent.putExtra(MESSAGE_TAG, criteries);
         startActivity(showFacilitiesIntent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) {
+                Connectors.setAuthenticityToken(data.getStringExtra("token"));
+            }
+        }
     }
 
     private static class StoreListener<T extends Entity> implements EntityListener<T> {
@@ -123,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public List<T> getSelectedEntities() {
-            if(selectedEntities == null)
+            if (selectedEntities == null)
                 selectedEntities = new ArrayList<>();
             return selectedEntities;
         }
