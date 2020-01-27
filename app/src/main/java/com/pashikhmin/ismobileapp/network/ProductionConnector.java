@@ -1,9 +1,6 @@
 package com.pashikhmin.ismobileapp.network;
 
-import android.app.AuthenticationRequiredException;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.text.TextUtils;
 import com.pashikhmin.ismobileapp.model.*;
 import com.pashikhmin.ismobileapp.network.exceptions.LoginRequiredException;
 import com.pashikhmin.ismobileapp.network.json.JSONModeller;
@@ -14,19 +11,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductionConnector implements ResourceSupplier, BinaryDataProvider {
-    static final List<String> SERVER_ENDPOINTS = Arrays.asList(
-            "http://192.168.43.56:8080",
-            "http://192.168.1.56:8080"
-    );
+    private static String namenode = "https://pastebin.com/raw/qnnpTbWk";
     private static String server;
 
     static final String GET_ALL_REGIONS = "/regions";
-    static final String GET_REGION = "/region";
     static final String GET_ALL_CATEGORIES = "/categories";
     static final String GET_CRITERIZED_FACILITIES = "/facilities/";
     static final String READ_IMAGE_SUFFIX = "/image/";
@@ -47,37 +42,39 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
         this.binaryDataProvider = binaryDataProvider;
     }
 
-    static String getServerAddress() throws IOException {
-        if (server == null)
-            server = figureOutIpAddress();
-        return server;
+    public static String getServerAddress() {
+        try {
+            if(server == null) {
+                server = loadServerIp();
+            }
+            return server;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private static String figureOutIpAddress() throws IOException {
-        Iterator<String> endpointIterator = SERVER_ENDPOINTS.iterator();
-        String possibleAddress = endpointIterator.next();
-        for (; ; ) {
-            try {
-                HttpURLConnection connection = setupConnection(new URL(possibleAddress + "/ping"));
-                if (connection.getResponseCode() == 200) {
-                    connection.disconnect();
-                    return possibleAddress;
-                } else
-                    throw new IOException("Unexpected response code: " + connection.getResponseCode());
-            } catch (IOException e) {
-                if (!endpointIterator.hasNext())
-                    throw e;
-                possibleAddress = endpointIterator.next();
-            }
+    public static String pingServer() throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(getServerAddress()+"/ping").openConnection();
+        if (connection.getResponseCode() != 200)
+            throw new IOException();
+        return getServerAddress();
+    }
+
+    private static String loadServerIp() throws IOException {
+        HttpURLConnection con = ((HttpURLConnection) new URL(namenode).openConnection());
+        try (BufferedReader namenodeReader = new BufferedReader(
+                new InputStreamReader(con.getInputStream())
+        )) {
+            return namenodeReader.readLine();
         }
     }
 
     static HttpURLConnection setupConnection(URL url) throws IOException {
         HttpURLConnection ret = ((HttpURLConnection) url.openConnection());
         ret.setConnectTimeout(TIMEOUT);
-        ret.setRequestProperty("Accept", "application/json");
+//        ret.setRequestProperty("Accept", "application/json");
         ret.setRequestProperty("Content-Type", "application/json");
-        if(Connectors.getAuthenticityToken() != null) {
+        if (Connectors.getAuthenticityToken() != null) {
             ret.setRequestProperty("Cookie", Connectors.getAuthenticityToken());
         }
         return ret;
@@ -106,7 +103,7 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
             if (connection != null) {
                 url = new URL(connection.getHeaderField("Location"));
             } else
-                url = new URL(getServerAddress() + suffix);
+                url = new URL(pingServer() + suffix);
             connection = setupConnection(url);
             if (content != null) {
                 connection.setRequestMethod("POST");

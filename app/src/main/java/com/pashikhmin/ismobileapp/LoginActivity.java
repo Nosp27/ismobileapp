@@ -7,11 +7,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.ismobileapp.R;
+import com.pashikhmin.ismobileapp.network.ProductionConnector;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String SERVERNAME = ProductionConnector.getServerAddress();
     private static final String TAG = "LoginActivity";
     private WebView webView;
-    private boolean jsOn = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +27,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void toApp() {
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("token", CookieManager.getInstance().getCookie("http://192.168.1.56:8080"));
+        resultIntent.putExtra("token", CookieManager.getInstance().getCookie(SERVERNAME));
         setResult(RESULT_OK, resultIntent);
         finish();
     }
 
     private void loginInWebView() {
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl("http://192.168.1.56:8080/secure_ping");
+        webView.loadUrl(SERVERNAME + "/secure_ping");
     }
 }

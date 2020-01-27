@@ -49,7 +49,7 @@ public class Connectors {
 
     public static boolean pingServer() {
         try {
-            ProductionConnector.getServerAddress();
+            ProductionConnector.pingServer();
             return true;
         } catch (IOException e) {
         }
