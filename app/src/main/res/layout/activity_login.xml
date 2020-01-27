@@ -6,26 +6,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.pashikhmin.ismobileapp.LoginActivity">
-    <WebView android:layout_width="match_parent" android:layout_height="392dp"
+    <WebView android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:layout_marginBottom="2dp"
              app:layout_constraintStart_toStartOf="parent"
              app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintBottom_toTopOf="@id/to_app"
              android:id="@+id/webview"
     />
 
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/webview"
-            android:id="@+id/secure_ping_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="Secure Ping"/>
-
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/secure_ping_btn"
-            android:id="@+id/switch_js_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="Switch Off JS"/>
-
     <Button android:layout_width="match_parent" android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/confirm_button_style"
             android:layout_margin="3dp"
             android:id="@+id/to_app"
             app:layout_constraintStart_toStartOf="parent"

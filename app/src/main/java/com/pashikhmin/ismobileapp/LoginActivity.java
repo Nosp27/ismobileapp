@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.ismobileapp.R;
 
@@ -17,13 +16,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Need Login");
         setContentView(R.layout.activity_login);
-        CookieManager.getInstance().removeAllCookies(null);
+//        CookieManager.getInstance().removeAllCookies(null);
         webView = findViewById(R.id.webview);
-        webView.getSettings().setJavaScriptEnabled(true);
-        findViewById(R.id.secure_ping_btn).setOnClickListener(e -> loginInWebView());
-        findViewById(R.id.switch_js_btn).setOnClickListener(e -> switchJs());
         findViewById(R.id.to_app).setOnClickListener(e -> toApp());
+        loginInWebView();
     }
 
     private void toApp() {
@@ -36,12 +34,5 @@ public class LoginActivity extends AppCompatActivity {
     private void loginInWebView() {
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl("http://192.168.1.56:8080/secure_ping");
-    }
-
-    private void switchJs() {
-        jsOn = !jsOn;
-        webView.getSettings().setJavaScriptEnabled(jsOn);
-        String newMessage = "Switch " + (jsOn ? "OFF" : "ON") + " JS";
-        ((Button) findViewById(R.id.switch_js_btn)).setText(newMessage);
     }
 }
