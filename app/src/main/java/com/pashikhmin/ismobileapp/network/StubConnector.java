@@ -9,7 +9,10 @@ import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StubConnector implements ResourceSupplier, BinaryDataProvider {
@@ -60,6 +63,16 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider {
     @Override
     public void setBinaryDataProvider(BinaryDataProvider provider) {
         this.binaryDataProvider = provider;
+    }
+
+    @Override
+    public boolean changeLike(Facility facility) throws IOException {
+        return true;
+    }
+
+    @Override
+    public List<Facility> getLikedFacilities() throws IOException {
+        return new LinkedList<>();
     }
 
     @Override

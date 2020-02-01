@@ -1,6 +1,7 @@
 package com.pashikhmin.ismobileapp.network;
 
 import android.graphics.drawable.Drawable;
+import android.util.SparseArray;
 import com.pashikhmin.ismobileapp.model.*;
 import com.pashikhmin.ismobileapp.network.exceptions.LoginRequiredException;
 import com.pashikhmin.ismobileapp.network.json.JSONModeller;
@@ -25,6 +26,8 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
     static final String GET_ALL_CATEGORIES = "/categories";
     static final String GET_CRITERIZED_FACILITIES = "/facilities/";
     static final String READ_IMAGE_SUFFIX = "/image/";
+    static final String GET_LIKED_FACILITIES = "/actor/favorites";
+    static final String LIKE_FACILITY = "/actor/like";
 
     private static final int TIMEOUT = 1000;
 
@@ -44,7 +47,7 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
 
     public static String getServerAddress() {
         try {
-            if(server == null) {
+            if (server == null) {
                 server = loadServerIp();
             }
             return server;
@@ -54,7 +57,7 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
     }
 
     public static String pingServer() throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) new URL(getServerAddress()+"/ping").openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL(getServerAddress() + "/ping").openConnection();
         if (connection.getResponseCode() != 200)
             throw new IOException();
         return getServerAddress();
@@ -193,8 +196,19 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
         for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_CRITERIZED_FACILITIES, criteriesJson.toString())))
             ret.add(JSONModeller.fromJSON(Facility.class, regionJSON));
         addImagesForEntities(ret);
+        addLikesForFacilities(ret);
 
         return ret;
+    }
+
+    private void addLikesForFacilities(List<Facility> ret) throws IOException {
+        List<Facility> liked = getLikedFacilities();
+        SparseArray<Facility> facilityMap = new SparseArray<>(ret.size());
+        for (Facility f : ret)
+            facilityMap.put(f.getId(), f);
+        for (Facility f : liked) {
+            facilityMap.get(f.getId()).setLiked(true);
+        }
     }
 
     private void addImagesForEntities(List<? extends Entity> list) throws IOException {
@@ -208,5 +222,24 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
         if (key == null)
             return null;
         return Drawable.createFromStream(connectToApi(READ_IMAGE_SUFFIX + key, null), null);
+    }
+
+    @Override
+    public boolean changeLike(Facility facility) throws IOException {
+        JSONTokener tokener = readFromApi(String.format("%s/%s", LIKE_FACILITY, facility.getId()));
+        try {
+            return ((JSONObject)tokener.nextValue()).getBoolean("liked");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Facility> getLikedFacilities() throws IOException {
+        List<Facility> ret = new ArrayList<>();
+        for (JSONObject regionJSON : readJsonAsList(readFromApi(GET_LIKED_FACILITIES)))
+            ret.add(JSONModeller.fromJSON(Facility.class, regionJSON));
+        addImagesForEntities(ret);
+        return ret;
     }
 }

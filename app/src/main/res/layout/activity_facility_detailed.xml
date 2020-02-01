@@ -22,6 +22,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
         />
+        <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintEnd_toEndOf="@+id/facility_name"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toTopOf="@+id/facility_name"
+                android:layout_margin="2dp"
+                android:id="@+id/liked"
+                android:background="@android:drawable/btn_star_big_off"
+                android:src="@android:drawable/btn_star_big_on"/>
         <ImageView
                 android:id="@+id/detailed_facility_image"
                 android:layout_width="wrap_content"

@@ -26,4 +26,11 @@
             app:layout_constraintEnd_toEndOf="@id/item_img"
             app:layout_constraintStart_toStartOf="@id/item_img"
     />
+    <ImageButton android:layout_width="45dp" android:layout_height="43dp"
+                 app:layout_constraintEnd_toEndOf="@+id/item_img" android:layout_marginEnd="8dp"
+                 app:layout_constraintTop_toTopOf="@+id/item_img"
+                 android:layout_margin="2dp"
+                 android:id="@+id/liked"
+                 android:background="@android:drawable/btn_star_big_off"
+                 android:src="@android:drawable/btn_star_big_on"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
