@@ -26,7 +26,7 @@ public abstract class BaseEntityAdapter extends ArrayAdapter<Entity> {
         this(context, resource, listener, listener.getEntities());
     }
 
-    private BaseEntityAdapter(Context context, int resource, EntityListener listener, List<Entity> content) {
+    private BaseEntityAdapter(Context context, int resource, EntityListener<Entity> listener, List<Entity> content) {
         super(context, resource, content);
         this.resource = resource;
         this.entityListener = listener;
