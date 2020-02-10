@@ -8,6 +8,7 @@ import com.pashikhmin.ismobileapp.model.Region;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface ResourceSupplier {
     List<Region> getAllRegions() throws IOException;
@@ -15,4 +16,6 @@ public interface ResourceSupplier {
     List<Facility> getCriterizedFacilities(Criteries criteries) throws IOException;
     BinaryDataProvider getBinaryDataProvider();
     void setBinaryDataProvider(BinaryDataProvider provider);
+    boolean changeLike(Facility facility) throws IOException;
+    List<Facility> getLikedFacilities() throws IOException;
 }

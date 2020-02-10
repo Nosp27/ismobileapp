@@ -26,6 +26,7 @@ public class Facility implements Entity, Serializable {
     private Category[] categories;
 
     private transient Drawable image;
+    private Boolean liked = false;
 
     public Facility() {
     }
@@ -92,5 +93,13 @@ public class Facility implements Entity, Serializable {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         image = Connectors.getDefaultCachedConnector().getBinaryDataProvider().loadImage(imageId);
+    }
+
+    public synchronized Boolean getLiked() {
+        return liked;
+    }
+
+    public synchronized void setLiked(Boolean liked) {
+        this.liked = liked;
     }
 }

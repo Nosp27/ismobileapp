@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.*;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import com.example.ismobileapp.R;
 import com.pashikhmin.ismobileapp.map.MapTool;
@@ -12,6 +13,7 @@ import com.pashikhmin.ismobileapp.model.Entity;
 import com.pashikhmin.ismobileapp.model.Facility;
 import com.pashikhmin.ismobileapp.model.callbacks.EntityListener;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
+import com.pashikhmin.ismobileapp.network.loadTask.SubmitLikesTask;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import com.pashikhmin.ismobileapp.network.Connectors;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
@@ -23,13 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityInvestingFacilities extends FragmentActivity {
-
+    private static final int DETAILED_FACILITY_REQUEST_CODE = 288;
     private static final String TAG = "ActivityInvestingFacilities";
     public static final String FACILITY_TAG = "com.example.ismobileapp.ActivityInvestingFacilities.FACILITY";
 
     private MapTool mapTool;
     ResourceSupplier connector = Connectors.getDefaultCachedConnector();
     List<Facility> facilities;
+
+    Facility selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,10 +128,22 @@ public class ActivityInvestingFacilities extends FragmentActivity {
     }
 
     private void detailFacility(Entity selected) {
-        Facility f = (Facility) selected;
+        this.selected = (Facility) selected;
 
         Intent intent = new Intent(this, FacilityDetailed.class);
-        intent.putExtra(FACILITY_TAG, f);
-        startActivity(intent);
+        intent.putExtra(FACILITY_TAG, this.selected);
+        startActivityForResult(intent, DETAILED_FACILITY_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DETAILED_FACILITY_REQUEST_CODE && data != null &&
+                data.getExtras() != null &&
+                data.getExtras().containsKey("liked")) {
+            Boolean liked = data.getBooleanExtra("liked", false);
+            selected.setLiked(liked);
+            initFacilities();
+        }
     }
 }

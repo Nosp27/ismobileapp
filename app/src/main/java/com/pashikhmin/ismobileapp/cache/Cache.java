@@ -97,6 +97,16 @@ public class Cache implements ResourceSupplier, BinaryDataProvider {
         return ret;
     }
 
+    @Override
+    public boolean changeLike(Facility facility) throws IOException {
+        return connector.changeLike(facility);
+    }
+
+    @Override
+    public List<Facility> getLikedFacilities() throws IOException {
+        return connector.getLikedFacilities();
+    }
+
     void resetCaches() {
         cacheWarmFlag.set(false);
     }
