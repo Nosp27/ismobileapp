@@ -7,6 +7,7 @@ import com.pashikhmin.ismobileapp.model.Facility;
 import com.pashikhmin.ismobileapp.model.Region;
 import com.pashikhmin.ismobileapp.network.Connectors;
 import com.pashikhmin.ismobileapp.network.ProductionConnector;
+import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -19,12 +20,12 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class ProductionConnectorTest {
     private static final String TAG = "ProductionConnectorTest";
-    private ProductionConnector connector;
+    private ResourceSupplier connector;
 
     @Before
     public void assumePing() throws IOException {
         Assume.assumeTrue("Cannot connect to server", Connectors.pingServer());
-        connector = new ProductionConnector();
+        connector = new StubConnector();
     }
 
     @Test
