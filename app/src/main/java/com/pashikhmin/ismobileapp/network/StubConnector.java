@@ -10,14 +10,12 @@ import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class StubConnector implements ResourceSupplier, BinaryDataProvider {
 
     private BinaryDataProvider binaryDataProvider;
+    private List<Facility> recordedLikeList = new ArrayList<>();
 
     protected StubConnector() {
         setBinaryDataProvider(this);
@@ -67,12 +65,21 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider {
 
     @Override
     public boolean changeLike(Facility facility) throws IOException {
-        return true;
+        boolean becameLiked;
+        if(recordedLikeList.contains(facility)) {
+            recordedLikeList.remove(facility);
+            becameLiked = false;
+        }
+        else {
+            recordedLikeList.add(facility);
+            becameLiked = true;
+        }
+        return becameLiked;
     }
 
     @Override
     public List<Facility> getLikedFacilities() throws IOException {
-        return new LinkedList<>();
+        return recordedLikeList;
     }
 
     @Override
