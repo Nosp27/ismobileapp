@@ -23,11 +23,16 @@ import com.google.android.gms.maps.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ActivityInvestingFacilities extends FragmentActivity {
     private static final int DETAILED_FACILITY_REQUEST_CODE = 288;
     private static final String TAG = "ActivityInvestingFacilities";
     public static final String FACILITY_TAG = "com.example.ismobileapp.ActivityInvestingFacilities.FACILITY";
+
+    // just for testing
+    Lock facilityLoadLock = new ReentrantLock();
 
     private MapTool mapTool;
     ResourceSupplier connector = Connectors.getDefaultCachedConnector();
@@ -50,39 +55,44 @@ public class ActivityInvestingFacilities extends FragmentActivity {
     }
 
     void onLoadFacilities(LoadTaskResult<List<Facility>> res) {
-        if (!res.successful()) {
-            showErrorScreen();
-            return;
+        try {
+            if (!res.successful()) {
+                showErrorScreen();
+                return;
+            }
+
+            List<Facility> loadedFacilities = res.getResult();
+            setContentView(R.layout.activity_investing_facilities);
+            this.facilities = loadedFacilities;
+            initFacilities();
+
+            setTitle("Investment Opportunities");
+            TabHost tabHost = findViewById(R.id.tabHost);
+            tabHost.setup();
+
+            TabHost.TabSpec regionTab = tabHost.newTabSpec("tab1");
+            regionTab.setContent(R.id.tabWithFacilitiesTable);
+            regionTab.setIndicator("Opportunities");
+            tabHost.addTab(regionTab);
+
+            TabHost.TabSpec mapTab = tabHost.newTabSpec("tab2");
+            mapTab.setContent(R.id.tabWithMap);
+            mapTab.setIndicator("Map");
+            tabHost.addTab(mapTab);
+
+            tabHost.setCurrentTab(0);
+
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(map -> mapTool.initializeMap(map, facilities));
+        } finally {
+            facilityLoadLock.unlock();
         }
-
-        List<Facility> loadedFacilities = res.getResult();
-        setContentView(R.layout.activity_investing_facilities);
-        this.facilities = loadedFacilities;
-        initFacilities();
-
-        setTitle("Investment Opportunities");
-        TabHost tabHost = findViewById(R.id.tabHost);
-        tabHost.setup();
-
-        TabHost.TabSpec regionTab = tabHost.newTabSpec("tab1");
-        regionTab.setContent(R.id.tabWithFacilitiesTable);
-        regionTab.setIndicator("Opportunities");
-        tabHost.addTab(regionTab);
-
-        TabHost.TabSpec mapTab = tabHost.newTabSpec("tab2");
-        mapTab.setContent(R.id.tabWithMap);
-        mapTab.setIndicator("Map");
-        tabHost.addTab(mapTab);
-
-        tabHost.setCurrentTab(0);
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(map -> mapTool.initializeMap(map, facilities));
     }
 
     void loadFacilities() {
+        facilityLoadLock.lock();
         LoadTask<List<Facility>> facilityLoadTask =
                 new LoadTask<>(this::loadFacilitiesCallback, this::onLoadFacilities);
         Intent intent = getIntent();
