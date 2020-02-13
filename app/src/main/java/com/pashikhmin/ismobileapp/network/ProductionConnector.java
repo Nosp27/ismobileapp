@@ -64,13 +64,12 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
     }
 
     private static String loadServerIp() throws IOException {
-//        HttpURLConnection con = ((HttpURLConnection) new URL(namenode).openConnection());
-//        try (BufferedReader namenodeReader = new BufferedReader(
-//                new InputStreamReader(con.getInputStream())
-//        )) {
-//            return namenodeReader.readLine();
-//        }
-        return "http://10.0.2.2:8080";
+        HttpURLConnection con = ((HttpURLConnection) new URL(namenode).openConnection());
+        try (BufferedReader namenodeReader = new BufferedReader(
+                new InputStreamReader(con.getInputStream())
+        )) {
+            return namenodeReader.readLine();
+        }
     }
 
     static HttpURLConnection setupConnection(URL url) throws IOException {
