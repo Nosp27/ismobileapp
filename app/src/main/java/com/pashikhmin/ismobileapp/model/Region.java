@@ -15,6 +15,10 @@ public class Region implements Entity, Serializable {
     private String regionName;
     @JSONField
     private Integer imageId;
+    @JSONField
+    private Double area;
+    @JSONField
+    private Integer population;
 
     private transient Drawable image;
 
