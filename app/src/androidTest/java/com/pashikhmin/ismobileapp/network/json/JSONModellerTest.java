@@ -36,7 +36,18 @@ public class JSONModellerTest {
 
     @Test
     public void fromJSONRegion() throws JSONException {
-        String json = "{\"regionName\":\"SAS\",\"regionId\":3, \"imageId\": null, \"area\": 12.322, \"population\":10}";
+        String json = "{" +
+                "\"regionName\":\"SAS\"," +
+                "\"regionId\":3, " +
+                "\"imageId\": null, " +
+                "\"area\": 12.322, " +
+                "\"population\":10, " +
+                "\"unemployed\": null, " +
+                "\"totalLabourForce\": null," +
+                "\"gdp\": null," +
+                "\"avgPropertyPrice\": null," +
+                "\"avgFamilyIncome\": null" +
+                "}";
         Region region = JSONModeller.fromJSON(Region.class, new JSONObject(json));
 
         Assert.assertNotNull(region);
@@ -56,6 +67,7 @@ public class JSONModellerTest {
                         "        \"imageId\": 0,\n" +
                         "        \"categories\": [\n" +
                         "            {\n" +
+                        "                \"catId\": 0,\n" +
                         "                \"catName\": \"Research\",\n" +
                         "                \"imageId\": null\n" +
                         "            }\n" +
@@ -65,10 +77,20 @@ public class JSONModellerTest {
                         "            \"regionName\": \"Moscow\",\n" +
                         "            \"imageId\": null,\n" +
                         "            \"area\": 1000.0123,\n" +
-                        "            \"population\": 123\n" +
-                        "        }\n" +
+                        "            \"population\": 123,\n" +
+                        "            \"unemployed\": null,\n" +
+                        "            \"totalLabourForce\": null,\n" +
+                        "            \"gdp\": null,\n" +
+                        "            \"avgPropertyPrice\": null,\n" +
+                        "            \"avgFamilyIncome\": null\n" +
+                        "        },\n" +
+                        "        \"utility\": \"Unavailable\",\n" +
+                        "        \"employees\": null,\n" +
+                        "        \"investmentSize\": null,\n" +
+                        "        \"profitability\": null\n" +
                         "    }\n";
         Facility facility = JSONModeller.fromJSON(Facility.class, new JSONObject(json));
+        Assert.assertNotNull(facility);
         Assert.assertNotNull(facility.getRegion());
         Assert.assertNotNull(facility.getCategories());
     }
