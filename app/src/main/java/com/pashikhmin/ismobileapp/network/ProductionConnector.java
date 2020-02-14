@@ -3,9 +3,13 @@ package com.pashikhmin.ismobileapp.network;
 import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 import com.pashikhmin.ismobileapp.model.*;
+import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
+import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
+import com.pashikhmin.ismobileapp.model.helpdesk.Message;
 import com.pashikhmin.ismobileapp.network.exceptions.LoginRequiredException;
 import com.pashikhmin.ismobileapp.network.json.JSONModeller;
 import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
+import com.pashikhmin.ismobileapp.resourceSupplier.HelpDeskResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +22,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductionConnector implements ResourceSupplier, BinaryDataProvider {
+public class ProductionConnector implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier {
     private static String namenode = "https://pastebin.com/raw/qnnpTbWk";
     private static String server;
 
@@ -28,6 +32,7 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
     static final String READ_IMAGE_SUFFIX = "/image/";
     static final String GET_LIKED_FACILITIES = "/actor/favorites";
     static final String LIKE_FACILITY = "/actor/like";
+    static final String FINGER = "/actor/me";
 
     private static final int TIMEOUT = 1000;
 
@@ -227,7 +232,7 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
     public boolean changeLike(Facility facility) throws IOException {
         JSONTokener tokener = readFromApi(String.format("%s/%s", LIKE_FACILITY, facility.getId()));
         try {
-            return ((JSONObject)tokener.nextValue()).getBoolean("liked");
+            return ((JSONObject) tokener.nextValue()).getBoolean("liked");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -240,5 +245,22 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
             ret.add(JSONModeller.fromJSON(Facility.class, regionJSON));
         addImagesForEntities(ret);
         return ret;
+    }
+
+    @Override
+    public Actor finger() throws IOException {
+        return JSONModeller.fromJSON(Actor.class, readJsonObject(readFromApi(FINGER)));
+    }
+
+    @Override
+    public List<Issue> getOpenedIssues() throws IOException {
+        //TODO: implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<Message> getIssueHistory(Issue issue) throws IOException {
+        //TODO: implement
+        throw new UnsupportedOperationException();
     }
 }

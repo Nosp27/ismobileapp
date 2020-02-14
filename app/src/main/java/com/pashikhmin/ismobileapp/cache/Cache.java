@@ -3,7 +3,12 @@ package com.pashikhmin.ismobileapp.cache;
 import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 import com.pashikhmin.ismobileapp.model.*;
+import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
+import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
+import com.pashikhmin.ismobileapp.model.helpdesk.Message;
+import com.pashikhmin.ismobileapp.network.ProductionConnector;
 import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
+import com.pashikhmin.ismobileapp.resourceSupplier.HelpDeskResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 
 import java.io.IOException;
@@ -11,12 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Cache implements ResourceSupplier, BinaryDataProvider {
+public class Cache implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier {
 
     private AtomicBoolean cacheWarmFlag = new AtomicBoolean(false);
 
     private ResourceSupplier connector;
+    private HelpDeskResourceSupplier helpDeskResourceSupplier;
 
+    Actor cachedMe;
     CachedEntities<Region> cachedRegions;
     CachedEntities<Category> cachedCategories;
     CachedEntities<Drawable> cachedDrawables;
@@ -36,6 +43,7 @@ public class Cache implements ResourceSupplier, BinaryDataProvider {
 
     Cache(ResourceSupplier connector) throws IOException {
         this.connector = connector;
+        helpDeskResourceSupplier = ((HelpDeskResourceSupplier) connector);
 
         // set cached image providing
         setBinaryDataProvider(connector.getBinaryDataProvider());
@@ -109,6 +117,25 @@ public class Cache implements ResourceSupplier, BinaryDataProvider {
 
     void resetCaches() {
         cacheWarmFlag.set(false);
+    }
+
+    @Override
+    public List<Issue> getOpenedIssues() throws IOException {
+        // TODO: caching
+        return helpDeskResourceSupplier.getOpenedIssues();
+    }
+
+    @Override
+    public List<Message> getIssueHistory(Issue issue) throws IOException {
+        // TODO: caching
+        return helpDeskResourceSupplier.getIssueHistory(issue);
+    }
+
+    @Override
+    public Actor finger() throws IOException {
+        if (cachedMe == null)
+            cachedMe = helpDeskResourceSupplier.finger();
+        return cachedMe;
     }
 
     class CachedEntities<T> {

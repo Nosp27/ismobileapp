@@ -5,7 +5,11 @@ import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Facility;
 import com.pashikhmin.ismobileapp.model.Region;
+import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
+import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
+import com.pashikhmin.ismobileapp.model.helpdesk.Message;
 import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
+import com.pashikhmin.ismobileapp.resourceSupplier.HelpDeskResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 
 import java.io.ByteArrayInputStream;
@@ -15,9 +19,23 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class StubConnector implements ResourceSupplier, BinaryDataProvider {
+public class StubConnector implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier {
 
     private BinaryDataProvider binaryDataProvider;
+
+    // Help Desk Data
+    private static final Actor investor = new Actor("Some investor");
+    private static final Actor manager = new Actor("Some manager");
+    private static final Issue issue1 = new Issue("Want to invest in Rosneft");
+    private static final Issue issue2 = new Issue("Cannot load my favorite facilities");
+    private static final List<Message> messagesForIssue1 = Arrays.asList(
+            new Message("Hello! This is a test message from test manager", manager),
+            new Message("Hello, this is a test response from investor", investor)
+    );
+    private static final List<Message> messagesForIssue2 = Arrays.asList(
+            new Message("Test message for issue2. Sorry for those not loaded facilies", manager),
+            new Message("Ok.", investor)
+    );
 
     protected StubConnector() {
         setBinaryDataProvider(this);
@@ -89,5 +107,24 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider {
                 124, -88, 0, 0, 0, 0, 73, 69, 78, 68, -82,
         };
         return Drawable.createFromStream(new ByteArrayInputStream(bts), null);
+    }
+
+    @Override
+    public List<Issue> getOpenedIssues() throws IOException {
+        return Arrays.asList(issue1, issue2);
+    }
+
+    @Override
+    public List<Message> getIssueHistory(Issue issue) throws IOException {
+        if (issue == issue1) {
+            return messagesForIssue1;
+        } else if (issue == issue2) {
+            return messagesForIssue2;
+        } else throw new IOException();
+    }
+
+    @Override
+    public Actor finger() throws IOException {
+        return investor;
     }
 }
