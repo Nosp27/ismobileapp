@@ -27,12 +27,16 @@ public class JSONModellerTest {
         region.setRegionId(3);
         region.setRegionName("SAS");
         String actual = JSONModeller.toJSON(region).toString();
-        Assert.assertEquals("{\"imageId\":null,\"regionId\":3,\"regionName\":\"SAS\"}", actual);
+        Assert.assertTrue(actual.contains("\"imageId\":null"));
+        Assert.assertTrue(actual.contains("\"regionName\":\"SAS\""));
+        Assert.assertTrue(actual.contains("\"regionId\":3"));
+        Assert.assertTrue(actual.contains("\"area\":null"));
+        Assert.assertTrue(actual.contains("\"population\":null"));
     }
 
     @Test
     public void fromJSONRegion() throws JSONException {
-        String json = "{\"regionName\":\"SAS\",\"regionId\":3, \"imageId\": null}";
+        String json = "{\"regionName\":\"SAS\",\"regionId\":3, \"imageId\": null, \"area\": 12.322, \"population\":10}";
         Region region = JSONModeller.fromJSON(Region.class, new JSONObject(json));
 
         Assert.assertNotNull(region);
@@ -59,7 +63,9 @@ public class JSONModellerTest {
                         "        \"region\": {\n" +
                         "            \"regionId\": 0,\n" +
                         "            \"regionName\": \"Moscow\",\n" +
-                        "            \"imageId\": null\n" +
+                        "            \"imageId\": null,\n" +
+                        "            \"area\": 1000.0123,\n" +
+                        "            \"population\": 123\n" +
                         "        }\n" +
                         "    }\n";
         Facility facility = JSONModeller.fromJSON(Facility.class, new JSONObject(json));
