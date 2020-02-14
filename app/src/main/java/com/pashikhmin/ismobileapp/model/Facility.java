@@ -24,6 +24,14 @@ public class Facility implements Entity, Serializable {
     private Region region;
     @JSONField
     private Category[] categories;
+    @JSONField
+    private String utility;
+    @JSONField
+    private Integer employees;
+    @JSONField
+    private Double investmentSize;
+    @JSONField
+    private Double profitability;
 
     private transient Drawable image;
     private Boolean liked = false;
