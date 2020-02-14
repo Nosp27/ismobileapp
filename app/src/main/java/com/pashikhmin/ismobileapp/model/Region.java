@@ -19,6 +19,16 @@ public class Region implements Entity, Serializable {
     private Double area;
     @JSONField
     private Integer population;
+    @JSONField
+    private Integer unemployed;
+    @JSONField
+    private Integer totalLabourForce;
+    @JSONField
+    private Double gdp;
+    @JSONField
+    private Double avgPropertyPrice;
+    @JSONField
+    private Double avgFamilyIncome;
 
     private transient Drawable image;
 
