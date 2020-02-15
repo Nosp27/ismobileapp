@@ -5,6 +5,7 @@ import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Facility;
 import com.pashikhmin.ismobileapp.model.Region;
+import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
 import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
 import com.pashikhmin.ismobileapp.model.helpdesk.Message;
 import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
@@ -24,15 +25,16 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider, Help
 
     // Help Desk Data
     private static final Actor investor = new Actor("Some investor");
+    private static final Actor manager = new Actor("Some manager");
     private static final Issue issue1 = new Issue("Want to invest in Rosneft");
     private static final Issue issue2 = new Issue("Cannot load my favorite facilities");
     private static final List<Message> messagesForIssue1 = Arrays.asList(
-            new Message(),
-            new Message()
+            new Message("Hello! This is a test message from test manager", manager),
+            new Message("Hello, this is a test response from investor", investor)
     );
     private static final List<Message> messagesForIssue2 = Arrays.asList(
-            new Message(),
-            new Message()
+            new Message("Test message for issue2. Sorry for those not loaded facilies", manager),
+            new Message("Ok.", investor)
     );
 
     protected StubConnector() {
@@ -114,7 +116,7 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider, Help
 
     @Override
     public List<Message> getIssueHistory(Issue issue) throws IOException {
-        if(issue == issue1) {
+        if (issue == issue1) {
             return messagesForIssue1;
         } else if (issue == issue2) {
             return messagesForIssue2;
