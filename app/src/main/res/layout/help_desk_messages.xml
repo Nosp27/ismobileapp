@@ -13,7 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="11"
-            android:gravity="fill_horizontal"/>
+            android:gravity="fill_horizontal">
+    </LinearLayout>
     <EditText
             android:id="@+id/helpdesk_message_input"
             android:layout_width="match_parent"
