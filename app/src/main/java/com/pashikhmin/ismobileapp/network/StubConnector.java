@@ -23,6 +23,7 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider, Help
     private BinaryDataProvider binaryDataProvider;
 
     // Help Desk Data
+    private static final Actor investor = new Actor("Some investor");
     private static final Issue issue1 = new Issue("Want to invest in Rosneft");
     private static final Issue issue2 = new Issue("Cannot load my favorite facilities");
     private static final List<Message> messagesForIssue1 = Arrays.asList(
@@ -118,5 +119,10 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider, Help
         } else if (issue == issue2) {
             return messagesForIssue2;
         } else throw new IOException();
+    }
+
+    @Override
+    public Actor finger() throws IOException {
+        return investor;
     }
 }
