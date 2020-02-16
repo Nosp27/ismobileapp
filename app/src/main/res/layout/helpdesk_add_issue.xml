@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Topic:"
+            style="@style/label_style"
+    />
+    <EditText
+            android:id="@+id/issue_topic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22pt"
+    />
+    <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Describe your question:"
+            style="@style/label_style"
+    />
+    <EditText
+            android:id="@+id/issue_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22pt"
+    />
+    <Button
+            android:id="@+id/add_issue_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            style="@style/confirm_button_style"
+            android:text="Confirm issue"
+    />
+</LinearLayout>

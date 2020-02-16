@@ -6,6 +6,14 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         tools:context="com.pashikhmin.ismobileapp.HelpDeskActivity">
+    <Button
+            style="@style/confirm_button_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="New Issue"
+            android:textSize="6pt"
+    />
     <ListView
             android:id="@+id/helpdesk_issues"
             android:layout_width="match_parent"

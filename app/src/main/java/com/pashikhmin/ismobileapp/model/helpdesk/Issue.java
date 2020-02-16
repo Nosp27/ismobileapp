@@ -1,8 +1,9 @@
 package com.pashikhmin.ismobileapp.model.helpdesk;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Issue {
+public class Issue implements Serializable {
     private int id;
     private String status;
     private String topic;
