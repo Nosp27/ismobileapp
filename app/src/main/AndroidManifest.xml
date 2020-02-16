@@ -21,6 +21,8 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".AddHelpdeskIssueActivity">
+        </activity>
         <activity android:name="com.pashikhmin.ismobileapp.HelpDeskActivity">
         </activity>
         <activity android:name="com.pashikhmin.ismobileapp.LoginActivity">
