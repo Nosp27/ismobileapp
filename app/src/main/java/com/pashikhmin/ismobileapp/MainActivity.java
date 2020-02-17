@@ -1,6 +1,7 @@
 package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -41,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         connector = Connectors.getDefaultCachedConnector();
-        setContentView(R.layout.layout_loading);
+        setContentView(R.layout.splash_screen);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setContentView(R.layout.layout_loading);
+        if (findViewById(R.id.splash_screen) == null)
+            setContentView(R.layout.layout_loading);
         loadRegionsAndCategories();
     }
 
