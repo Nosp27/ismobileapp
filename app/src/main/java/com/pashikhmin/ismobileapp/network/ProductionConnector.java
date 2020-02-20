@@ -52,7 +52,7 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
             }
             return server;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to load namenode: " + e);
         }
     }
 
