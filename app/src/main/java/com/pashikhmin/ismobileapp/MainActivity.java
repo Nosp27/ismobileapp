@@ -42,14 +42,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         connector = Connectors.getDefaultCachedConnector();
-        setContentView(R.layout.splash_screen);
+        setContentView(R.layout.layout_loading);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (findViewById(R.id.splash_screen) == null)
-            setContentView(R.layout.layout_loading);
+        setContentView(R.layout.layout_loading);
         loadRegionsAndCategories();
     }
 
