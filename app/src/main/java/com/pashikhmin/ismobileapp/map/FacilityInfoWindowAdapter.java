@@ -32,7 +32,7 @@ public class FacilityInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         ((TextView) ret.findViewById(R.id.title)).setText(associatedFacility.getName());
         ((TextView) ret.findViewById(R.id.facility_region)).setText(associatedFacility.getRegionTitle());
         if (associatedFacility.getImage() != null)
-            ((ImageView) ret.findViewById(R.id.entity_image)).setImageDrawable(associatedFacility.getImage());
+            ((ImageView) ret.findViewById(R.id.item_img)).setImageDrawable(associatedFacility.getImage());
         return ret;
     }
 }

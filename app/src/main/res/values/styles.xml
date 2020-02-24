@@ -11,6 +11,7 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
@@ -19,23 +20,37 @@
         <item name="android:popupBackground">#DF5A5A5A</item>
         <item name="android:background">@drawable/spinner_background</item>
         <item name="android:layout_height">40dp</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:elevation">10dp</item>
+        <item name="android:layout_marginTop">8dp</item>
         <item name="android:divider">@color/colorBackground</item>
-        <item name="android:dividerHeight">5dp</item>
     </style>
     <style name="label_style" parent="TextAppearance.AppCompat">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textSize">12pt</item>
+        <item name="android:textSize">14pt</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_alignParentStart">true</item>
     </style>
-    <style name="confirm_button_style" parent="Base.Widget.AppCompat.Button">
-        <item name="android:background">@color/colorPrimary</item>
+    <style name="light_label_style" parent="label_style">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="confirm_button_style" parent="Base.Widget.AppCompat.ActionButton">
+        <item name="android:background">@drawable/ic_button</item>
+        <item name="android:backgroundTint">@color/colorShade</item>
         <item name="android:layout_margin">10dp</item>
-        <item name="android:textColor">@color/colorShade</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">12pt</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:elevation">10dp</item>
+    </style>
+    <style name="confirm_button_style_dark" parent="confirm_button_style">
+        <item name="android:backgroundTint">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorShade</item>
+        <item name="android:shadowColor">@color/colorPrimaryDark</item>
     </style>
     <style name="tag_cloud_button">
         <item name="android:background">@drawable/tag_cloud_button</item>
@@ -46,5 +61,17 @@
     </style>
     <style name="list_item_style">
         <item name="android:background">@color/colorBackground</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 </resources>

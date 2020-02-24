@@ -4,14 +4,19 @@
         <layer-list>
             <item>
                 <shape>
-                    <stroke android:color="@color/colorPrimaryDark"
-                            android:width="2sp"
+                    <stroke android:color="@color/colorAccent"
+                            android:width="1sp"
                     />
-                    <corners android:radius="2sp"/>
+                    <corners android:radius="4sp"/>
                 </shape>
             </item>
-            <item android:drawable="@drawable/ic_arrow_drop_down_black_24dp"
-                  android:gravity="center|right"/>
+            <item android:drawable="@drawable/ic_check_sign"
+                  android:gravity="center|right"
+                  android:start="30dp"
+                  android:end="13dp"
+                  android:top="9dp"
+                  android:bottom="8dp"
+            />
         </layer-list>
     </item>
 </selector>

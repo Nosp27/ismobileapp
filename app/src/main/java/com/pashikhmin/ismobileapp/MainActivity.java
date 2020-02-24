@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.pashikhmin.ismobileapp.R;
@@ -26,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HeaderFragmentRequred {
     private static final String TAG = "MainActivity";
     public static final String MESSAGE_TAG = "com.pashikhmin.ismobileapp.MainActivity.MESSAGE";
 
@@ -129,6 +130,16 @@ public class MainActivity extends AppCompatActivity {
                 Connectors.setAuthenticityToken(data.getStringExtra("token"));
             }
         }
+    }
+
+    @Override
+    public int resourceId(String tag) {
+        return R.layout.header_fragment;
+    }
+
+    @Override
+    public String topic(String tag) {
+        return "projects";
     }
 
     private static class StoreListener<T extends Entity> implements EntityListener<T> {
