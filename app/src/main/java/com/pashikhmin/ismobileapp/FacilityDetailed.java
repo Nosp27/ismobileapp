@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import com.example.ismobileapp.R;
+import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Facility;
 import androidx.appcompat.app.AppCompatActivity;

@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
-import com.example.ismobileapp.R;
+import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.map.MapTool;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Entity;
@@ -29,7 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ActivityInvestingFacilities extends FragmentActivity {
     private static final int DETAILED_FACILITY_REQUEST_CODE = 288;
     private static final String TAG = "ActivityInvestingFacilities";
-    public static final String FACILITY_TAG = "com.example.ismobileapp.ActivityInvestingFacilities.FACILITY";
+    public static final String FACILITY_TAG = "com.pashikhmin.ismobileapp.ActivityInvestingFacilities.FACILITY";
 
     // just for testing
     Lock facilityLoadLock = new ReentrantLock();

@@ -2,7 +2,7 @@ package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
 import android.widget.Spinner;
-import com.example.ismobileapp.R;
+import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Region;
 import com.pashikhmin.ismobileapp.network.Connectors;

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.example.ismobileapp.R;
+import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
 
 import java.util.List;

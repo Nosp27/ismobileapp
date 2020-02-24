@@ -1,4 +1,4 @@
-package com.example.ismobileapp;
+package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
 
 import java.util.ArrayList;

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.example.ismobileapp">
+          package="com.pashikhmin.ismobileapp">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -23,14 +24,14 @@
             tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".AddHelpdeskIssueActivity">
         </activity>
-        <activity android:name="com.pashikhmin.ismobileapp.HelpDeskActivity">
+        <activity android:name=".HelpDeskActivity">
         </activity>
-        <activity android:name="com.pashikhmin.ismobileapp.LoginActivity">
+        <activity android:name=".LoginActivity">
         </activity>
         <activity
-                android:name="com.pashikhmin.ismobileapp.FacilityDetailed"
+                android:name=".FacilityDetailed"
                 android:label="@string/title_activity_facility_detailed"
-                android:parentActivityName="com.pashikhmin.ismobileapp.ActivityInvestingFacilities"
+                android:parentActivityName=".ActivityInvestingFacilities"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -49,7 +50,7 @@
                 android:value="AIzaSyDUlt02tC7dKLOEYUc-eB7GznBjRYDDtDU"/>
 
         <activity
-                android:name="com.pashikhmin.ismobileapp.ActivityInvestingFacilities"
+                android:name=".ActivityInvestingFacilities"
                 android:label="@string/title_activity_investing_facilities">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -58,7 +59,7 @@
                     android:name="com.google.android.gms.version"
                     android:value="@integer/google_play_services_version"/>
         </activity>
-        <activity android:name="com.pashikhmin.ismobileapp.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

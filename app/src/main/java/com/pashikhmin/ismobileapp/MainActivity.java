@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.ismobileapp.R;
+import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Entity;
@@ -28,7 +28,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    public static final String MESSAGE_TAG = "com.example.ismobileapp.MainActivity.MESSAGE";
+    public static final String MESSAGE_TAG = "com.pashikhmin.ismobileapp.MainActivity.MESSAGE";
 
     private ResourceSupplier connector;
     private StoreListener<Region> regionListener;
