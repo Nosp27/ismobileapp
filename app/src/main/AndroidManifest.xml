@@ -47,7 +47,7 @@
         -->
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyDUlt02tC7dKLOEYUc-eB7GznBjRYDDtDU"/>
+                android:value="AIzaSyBqGPc0CMRYsIqVd4qjW5sLCnTyqY01TpA"/>
 
         <activity
                 android:name=".ActivityInvestingFacilities"
