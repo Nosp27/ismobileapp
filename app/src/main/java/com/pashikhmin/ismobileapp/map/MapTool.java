@@ -85,7 +85,7 @@ public class MapTool implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMap
         );
         ((TextView) facility_brief_view.findViewById(R.id.title)).setText(facility.getName());
         ((TextView) facility_brief_view.findViewById(R.id.facility_region)).setText(
-                facility.getRegion().getTitle()
+                facility.getRegionTitle()
         );
         return facility_brief_view;
     }

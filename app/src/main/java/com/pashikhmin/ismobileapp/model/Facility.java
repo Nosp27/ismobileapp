@@ -71,6 +71,12 @@ public class Facility implements Entity, Serializable {
         return region;
     }
 
+    public String getRegionTitle() {
+        if (region == null)
+            return "Unknown";
+        return getRegion().getTitle();
+    }
+
     public Category[] getCategories() {
         return categories;
     }
