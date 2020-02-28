@@ -1,5 +1,6 @@
 package com.pashikhmin.ismobileapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,19 +24,14 @@ import com.google.android.gms.maps.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class ActivityInvestingFacilities extends FragmentActivity {
     private static final int DETAILED_FACILITY_REQUEST_CODE = 288;
     private static final String TAG = "ActivityInvestingFacilities";
-    public static final String FACILITY_TAG = "com.pashikhmin.ismobileapp.ActivityInvestingFacilities.FACILITY";
-
-    // just for testing
-    Lock facilityLoadLock = new ReentrantLock();
+    static final String FACILITY_TAG = "com.pashikhmin.ismobileapp.ActivityInvestingFacilities.FACILITY";
 
     private MapTool mapTool;
-    ResourceSupplier connector = Connectors.getDefaultCachedConnector();
+    ResourceSupplier connector;
     List<Facility> facilities;
 
     Facility selected;
@@ -43,6 +39,7 @@ public class ActivityInvestingFacilities extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        connector = Connectors.getDefaultCachedConnector();
         setContentView(R.layout.layout_loading);
         mapTool = new MapTool(this);
         loadFacilities();
@@ -55,44 +52,39 @@ public class ActivityInvestingFacilities extends FragmentActivity {
     }
 
     void onLoadFacilities(LoadTaskResult<List<Facility>> res) {
-        try {
-            if (!res.successful()) {
-                showErrorScreen();
-                return;
-            }
-
-            List<Facility> loadedFacilities = res.getResult();
-            setContentView(R.layout.activity_investing_facilities);
-            this.facilities = loadedFacilities;
-            initFacilities();
-
-            setTitle("Investment Opportunities");
-            TabHost tabHost = findViewById(R.id.tabHost);
-            tabHost.setup();
-
-            TabHost.TabSpec regionTab = tabHost.newTabSpec("tab1");
-            regionTab.setContent(R.id.tabWithFacilitiesTable);
-            regionTab.setIndicator("Opportunities");
-            tabHost.addTab(regionTab);
-
-            TabHost.TabSpec mapTab = tabHost.newTabSpec("tab2");
-            mapTab.setContent(R.id.tabWithMap);
-            mapTab.setIndicator("Map");
-            tabHost.addTab(mapTab);
-
-            tabHost.setCurrentTab(0);
-
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map);
-            mapFragment.getMapAsync(map -> mapTool.initializeMap(map, facilities));
-        } finally {
-            facilityLoadLock.unlock();
+        if (!res.successful()) {
+            showErrorScreen();
+            return;
         }
+
+        List<Facility> loadedFacilities = res.getResult();
+        setContentView(R.layout.activity_investing_facilities);
+        this.facilities = loadedFacilities;
+        initFacilities();
+
+        setTitle("Investment Opportunities");
+        TabHost tabHost = findViewById(R.id.tabHost);
+        tabHost.setup();
+
+        TabHost.TabSpec regionTab = tabHost.newTabSpec("tab1");
+        regionTab.setContent(R.id.tabWithFacilitiesTable);
+        regionTab.setIndicator("Opportunities");
+        tabHost.addTab(regionTab);
+
+        TabHost.TabSpec mapTab = tabHost.newTabSpec("tab2");
+        mapTab.setContent(R.id.tabWithMap);
+        mapTab.setIndicator("Map");
+        tabHost.addTab(mapTab);
+
+        tabHost.setCurrentTab(0);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(map -> mapTool.initializeMap(map, facilities));
     }
 
     void loadFacilities() {
-        facilityLoadLock.lock();
         LoadTask<List<Facility>> facilityLoadTask =
                 new LoadTask<>(this::loadFacilitiesCallback, this::onLoadFacilities);
         Intent intent = getIntent();
@@ -148,9 +140,13 @@ public class ActivityInvestingFacilities extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == DETAILED_FACILITY_REQUEST_CODE && data != null &&
+        if (
+                requestCode == DETAILED_FACILITY_REQUEST_CODE &&
+                resultCode == Activity.RESULT_OK &&
+                data != null &&
                 data.getExtras() != null &&
-                data.getExtras().containsKey("liked")) {
+                data.getExtras().containsKey("liked")
+        ) {
             Boolean liked = data.getBooleanExtra("liked", false);
             selected.setLiked(liked);
             initFacilities();

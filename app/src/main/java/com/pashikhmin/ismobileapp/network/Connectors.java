@@ -41,6 +41,10 @@ public class Connectors {
         return defaultConnector;
     }
 
+    public static void setCustomConnector(ResourceSupplier customConnector) {
+        defaultConnector = customConnector;
+    }
+
     public static void setDebugMode(boolean debugMode) {
         Connectors.debugMode = debugMode;
         defaultConnector = null;
