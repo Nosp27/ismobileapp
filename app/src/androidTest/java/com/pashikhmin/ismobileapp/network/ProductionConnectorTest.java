@@ -24,7 +24,9 @@ public class ProductionConnectorTest {
 
     @Before
     public void assumePing() throws IOException {
-        Assume.assumeTrue("Cannot connect to server", Connectors.pingServer());
+//        Assume.assumeTrue("Cannot connect to server", Connectors.pingServer());
+        
+        //Stub connector because for ProductionConnector authentication is needed
         connector = new StubConnector();
     }
 

@@ -83,7 +83,7 @@ public class Facility implements Entity, Serializable {
 
     @Override
     public String getTitle() {
-        return name;
+        return getName();
     }
 
     @Override
