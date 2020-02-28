@@ -4,17 +4,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
-import com.pashikhmin.ismobileapp.R;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.material.badge.BadgeDrawable;
 import com.pashikhmin.ismobileapp.map.MapTool;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Entity;
 import com.pashikhmin.ismobileapp.model.Facility;
 import com.pashikhmin.ismobileapp.model.callbacks.EntityListener;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
-import com.pashikhmin.ismobileapp.network.loadTask.SubmitLikesTask;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import com.pashikhmin.ismobileapp.network.Connectors;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
@@ -25,7 +27,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityInvestingFacilities extends FragmentActivity {
+public class ActivityInvestingFacilities extends FragmentActivity implements HeaderFragmentRequred {
+    private final String opportunitiesTabTag = "opportunities";
+    private final String mapTabTag = "map";
+
+    private String tabTag = opportunitiesTabTag;
     private static final int DETAILED_FACILITY_REQUEST_CODE = 288;
     private static final String TAG = "ActivityInvestingFacilities";
     static final String FACILITY_TAG = "com.pashikhmin.ismobileapp.ActivityInvestingFacilities.FACILITY";
@@ -62,26 +68,36 @@ public class ActivityInvestingFacilities extends FragmentActivity {
         this.facilities = loadedFacilities;
         initFacilities();
 
+        setupTabHost();
         setTitle("Investment Opportunities");
-        TabHost tabHost = findViewById(R.id.tabHost);
-        tabHost.setup();
-
-        TabHost.TabSpec regionTab = tabHost.newTabSpec("tab1");
-        regionTab.setContent(R.id.tabWithFacilitiesTable);
-        regionTab.setIndicator("Opportunities");
-        tabHost.addTab(regionTab);
-
-        TabHost.TabSpec mapTab = tabHost.newTabSpec("tab2");
-        mapTab.setContent(R.id.tabWithMap);
-        mapTab.setIndicator("Map");
-        tabHost.addTab(mapTab);
-
-        tabHost.setCurrentTab(0);
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(map -> mapTool.initializeMap(map, facilities));
+        mapFragment.getMapAsync(map -> mapTool.initializeMap(map, facilities, this::loadFacilityOnInfoWindowClick));
+    }
+
+    private void setupTabHost() {
+        TabHost tabHost = findViewById(R.id.tabHost);
+        tabHost.setup();
+
+        TabHost.TabSpec regionTab = tabHost.newTabSpec(opportunitiesTabTag);
+        regionTab.setContent(R.id.tabWithFacilitiesTable);
+        regionTab.setIndicator("", getResources().getDrawable(R.drawable.invest_ops_selector, getTheme()));
+        tabHost.addTab(regionTab);
+
+        TabHost.TabSpec mapTab = tabHost.newTabSpec(mapTabTag);
+        mapTab.setContent(R.id.tabWithMap);
+        mapTab.setIndicator("", getResources().getDrawable(R.drawable.map_globe_selector, getTheme()));
+        tabHost.addTab(mapTab);
+
+        for (int i = 0; i < tabHost.getChildCount(); i++)
+            ((TextView) tabHost.getTabWidget().getChildTabViewAt(i).findViewById(android.R.id.title)).setTextColor(
+                    getResources().getColor(R.color.colorShade, getTheme())
+            );
+
+        tabHost.setOnTabChangedListener(e -> tabTag = e);
+        tabHost.setCurrentTab(0);
+        tabTag = tabHost.getCurrentTabTag();
     }
 
     void loadFacilities() {
@@ -102,11 +118,10 @@ public class ActivityInvestingFacilities extends FragmentActivity {
     }
 
 
-
     void initFacilities() {
-        GridView grid = findViewById(R.id.viewFacilities);
-        grid.setAdapter(
-                new EntityListAdapter(grid.getContext(), R.layout.list_item_facility, new EntityListener() {
+        ListView facilityContainer = findViewById(R.id.viewFacilities);
+        facilityContainer.setAdapter(
+                new EntityListAdapter(facilityContainer.getContext(), R.layout.list_item_facility, new EntityListener() {
                     @Override
                     public List<Entity> getEntities() {
                         return new ArrayList<>(facilities);
@@ -129,6 +144,10 @@ public class ActivityInvestingFacilities extends FragmentActivity {
                 }));
     }
 
+    private void loadFacilityOnInfoWindowClick(Marker marker) {
+        detailFacility(((Facility) marker.getTag()));
+    }
+
     private void detailFacility(Entity selected) {
         this.selected = (Facility) selected;
 
@@ -142,14 +161,31 @@ public class ActivityInvestingFacilities extends FragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (
                 requestCode == DETAILED_FACILITY_REQUEST_CODE &&
-                resultCode == Activity.RESULT_OK &&
-                data != null &&
-                data.getExtras() != null &&
-                data.getExtras().containsKey("liked")
+                        resultCode == Activity.RESULT_OK &&
+                        data != null &&
+                        data.getExtras() != null &&
+                        data.getExtras().containsKey("liked")
         ) {
             Boolean liked = data.getBooleanExtra("liked", false);
             selected.setLiked(liked);
             initFacilities();
+        }
+    }
+
+    @Override
+    public int resourceId(String tag) {
+        return R.layout.header_fragment;
+    }
+
+    @Override
+    public String topic(String tag) {
+        switch (tag) {
+            case "facility_list_layout_header":
+                return opportunitiesTabTag;
+            case "map_layout_header":
+                return mapTabTag;
+            default:
+                throw new RuntimeException("Unknown header fragment");
         }
     }
 }

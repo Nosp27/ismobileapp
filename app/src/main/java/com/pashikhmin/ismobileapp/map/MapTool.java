@@ -35,11 +35,19 @@ public class MapTool implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMap
     }
 
     public void initializeMap(GoogleMap googleMap, List<Facility> facilities) {
+        initializeMap(googleMap, facilities, null);
+    }
+
+    public void initializeMap(
+            GoogleMap googleMap,
+            List<Facility> facilities,
+            GoogleMap.OnInfoWindowClickListener infoWindowClickCallback) {
         mMap = googleMap;
         addMarkersForFacilities(facilities);
         mMap.setInfoWindowAdapter(new FacilityInfoWindowAdapter(activity));
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapClickListener(this);
+        mMap.setOnInfoWindowClickListener(infoWindowClickCallback);
     }
 
     void addMarkersForFacilities(List<Facility> facilities) {
@@ -67,15 +75,6 @@ public class MapTool implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMap
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Facility attachedFacility = (Facility) marker.getTag();
-        if (attachedFacility == null) {
-            throw new IllegalArgumentException("Got Marker without attached facility");
-        }
-
-        LinearLayout _mapLayout = getMapLayout();
-        removeBriefPanel();
-        View facility_brief_view = getBriefView(attachedFacility, _mapLayout);
-        _mapLayout.addView(facility_brief_view);
         return false;
     }
 

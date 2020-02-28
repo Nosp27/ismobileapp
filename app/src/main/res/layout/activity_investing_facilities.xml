@@ -3,8 +3,10 @@
         android:id="@+id/tabHost"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" xmlns:tools="http://schemas.android.com/tools">
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        xmlns:tools="http://schemas.android.com/tools"
+>
     <LinearLayout android:layout_height="match_parent"
                   xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
@@ -14,6 +16,7 @@
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
         />
         <FrameLayout
                 android:id="@android:id/tabcontent"
@@ -23,11 +26,13 @@
                     android:id="@+id/tabWithFacilitiesTable"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                <GridView
-                        android:id="@+id/viewFacilities"
+                <fragment
+                        android:id="@+id/facility_list_fragment"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:numColumns="3"
+                        tools:layout="@layout/facility_list"
+                        tools:context=".ActivityInvestingFacilities"
+                        android:name="com.pashikhmin.ismobileapp.FacilityListFragment"
                 />
             </LinearLayout>
             <LinearLayout
@@ -36,6 +41,14 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
             >
+                <fragment
+                        android:id="@+id/layout_header"
+                        android:tag="map_layout_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        tools:layout="@layout/header_fragment"
+                        android:name="com.pashikhmin.ismobileapp.HeaderFragment"
+                />
                 <fragment
                         android:layout_weight="3"
                         android:layout_width="match_parent"

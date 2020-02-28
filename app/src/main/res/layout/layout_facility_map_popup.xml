@@ -1,48 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        android:id="@+id/facility_brief"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/facility_brief"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+>
     <ImageView
-            android:id="@+id/entity_image"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/ic_launcher_background"
-            android:layout_margin="5sp"
-    />
-    <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/label_style"
-            android:textSize="10pt"
-            android:layout_alignParentStart="false"
-            android:text="Some facility"
-            android:layout_toEndOf="@+id/entity_image"
-            android:layout_margin="3dp"
+            android:id="@+id/item_img"
+            android:layout_width="270dp"
+            android:layout_height="130dp"
+            android:scaleType="centerCrop"
     />
     <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/entity_image"
-            android:layout_below="@+id/title"
+            android:layout_width="270dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@id/item_img"
+            android:background="@color/black_overlay"
     >
-        <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_launcher_background"
-                android:layout_gravity="center_vertical"
+        <TextView android:id="@+id/title"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="start|center_vertical"
+                  android:text="Facility name"
+                  android:layout_marginStart="15dp"
+                  android:textSize="8pt"
+                  android:fontFamily="@font/roboto_regular"
+                  android:textColor="@color/white"
+                  android:layout_weight="5"
         />
-        <TextView
-                android:id="@+id/facility_region"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/label_style"
-                android:layout_marginStart="2dp"
-                android:textSize="8pt"
-                android:text="Some region"
+        <TextView android:id="@+id/facility_region"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="end|center_vertical"
+                  android:text="Region name"
+                  android:layout_marginEnd="15dp"
+                  android:textSize="8pt"
+                  android:textAlignment="viewEnd"
+                  android:fontFamily="@font/roboto_regular"
+                  android:textColor="@color/white"
+                  android:layout_weight="5"
         />
     </LinearLayout>
-
 </RelativeLayout>

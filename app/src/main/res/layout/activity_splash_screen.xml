@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="#494959"
+             tools:context=".SplashScreenActivity">
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_raster_splash_screen_background"
+            android:scaleType="centerCrop"
+    />
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="63dp"
+            android:background="@drawable/ic_logo"
+            android:scaleType="centerCrop"
+    />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Invest In UAE"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="160dp"
+            android:fontFamily="@font/britannic_bold_regular"
+    />
+</FrameLayout>

@@ -48,9 +48,9 @@ public abstract class BaseEntityAdapter extends ArrayAdapter<Entity> {
         if (entity instanceof Facility) {
             int newResource =
                     ((Facility) entity).getLiked() ?
-                            android.R.drawable.star_big_on :
-                            android.R.drawable.star_big_off;
-            ((ImageButton) convertView.findViewById(R.id.liked)).setImageResource(newResource);
+                            R.drawable.ic_star_filled :
+                            R.drawable.ic_star_empty;
+            ((ImageView) convertView.findViewById(R.id.liked)).setImageResource(newResource);
         }
 
         CheckBox cb_select_item = convertView.findViewById(R.id.region_selected);

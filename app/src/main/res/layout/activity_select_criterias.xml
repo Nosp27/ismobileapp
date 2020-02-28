@@ -6,50 +6,59 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.pashikhmin.ismobileapp.MainActivity">
-
-    <TextView
-            android:text="SELECT REGIONS"
-            android:id="@+id/tv_select_regions"
+    <fragment
+            android:id="@+id/layout_header"
+            android:tag="criterias_select_layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            tools:layout="@layout/header_fragment"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/label_style"
+            android:name="com.pashikhmin.ismobileapp.HeaderFragment"
     />
-
-    <Spinner
-            android:id="@+id/listRegions"
+    <LinearLayout
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_select_regions"
-            app:layout_constraintStart_toStartOf="@id/tv_select_regions"
-            style="@style/spinner_style"
-            android:dropDownWidth="300dp"
-    />
-
-    <TextView
-            android:text="SELECT CATEGORIES"
-            android:id="@+id/tv_select_categories"
-            app:layout_constraintTop_toBottomOf="@id/listRegions"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/label_style"
-            android:layout_marginTop="12dp"
-    />
-
-    <Spinner
-            android:id="@+id/listCategories"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_select_categories"
-            app:layout_constraintStart_toStartOf="@id/tv_select_categories"
-            style="@style/spinner_style"
-            android:dropDownWidth="300dp"
-    />
-
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_select_regions"
+            android:layout_height="0dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginTop="145dp"
+            android:background="@drawable/ic_layout_body"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="SELECT"
-            style="@style/confirm_button_style"
-    />
+    >
+        <TextView
+                android:text="Region"
+                android:id="@+id/tv_select_regions"
+                android:layout_marginTop="12dp"
+                style="@style/label_style"
+        />
+        <Spinner
+                android:id="@+id/listRegions"
+                android:layout_width="match_parent"
+                style="@style/spinner_style"
+                android:dropDownWidth="300dp"
+        />
+
+        <TextView
+                android:text="Category"
+                android:id="@+id/tv_select_categories"
+                style="@style/label_style"
+                android:layout_marginTop="12dp"
+        />
+
+        <Spinner
+                android:id="@+id/listCategories"
+                android:layout_width="match_parent"
+                style="@style/spinner_style"
+                android:dropDownWidth="300dp"
+        />
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_select_regions"
+                android:text="Select"
+                style="@style/confirm_button_style_dark"
+        />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

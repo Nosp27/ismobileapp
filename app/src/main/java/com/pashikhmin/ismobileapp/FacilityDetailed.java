@@ -15,20 +15,18 @@ import com.pashikhmin.ismobileapp.network.loadTask.SubmitLikesTask;
 
 import java.io.IOException;
 
-public class FacilityDetailed extends AppCompatActivity {
+public class FacilityDetailed extends AppCompatActivity implements HeaderFragmentRequred {
     private Facility facility;
     private Intent resultIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_facility_detailed);
-
         facility = (Facility) getIntent().getSerializableExtra(ActivityInvestingFacilities.FACILITY_TAG);
         if (facility == null)
             return;
+        setContentView(R.layout.activity_facility_detailed);
         initResult();
-        ((TextView) findViewById(R.id.facility_name)).setText(facility.getName());
         ((ImageView) findViewById(R.id.detailed_facility_image)).setImageDrawable(facility.getImage());
         ((TextView) findViewById(R.id.facility_description)).setText(facility.getDescription());
         ImageButton likeButton = findViewById(R.id.liked);
@@ -60,8 +58,8 @@ public class FacilityDetailed extends AppCompatActivity {
         boolean liked = facility.getLiked();
         likeButton.setImageResource(
                 liked ?
-                        android.R.drawable.star_big_on :
-                        android.R.drawable.star_big_off
+                        R.drawable.ic_star_filled :
+                        R.drawable.ic_star_empty
         );
 
         resultIntent.putExtra("liked", liked);
@@ -85,5 +83,15 @@ public class FacilityDetailed extends AppCompatActivity {
         Button btn = new Button(ctx, null, 0, R.style.tag_cloud_button);
         btn.setText(title);
         return btn;
+    }
+
+    @Override
+    public int resourceId(String tag) {
+        return R.layout.header_fragment;
+    }
+
+    @Override
+    public String topic(String tag) {
+        return facility.getName();
     }
 }
