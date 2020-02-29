@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
 import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
@@ -24,7 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HelpDeskActivity extends AppCompatActivity {
+public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmentRequred {
     private static final String TAG = "HelpDeskActivity";
     private static final int ADD_ACTIVITY_REQUEST_CODE = 799;
     private HelpDeskResourceSupplier resourceSupplier;
@@ -147,7 +146,17 @@ public class HelpDeskActivity extends AppCompatActivity {
 
     private void setIssueListViewAdapter() {
         ((ListView) findViewById(R.id.helpdesk_issues)).setAdapter(
-                new IssueListAdapter(this, R.layout.helpdesk_issue, loadedIssues, this::onIssueClick)
+                new IssueListAdapter(this, R.layout.help_desk_issue, loadedIssues, this::onIssueClick)
         );
+    }
+
+    @Override
+    public int resourceId(String tag) {
+        return R.layout.header_fragment;
+    }
+
+    @Override
+    public String topic(String tag) {
+        return "issues";
     }
 }

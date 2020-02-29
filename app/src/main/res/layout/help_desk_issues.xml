@@ -1,22 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.pashikhmin.ismobileapp.HelpDeskActivity">
-    <Button
-            style="@style/confirm_button_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="New Issue"
-            android:textSize="6pt"
-    />
-    <ListView
-            android:id="@+id/helpdesk_issues"
+        tools:context="com.pashikhmin.ismobileapp.HelpDeskActivity" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment
+            android:id="@+id/layout_header"
+            android:tag="facility_list_layout_header"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-    />
-</LinearLayout>
+            android:layout_height="120dp"
+            tools:layout="@layout/header_fragment"
+            android:name="com.pashikhmin.ismobileapp.HeaderFragment"
+            app:layout_constraintTop_toTopOf="parent"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="95dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/ic_layout_body"
+    >
+        <Button
+                android:id="@+id/add_issue_btn"
+                style="@style/confirm_button_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="New Issue"
+                android:textSize="6pt"
+        />
+        <ListView
+                android:id="@+id/helpdesk_issues"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="12dp"
+                android:layout_margin="12dp"
+                tools:listitem="@layout/help_desk_issue"
+        />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
