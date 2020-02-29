@@ -24,8 +24,8 @@ public class HeaderFragment extends OneShotFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View contentView = inflater.inflate(requester.resourceId(getTag()), container, false);
         String tag = getTag();
+        View contentView = inflater.inflate(requester.resourceId(tag), container, false);
         if (tag != null)
             ((TextView) contentView.findViewById(R.id.tv_header)).setText(requester.topic(getTag()));
         ((TextView) contentView.findViewById(R.id.tv_user_name)).setText(requester.userName());

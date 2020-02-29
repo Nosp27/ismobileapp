@@ -34,6 +34,16 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginTop="15dp"
         >
+            <ImageView
+                    android:id="@+id/detailed_facility_image"
+                    android:layout_width="0dp"
+                    android:layout_height="140dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher_background"
+            />
             <ImageButton
                     android:layout_width="32dp"
                     android:layout_height="30dp"
@@ -45,16 +55,6 @@
                     android:id="@+id/liked"
                     android:background="@color/transparent"
                     android:src="@drawable/ic_star_filled"/>
-            <ImageView
-                    android:id="@+id/detailed_facility_image"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background"
-            />
             <TextView
                     android:id="@+id/facility_description"
                     android:layout_width="match_parent"

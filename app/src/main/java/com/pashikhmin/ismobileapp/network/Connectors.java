@@ -6,7 +6,7 @@ import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import java.io.IOException;
 
 public class Connectors {
-    private static boolean debugMode = false;
+    private static boolean debugMode = true;
     private static boolean cachingEnabled = true;
 
     private static ResourceSupplier defaultConnector;
@@ -34,7 +34,7 @@ public class Connectors {
                 }
             }
         if (cachingEnabled) {
-            if(cachedConnector == null)
+            if (cachedConnector == null)
                 cachedConnector = new CachingTask(defaultConnector).getResourceSupplier();
             return cachedConnector;
         }
