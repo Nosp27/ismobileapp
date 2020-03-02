@@ -6,9 +6,11 @@ import com.pashikhmin.ismobileapp.model.*;
 import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
 import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
 import com.pashikhmin.ismobileapp.model.helpdesk.Message;
+import com.pashikhmin.ismobileapp.network.exceptions.AuthenticationFailedException;
 import com.pashikhmin.ismobileapp.network.exceptions.LoginRequiredException;
 import com.pashikhmin.ismobileapp.network.json.JSONModeller;
 import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
+import com.pashikhmin.ismobileapp.resourceSupplier.CredentialsResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.HelpDeskResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import org.json.JSONArray;
@@ -16,23 +18,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class ProductionConnector implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier {
+public class ProductionConnector implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier, CredentialsResourceSupplier {
     private static String namenode = "https://pastebin.com/raw/qnnpTbWk";
     private static String server;
 
-    static final String GET_ALL_REGIONS = "/regions";
-    static final String GET_ALL_CATEGORIES = "/categories";
-    static final String GET_CRITERIZED_FACILITIES = "/facilities/";
-    static final String READ_IMAGE_SUFFIX = "/image/";
-    static final String GET_LIKED_FACILITIES = "/actor/favorites";
-    static final String LIKE_FACILITY = "/actor/like";
-    static final String FINGER = "/actor/me";
+    private static Random random = new Random();
+    private static final String SECURE_PING = "/secure_ping";
+    private static final String GET_ALL_REGIONS = "/regions";
+    private static final String GET_ALL_CATEGORIES = "/categories";
+    private static final String GET_CRITERIZED_FACILITIES = "/facilities/";
+    private static final String READ_IMAGE_SUFFIX = "/image/";
+    private static final String GET_LIKED_FACILITIES = "/actor/favorites";
+    private static final String LIKE_FACILITY = "/actor/like";
+    private static final String FINGER = "/actor/me";
+    private static final String SESSION_TOKEN_URL = "https://dev-478832.okta.com/api/v1/authn";
+    private static final String AUTHORIZE_URL = "https://dev-478832.okta.com/oauth2/v1/authorize";
+
 
     private static final int TIMEOUT = 1000;
 
@@ -40,6 +45,7 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
 
     public ProductionConnector() throws IOException {
         setBinaryDataProvider(this);
+        CookieManager.setDefault(new CookieManager());
     }
 
     public BinaryDataProvider getBinaryDataProvider() {
@@ -63,8 +69,7 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
 
     public static String pingServer() throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(getServerAddress() + "/ping").openConnection();
-        if (connection.getResponseCode() != 200)
-            throw new IOException();
+        checkResponseCode(connection.getResponseCode());
         return getServerAddress();
     }
 
@@ -122,8 +127,7 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
         if (connection.getHeaderField("Content-Type").contains("text/html") || responseCode == 403) {
             throw new LoginRequiredException();
         }
-        if (responseCode != 200)
-            throw new ConnectException("Unsuccessful response: " + responseCode);
+        checkResponseCode(responseCode);
         return connection.getInputStream();
     }
 
@@ -262,5 +266,106 @@ public class ProductionConnector implements ResourceSupplier, BinaryDataProvider
     public List<Message> getIssueHistory(Issue issue) throws IOException {
         //TODO: implement
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getCookie(String username, String password) throws IOException {
+        String sessionToken = getSessionToken(username, password);
+        String cookie = introspectToken(sessionToken);
+        validateCookie(cookie);
+        return cookie;
+    }
+
+    private String getSessionToken(String username, String password) throws IOException {
+        URL authUrl = new URL(SESSION_TOKEN_URL);
+
+        Map<String, Object> requestHeaders = new HashMap<>();
+        requestHeaders.put("username", username);
+        requestHeaders.put("password", password);
+        requestHeaders.put("warnBeforePasswordExpired", true);
+        requestHeaders.put("multiOptionalFactorEnroll", true);
+        JSONObject requestHeadersJson = new JSONObject(requestHeaders);
+
+        JSONTokener authRespTokener = authTokenRequest(authUrl, requestHeadersJson.toString());
+        JSONObject authRespJson;
+        String sessionToken;
+        try {
+            authRespJson = new JSONObject(authRespTokener);
+            if(authRespJson.has("errorSummary"))
+                throw new AuthenticationFailedException();
+
+            sessionToken = authRespJson.getString("sessionToken");
+        } catch (JSONException e) {
+            throw new IOException("Wrong content format!", e);
+        }
+        return sessionToken;
+    }
+
+    private JSONTokener authTokenRequest(URL url, String data) throws IOException {
+        HttpURLConnection conn = setupConnection(url);
+        conn.setRequestMethod("POST");
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(data.getBytes());
+        }
+        InputStream responseStream;
+        if (conn.getResponseCode() == 200)
+            responseStream = conn.getInputStream();
+        else
+            responseStream = conn.getErrorStream();
+        return tokenize(new InputStreamReader(responseStream));
+    }
+
+    private String introspectToken(String token) throws IOException {
+        Map<String, String> queryargs = new HashMap<>();
+        queryargs.put("client_id", "0oa11tnym3wzviaV34x6");
+        queryargs.put("response_type", "id_token");
+        queryargs.put("scope", "openid");
+        queryargs.put("nonce", "some nonce");
+        queryargs.put("prompt", "none");
+        queryargs.put("redirect_uri", pingServer() + "/actor/login_callback");
+        queryargs.put("state", Integer.toString(Integer.hashCode(random.nextInt())).substring(0, 5)); // random state
+        queryargs.put("sessionToken", token);
+
+        StringBuilder queryString = new StringBuilder();
+        for (Map.Entry<String, String> param : queryargs.entrySet()) {
+            if (queryString.length() != 0) queryString.append('&');
+            queryString.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+            queryString.append('=');
+            queryString.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+        }
+        HttpURLConnection conn = setupConnection(new URL(AUTHORIZE_URL + "/?" + queryString));
+        int rc = conn.getResponseCode();
+        checkResponseCode(rc, 302);
+        String cookie = null;
+        for (String c : conn.getHeaderFields().get("Set-Cookie"))
+            if (c.contains("sid")) {
+                cookie = c;
+                break;
+            }
+        if (cookie == null)
+            throw new IOException("No Cookie found");
+        return cookie.split(";")[0];
+    }
+
+    private void validateCookie(String cookie) throws IOException {
+        try {
+            Connectors.setAuthenticityToken(cookie);
+            InputStream is = connectToApi("/secure_ping", null);
+            if (!new BufferedReader(new InputStreamReader(is)).readLine().equals("Login successful!"))
+                throw new IOException("Login not successful!");
+        } catch (IOException e) {
+            throw new IOException("Cookie has not been validated!", e);
+        }
+    }
+
+    private static void checkResponseCode(int code) throws IOException {
+        checkResponseCode(code, 200);
+    }
+
+    private static void checkResponseCode(int code, int... asserted) throws IOException {
+        for (int x : asserted)
+            if (code == x)
+                return;
+        throw new IOException("Got response code " + code);
     }
 }
