@@ -6,7 +6,7 @@ import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 import java.io.IOException;
 
 public class Connectors {
-    private static boolean debugMode = true;
+    private static boolean debugMode = false;
     private static boolean cachingEnabled = true;
 
     private static ResourceSupplier defaultConnector;

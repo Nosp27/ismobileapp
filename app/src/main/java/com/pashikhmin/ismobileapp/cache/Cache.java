@@ -8,6 +8,7 @@ import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
 import com.pashikhmin.ismobileapp.model.helpdesk.Message;
 import com.pashikhmin.ismobileapp.network.ProductionConnector;
 import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
+import com.pashikhmin.ismobileapp.resourceSupplier.CredentialsResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.HelpDeskResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Cache implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier {
+public class Cache implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier, CredentialsResourceSupplier {
 
     private AtomicBoolean cacheWarmFlag = new AtomicBoolean(false);
 
@@ -136,6 +137,11 @@ public class Cache implements ResourceSupplier, BinaryDataProvider, HelpDeskReso
         if (cachedMe == null)
             cachedMe = helpDeskResourceSupplier.finger();
         return cachedMe;
+    }
+
+    @Override
+    public String getCookie(String username, String password) throws IOException {
+        return ((CredentialsResourceSupplier) connector).getCookie(username, password);
     }
 
     class CachedEntities<T> {

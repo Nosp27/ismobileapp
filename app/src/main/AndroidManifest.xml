@@ -39,6 +39,9 @@
         <activity android:name=".HelpDeskActivity">
         </activity>
         <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.LOGIN"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".FacilityDetailed"

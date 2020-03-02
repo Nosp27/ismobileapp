@@ -9,6 +9,7 @@ import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
 import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
 import com.pashikhmin.ismobileapp.model.helpdesk.Message;
 import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
+import com.pashikhmin.ismobileapp.resourceSupplier.CredentialsResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.HelpDeskResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
 
@@ -16,7 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class StubConnector implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier {
+public class StubConnector implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier, CredentialsResourceSupplier {
 
     private BinaryDataProvider binaryDataProvider;
     private List<Facility> recordedLikeList = new ArrayList<>();
@@ -84,11 +85,10 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider, Help
     @Override
     public boolean changeLike(Facility facility) throws IOException {
         boolean becameLiked;
-        if(recordedLikeList.contains(facility)) {
+        if (recordedLikeList.contains(facility)) {
             recordedLikeList.remove(facility);
             becameLiked = false;
-        }
-        else {
+        } else {
             recordedLikeList.add(facility);
             becameLiked = true;
         }
@@ -133,5 +133,12 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider, Help
     @Override
     public Actor finger() throws IOException {
         return investor;
+    }
+
+    @Override
+    public String getCookie(String username, String password) throws IOException {
+        if (username.equals("user") && password.equals("password"))
+            return "some stub cookie";
+        throw new IOException("Wrong credentials provided");
     }
 }
