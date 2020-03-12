@@ -1,16 +1,13 @@
 package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Entity;
@@ -18,8 +15,8 @@ import com.pashikhmin.ismobileapp.model.Region;
 import com.pashikhmin.ismobileapp.model.callbacks.EntityListener;
 import com.pashikhmin.ismobileapp.network.exceptions.LoginRequiredException;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
-import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
-import com.pashikhmin.ismobileapp.network.Connectors;
+import com.pashikhmin.ismobileapp.resourceSupplier.ApiConnector;
+import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
 import com.pashikhmin.ismobileapp.viewmodel.EntitySpinnerAdapter;
 
@@ -31,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements HeaderFragmentReq
     private static final String TAG = "MainActivity";
     public static final String MESSAGE_TAG = "com.pashikhmin.ismobileapp.MainActivity.MESSAGE";
 
-    private ResourceSupplier connector;
+    private ApiConnector connector;
     private StoreListener<Region> regionListener;
     private StoreListener<Category> categoryListener;
 
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements HeaderFragmentReq
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        connector = Connectors.getDefaultCachedConnector();
+        connector = Connectors.api();
         setContentView(R.layout.layout_loading);
     }
 

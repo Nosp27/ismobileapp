@@ -4,21 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.material.badge.BadgeDrawable;
 import com.pashikhmin.ismobileapp.map.MapTool;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Entity;
 import com.pashikhmin.ismobileapp.model.Facility;
 import com.pashikhmin.ismobileapp.model.callbacks.EntityListener;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
-import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
-import com.pashikhmin.ismobileapp.network.Connectors;
+import com.pashikhmin.ismobileapp.resourceSupplier.ApiConnector;
+import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
 import com.pashikhmin.ismobileapp.viewmodel.EntityListAdapter;
 import com.google.android.gms.maps.*;
@@ -37,7 +34,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
     static final String FACILITY_TAG = "com.pashikhmin.ismobileapp.ActivityInvestingFacilities.FACILITY";
 
     private MapTool mapTool;
-    ResourceSupplier connector;
+    ApiConnector connector;
     List<Facility> facilities;
 
     Facility selected;
@@ -45,7 +42,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        connector = Connectors.getDefaultCachedConnector();
+        connector = Connectors.api();
         setContentView(R.layout.layout_loading);
         mapTool = new MapTool(this);
         loadFacilities();

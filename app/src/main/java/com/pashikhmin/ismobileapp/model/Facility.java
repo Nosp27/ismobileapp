@@ -1,7 +1,7 @@
 package com.pashikhmin.ismobileapp.model;
 
 import android.graphics.drawable.Drawable;
-import com.pashikhmin.ismobileapp.network.Connectors;
+import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 import com.pashikhmin.ismobileapp.network.json.JSONField;
 
 import java.io.*;
@@ -106,7 +106,7 @@ public class Facility implements Entity, Serializable {
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        image = Connectors.getDefaultCachedConnector().getBinaryDataProvider().loadImage(imageId);
+        image = Connectors.api().loadImage(imageId);
     }
 
     public synchronized Boolean getLiked() {

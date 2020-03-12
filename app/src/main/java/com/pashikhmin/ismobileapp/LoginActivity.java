@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.pashikhmin.ismobileapp.network.Connectors;
-import com.pashikhmin.ismobileapp.network.ProductionConnector;
+import com.pashikhmin.ismobileapp.network.connectors.Connectors;
+import com.pashikhmin.ismobileapp.network.exceptions.AuthenticationFailedException;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
 import com.pashikhmin.ismobileapp.resourceSupplier.CredentialsResourceSupplier;
@@ -16,7 +16,6 @@ import com.pashikhmin.ismobileapp.resourceSupplier.CredentialsResourceSupplier;
 import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String SERVERNAME = ProductionConnector.getServerAddress();
     private static final String TAG = "LoginActivity";
     CredentialsResourceSupplier resourceSupplier;
     String cookie;
@@ -25,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        resourceSupplier = ((CredentialsResourceSupplier) Connectors.getDefaultCachedConnector());
+        resourceSupplier = ((CredentialsResourceSupplier) Connectors.api());
         setTitle("Need Login");
         setContentView(R.layout.activity_login);
         findViewById(R.id.to_app).setOnClickListener(e -> onSubmitClick());
@@ -55,8 +54,12 @@ public class LoginActivity extends AppCompatActivity {
             TextView tvError = findViewById(R.id.error_text);
             if (tvError.getVisibility() != View.VISIBLE)
                 tvError.setVisibility(View.VISIBLE);
-
-            tvError.setText(getString(R.string.auth_error));
+            int errorTextResource;
+            if (res.getError() instanceof AuthenticationFailedException)
+                errorTextResource = R.string.auth_error;
+            else
+                errorTextResource = R.string.unknown_error;
+            tvError.setText(getString(errorTextResource));
             return;
         }
         cookie = res.getResult();

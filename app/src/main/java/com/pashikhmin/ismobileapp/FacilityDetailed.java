@@ -5,15 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Facility;
 import androidx.appcompat.app.AppCompatActivity;
-import com.pashikhmin.ismobileapp.network.Connectors;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
 import com.pashikhmin.ismobileapp.network.loadTask.SubmitLikesTask;
-
-import java.io.IOException;
 
 public class FacilityDetailed extends AppCompatActivity implements HeaderFragmentRequred {
     private Facility facility;
