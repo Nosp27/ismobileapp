@@ -4,14 +4,15 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.lang.reflect.*;
 import java.util.*;
 
-public class JSONModeller {
+public class JSONModeller implements JSONParser{
     private static final String TAG = "JSONModeller";
 
-    public static <T> T fromJSON(Class<T> neededClass, JSONObject jsonObject) {
+    static <T> T fromJSON(Class<T> neededClass, JSONObject jsonObject) {
         try {
             T ret = neededClass.newInstance();
             for (Field field : neededClass.getDeclaredFields())
@@ -43,7 +44,7 @@ public class JSONModeller {
         }
     }
 
-    public static <T> T[] fromJSON(Class<T> neededClass, JSONArray jsonArray) {
+    static <T> T[] fromJSON(Class<T> neededClass, JSONArray jsonArray) {
         try {
             T[] ret = (T[]) Array.newInstance(neededClass, jsonArray.length());
             for (int i = 0; i < ret.length; ++i) {
@@ -53,6 +54,30 @@ public class JSONModeller {
             return ret;
         } catch (JSONException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public <T> T readObject(Class<T> cls, JSONTokener tokener) {
+        if (tokener == null)
+            return null;
+
+        try {
+            return fromJSON(cls, (JSONObject) tokener.nextValue());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            // TODO: 01/12/2019 handle json exception
+            return null;
+        }
+    }
+
+    public <T> List<T> readList(Class<T> cls, JSONTokener tokener) {
+        if (tokener == null)
+            throw new IllegalArgumentException("Tokener is null");
+        try {
+            JSONArray nextTokens = ((JSONArray) tokener.nextValue());
+            return Arrays.asList(fromJSON(cls, nextTokens));
+        } catch (JSONException e) {
+            throw new IllegalArgumentException("Parsing exception", e);
         }
     }
 

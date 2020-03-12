@@ -13,7 +13,7 @@ import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
 import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
 import com.pashikhmin.ismobileapp.model.helpdesk.Message;
-import com.pashikhmin.ismobileapp.network.Connectors;
+import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
 import com.pashikhmin.ismobileapp.resourceSupplier.HelpDeskResourceSupplier;
@@ -33,7 +33,7 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_loading);
-        resourceSupplier = (HelpDeskResourceSupplier) Connectors.getDefaultCachedConnector();
+        resourceSupplier = (HelpDeskResourceSupplier) Connectors.api();
         LoadTask<List<Issue>> loadIssuesTask = new LoadTask<>(this::loadIssues, this::onIssuesLoaded);
         loadIssuesTask.execute();
     }

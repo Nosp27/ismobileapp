@@ -1,6 +1,7 @@
 package com.pashikhmin.ismobileapp.network.loadTask;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import com.pashikhmin.ismobileapp.model.Criteries;
 
 import java.util.function.Consumer;
@@ -24,6 +25,7 @@ public class LoadTask<T> extends AsyncTask<Criteries, Integer, LoadTaskResult<T>
             else
                 result = task.apply(null);
         } catch (Throwable t) {
+            Log.e(getClass().getSimpleName(), "Error while doing task in background!", t);
             return new LoadTaskResult<>(t);
         }
         return new LoadTaskResult<>(result);

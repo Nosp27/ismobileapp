@@ -11,8 +11,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Facility;
-import com.pashikhmin.ismobileapp.network.Connectors;
-import com.pashikhmin.ismobileapp.network.StubConnector;
+import com.pashikhmin.ismobileapp.network.connectors.Connectors;
+import com.pashikhmin.ismobileapp.network.connectors.StubConnector;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -69,7 +69,7 @@ public class ActivityInvestingFacilitiesTest {
     public void testFacilityListLoading() throws IOException {
         // Load and cache facilities
         List<Facility> facilities = Connectors
-                .getDefaultCachedConnector()
+                .api()
                 .getCriterizedFacilities(null);
 
         // Check that there is matching `list_item` for `facility`

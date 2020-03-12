@@ -4,8 +4,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Region;
-import com.pashikhmin.ismobileapp.network.Connectors;
-import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
+import com.pashikhmin.ismobileapp.network.connectors.Connectors;
+import com.pashikhmin.ismobileapp.resourceSupplier.ApiConnector;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +27,9 @@ public class MainActivityTest {
 
     @Test
     public void testRegionAndCategoryItems() throws IOException {
-        ResourceSupplier resourceSupplier = Connectors.getDefaultCachedConnector();
-        Region[] expectedRegions = resourceSupplier.getAllRegions().toArray(new Region[0]);
-        Category[] expectedCategories = resourceSupplier.getAllCategories().toArray(new Category[0]);
+        ApiConnector apiConnector = Connectors.api();
+        Region[] expectedRegions = apiConnector.getAllRegions().toArray(new Region[0]);
+        Category[] expectedCategories = apiConnector.getAllCategories().toArray(new Category[0]);
 
         for (Region region : expectedRegions) {
             onData(is(region))

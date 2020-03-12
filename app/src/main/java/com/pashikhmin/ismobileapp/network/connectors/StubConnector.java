@@ -1,4 +1,4 @@
-package com.pashikhmin.ismobileapp.network;
+package com.pashikhmin.ismobileapp.network.connectors;
 
 import android.graphics.drawable.Drawable;
 import com.pashikhmin.ismobileapp.model.Category;
@@ -8,18 +8,15 @@ import com.pashikhmin.ismobileapp.model.Region;
 import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
 import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
 import com.pashikhmin.ismobileapp.model.helpdesk.Message;
-import com.pashikhmin.ismobileapp.resourceSupplier.BinaryDataProvider;
 import com.pashikhmin.ismobileapp.resourceSupplier.CredentialsResourceSupplier;
 import com.pashikhmin.ismobileapp.resourceSupplier.HelpDeskResourceSupplier;
-import com.pashikhmin.ismobileapp.resourceSupplier.ResourceSupplier;
+import com.pashikhmin.ismobileapp.resourceSupplier.ApiConnector;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class StubConnector implements ResourceSupplier, BinaryDataProvider, HelpDeskResourceSupplier, CredentialsResourceSupplier {
-
-    private BinaryDataProvider binaryDataProvider;
+public class StubConnector implements ApiConnector, HelpDeskResourceSupplier, CredentialsResourceSupplier {
     private List<Facility> recordedLikeList = new ArrayList<>();
 
     // Help Desk Data
@@ -37,7 +34,6 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider, Help
     );
 
     protected StubConnector() {
-        setBinaryDataProvider(this);
     }
 
     @Override
@@ -70,16 +66,6 @@ public class StubConnector implements ResourceSupplier, BinaryDataProvider, Help
                 new Facility("Hse", new Double[]{55.23, 34.33}),
                 new Facility("SAS", new Double[]{15.11, 24.32})
         );
-    }
-
-    @Override
-    public BinaryDataProvider getBinaryDataProvider() {
-        return binaryDataProvider;
-    }
-
-    @Override
-    public void setBinaryDataProvider(BinaryDataProvider provider) {
-        this.binaryDataProvider = provider;
     }
 
     @Override

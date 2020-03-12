@@ -3,7 +3,7 @@ package com.pashikhmin.ismobileapp.network.loadTask;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.pashikhmin.ismobileapp.model.Facility;
-import com.pashikhmin.ismobileapp.network.Connectors;
+import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -22,7 +22,7 @@ public class SubmitLikesTask extends AsyncTask<Facility, Object, Boolean> {
         boolean ret = true;
         for (Facility f : facilities) {
             try {
-                boolean likedFacility = Connectors.getDefaultCachedConnector().changeLike(f);
+                boolean likedFacility = Connectors.api().changeLike(f);
                 ret &= likedFacility;
                 f.setLiked(likedFacility);
             } catch (IOException e) {
