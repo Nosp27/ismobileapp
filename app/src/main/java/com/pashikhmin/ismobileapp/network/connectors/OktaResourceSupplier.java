@@ -44,10 +44,19 @@ public class OktaResourceSupplier implements CredentialsResourceSupplier {
         requestData.put("warnBeforePasswordExpired", true);
         requestData.put("multiOptionalFactorEnroll", true);
         JSONObject requestDataJSON = new JSONObject(requestData);
+        JSONTokener authRespTokener = null;
 
-        JSONTokener authRespTokener = oktaRestConnector.post(
-                SESSION_TOKEN_URL, requestDataJSON.toString()
-        );
+        try {
+            authRespTokener = oktaRestConnector.post(
+                    SESSION_TOKEN_URL, requestDataJSON.toString()
+            );
+        } catch (IOException e) {
+            String message = e.getMessage();
+            if (message!=null && message.contains("401"))
+                throw  new AuthenticationFailedException();
+            throw e;
+        }
+
         JSONObject authRespJson;
         String sessionToken;
         try {
