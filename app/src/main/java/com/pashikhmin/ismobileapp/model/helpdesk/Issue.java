@@ -1,11 +1,16 @@
 package com.pashikhmin.ismobileapp.model.helpdesk;
 
+import com.pashikhmin.ismobileapp.network.json.JSONField;
+
 import java.io.Serializable;
 import java.util.List;
 
 public class Issue implements Serializable {
+    @JSONField
     private int id;
+    @JSONField
     private String status;
+    @JSONField
     private String topic;
 
     public Issue() {
@@ -16,6 +21,10 @@ public class Issue implements Serializable {
     }
 
     // <editor-fold desc="Accessors">
+    public int getId() {
+        return id;
+    }
+
     public String getStatus() {
         return status;
     }

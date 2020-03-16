@@ -23,12 +23,10 @@ import java.util.List;
 public class ProductionConnector implements
         ApiConnector,
         CredentialsResourceSupplier {
-    String server = ApiConnector.SERVER;
-
     HttpConnector httpConnector;
     JSONParser jsonParser;
     CredentialsResourceSupplier credentialsResourceSupplier;
-    CacheWarmer cacheWarmer;
+    CacheWarmer cacheWarmer; // TODO: warm caches
 
     RESTConnector restConnector;
 
@@ -42,9 +40,9 @@ public class ProductionConnector implements
     }
 
     String pingServer() throws IOException {
-        String pingPath = server + "/ping";
+        String pingPath = ApiConnector.SERVER + "/ping";
         restConnector.get(pingPath);
-        return server;
+        return ApiConnector.SERVER;
     }
 
     @Override
@@ -128,14 +126,24 @@ public class ProductionConnector implements
 
     @Override
     public List<Issue> getOpenedIssues() throws IOException {
-        //TODO: implement
-        throw new UnsupportedOperationException();
+        return jsonParser.readList(Issue.class, restConnector.get(LIST_ISSUES));
     }
 
     @Override
     public List<Message> getIssueHistory(Issue issue) throws IOException {
-        //TODO: implement
-        throw new UnsupportedOperationException();
+        return jsonParser.readList(Message.class, restConnector.get(ISSUE_MESSAGES + issue.getId()));
+    }
+
+    @Override
+    public void sendMessage(Message toSend) throws IOException {
+        restConnector.post(ApiConnector.WRITE_MESSAGE, JSONModeller.toJSON(toSend).toString());
+    }
+
+    @Override
+    public Issue createIssue(Issue issue) throws IOException {
+        return jsonParser.readObject(Issue.class, restConnector.post(
+                ApiConnector.CREATE_ISSUE, JSONModeller.toJSON(issue).toString())
+        );
     }
 
     @Override

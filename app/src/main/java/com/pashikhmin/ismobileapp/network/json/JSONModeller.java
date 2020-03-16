@@ -38,7 +38,7 @@ public class JSONModeller implements JSONParser{
             return ret;
         } catch (IllegalAccessException | InstantiationException | JSONException e) {
             Log.e(TAG, e.toString());
-            return null;
+            throw new RuntimeException(e);
         } catch (NoSuchMethodException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +75,8 @@ public class JSONModeller implements JSONParser{
             throw new IllegalArgumentException("Tokener is null");
         try {
             JSONArray nextTokens = ((JSONArray) tokener.nextValue());
-            return Arrays.asList(fromJSON(cls, nextTokens));
+            T[] x = fromJSON(cls, nextTokens);
+            return Arrays.asList(x);
         } catch (JSONException e) {
             throw new IllegalArgumentException("Parsing exception", e);
         }

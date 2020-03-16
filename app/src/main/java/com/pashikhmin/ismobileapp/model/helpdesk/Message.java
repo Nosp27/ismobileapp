@@ -10,7 +10,7 @@ public class Message implements Serializable {
     @JSONField
     private String content;
     @JSONField
-    private Actor sender;
+    private Actor actor;
     @JSONField
     private Issue issue;
 
@@ -19,9 +19,22 @@ public class Message implements Serializable {
     public Message() {
     }
 
-    public Message(String content, Actor sender) {
+    public Message(Issue issue, String content) {
+        this.issue = issue;
         this.content = content;
-        this.sender = sender;
+    }
+
+    public Message(String content, Actor actor) {
+        this.content = content;
+        this.actor = actor;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getContent() {
@@ -33,15 +46,15 @@ public class Message implements Serializable {
     }
 
     public int getSenderId() {
-        return sender.getId();
+        return actor.getId();
     }
 
-    public Actor getSender() {
-        return sender;
+    public Actor getActor() {
+        return actor;
     }
 
-    public void setSender(Actor sender) {
-        this.sender = sender;
+    public void setActor(Actor actor) {
+        this.actor = actor;
     }
 
     public Issue getIssue() {

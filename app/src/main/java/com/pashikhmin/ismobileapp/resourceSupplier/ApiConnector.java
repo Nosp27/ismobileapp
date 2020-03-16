@@ -25,6 +25,11 @@ public interface ApiConnector {
     String LIKE_FACILITY = "/actor/like";
     String FINGER = "/actor/me";
 
+    String CREATE_ISSUE = "/help/issue";
+    String LIST_ISSUES = "/help/issues";
+    String WRITE_MESSAGE = "/help/message/send";
+    String ISSUE_MESSAGES = "/help/issue/messages/";
+
     List<Region> getAllRegions() throws IOException;
 
     List<Category> getAllCategories() throws IOException;
@@ -40,6 +45,10 @@ public interface ApiConnector {
     List<Issue> getOpenedIssues() throws IOException;
 
     List<Message> getIssueHistory(Issue issue) throws IOException;
+
+    Issue createIssue(Issue issue) throws IOException;
+
+    void sendMessage(Message message) throws IOException;
 
     Actor finger() throws IOException;
 }
