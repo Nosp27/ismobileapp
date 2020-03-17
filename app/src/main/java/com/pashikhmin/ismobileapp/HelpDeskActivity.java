@@ -3,9 +3,7 @@ package com.pashikhmin.ismobileapp;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -79,6 +77,7 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
         Intent transitIntent = new Intent(this, HelpDeskMessagesActivity.class);
         transitIntent.putExtra("my_message_ids", myMessageIds);
         transitIntent.putExtra("all_messages", messages);
+        transitIntent.putExtra("issue", messages.get(0).getIssueId());
         startActivity(transitIntent);
     }
 
@@ -135,7 +134,6 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
     }
 
     private void onIssueAdded(Issue issue) {
-        // TODO: add async task for uploading issue
         loadedIssues.add(issue);
         setIssueListViewAdapter();
     }
