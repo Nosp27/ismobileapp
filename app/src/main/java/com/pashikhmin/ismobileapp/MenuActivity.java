@@ -44,7 +44,7 @@ public class MenuActivity extends AppCompatActivity {
         else{
             helpdeskButton.setEnabled(false);
             helpdeskButton.setBackgroundTintList(ColorStateList.valueOf(
-                    getResources().getColor(R.color.colorShade, getTheme())
+                    getResources().getColor(R.color.colorDisabled, getTheme())
             ));
         }
     }

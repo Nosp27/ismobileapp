@@ -42,7 +42,7 @@ public class AddHelpdeskIssueActivity extends AppCompatActivity {
                     }, this::returnResult
             ).execute();
         } else {
-            Toast.makeText(this, "Ivalid parameters for creating issue", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid parameters for creating issue", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -2,6 +2,7 @@ package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ListView;
 import androidx.annotation.Nullable;
@@ -51,33 +52,34 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
         }
     }
 
-    private List<Message> loadMessages(Issue issue) {
+    private Pair<Issue, List<Message>> loadMessages(Issue issue) {
         try {
             List<Message> messages = resourceSupplier.getIssueHistory(issue);
             Actor me = resourceSupplier.finger();
             for (Message message : messages)
                 message.setMine(me.getId() == message.getSenderId());
-            return messages;
+            return new Pair<>(issue, messages);
         } catch (IOException e) {
             Log.e(TAG, "Exception while loading message history", e);
             throw new RuntimeException(e);
         }
     }
 
-    private void onMessagesLoaded(LoadTaskResult<List<Message>> taskResult) {
+    private void onMessagesLoaded(LoadTaskResult<Pair<Issue, List<Message>>> taskResult) {
         if (!taskResult.successful()) {
             processTaskFail();
             return;
         }
 
         HashSet<Integer> myMessageIds = new HashSet<>();
-        ArrayList<Message> messages = new ArrayList<>(taskResult.getResult());
-        for(Message m : taskResult.getResult())
+        Issue issue = taskResult.getResult().first;
+        ArrayList<Message> messages = new ArrayList<>(taskResult.getResult().second);
+        for(Message m : messages)
             if (m.isMine()) myMessageIds.add(m.getId());
         Intent transitIntent = new Intent(this, HelpDeskMessagesActivity.class);
         transitIntent.putExtra("my_message_ids", myMessageIds);
         transitIntent.putExtra("all_messages", messages);
-        transitIntent.putExtra("issue", messages.get(0).getIssueId());
+        transitIntent.putExtra("issue", issue.getId());
         startActivity(transitIntent);
     }
 
@@ -93,8 +95,7 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
     }
 
     private void onIssueClick(Issue clicked) {
-        setContentView(R.layout.layout_loading);
-        LoadTask<List<Message>> loadMessagesTask = new LoadTask<>(
+        LoadTask<Pair<Issue, List<Message>>> loadMessagesTask = new LoadTask<>(
                 e -> loadMessages(clicked), this::onMessagesLoaded
         );
         loadMessagesTask.execute();
