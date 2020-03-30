@@ -84,6 +84,6 @@ public class HelpDeskMessagesActivity extends AppCompatActivity implements Heade
 
     @Override
     public String topic(String tag) {
-        return "Messages";
+        return getResources().getString(R.string.messages);
     }
 }

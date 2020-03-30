@@ -49,7 +49,7 @@ public class EntitySpinnerAdapter extends BaseEntityAdapter {
         String ret = sb.toString();
 
         if (ret.isEmpty())
-            ret = "Nothing selected";
+            ret = getContext().getResources().getString(R.string.nothing_selected);
 
         return ret;
     }

@@ -151,6 +151,6 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
 
     @Override
     public String topic(String tag) {
-        return "issues";
+        return getResources().getString(R.string.issues);
     }
 }

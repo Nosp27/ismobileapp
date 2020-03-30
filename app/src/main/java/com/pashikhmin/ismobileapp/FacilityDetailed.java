@@ -51,14 +51,18 @@ public class FacilityDetailed extends AppCompatActivity implements HeaderFragmen
     }
 
     private void setLikeState(ImageButton likeButton) {
-        boolean liked = facility.getLiked();
-        likeButton.setImageResource(
-                liked ?
-                        R.drawable.ic_star_filled :
-                        R.drawable.ic_star_empty
-        );
-
-        resultIntent.putExtra("liked", liked);
+        Boolean liked = facility.getLiked();
+        if (liked == null) {
+            likeButton.setVisibility(View.INVISIBLE);
+        }
+        else {
+            likeButton.setImageResource(
+                    liked ?
+                            R.drawable.ic_star_filled :
+                            R.drawable.ic_star_empty
+            );
+            resultIntent.putExtra("liked", liked);
+        }
         setResult(0, resultIntent);
     }
 

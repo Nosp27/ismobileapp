@@ -46,11 +46,16 @@ public abstract class BaseEntityAdapter extends ArrayAdapter<Entity> {
             ((ImageView) convertView.findViewById(R.id.item_img)).setImageDrawable(img);
 
         if (entity instanceof Facility) {
-            int newResource =
-                    ((Facility) entity).getLiked() ?
-                            R.drawable.ic_star_filled :
-                            R.drawable.ic_star_empty;
-            ((ImageView) convertView.findViewById(R.id.liked)).setImageResource(newResource);
+            ImageView likeStar = convertView.findViewById(R.id.liked);
+            if (((Facility) entity).getLiked() == null)
+                likeStar.setVisibility(View.INVISIBLE);
+            else {
+                int newResource =
+                        ((Facility) entity).getLiked() ?
+                                R.drawable.ic_star_filled :
+                                R.drawable.ic_star_empty;
+                likeStar.setImageResource(newResource);
+            }
         }
 
         CheckBox cb_select_item = convertView.findViewById(R.id.region_selected);

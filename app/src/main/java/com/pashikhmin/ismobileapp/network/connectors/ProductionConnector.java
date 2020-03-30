@@ -60,15 +60,19 @@ public class ProductionConnector implements
         List<Facility> ret = new ArrayList<>();
         JSONObject criteriesJson = JSONModeller.toJSON(criteries);
         if (criteriesJson == null)
-            return ret;
-        String postData = criteries.toString();
+            throw new IllegalArgumentException("Criterias must not be null");
+        String postData = criteriesJson.toString();
 
         ret.addAll(jsonParser.readList(
                 Facility.class,
                 restConnector.post(GET_CRITERIZED_FACILITIES, postData)
         ));
         addImagesForEntities(ret);
-        addLikesForFacilities(ret);
+
+        if (Connectors.userAuthorized())
+            addLikesForFacilities(ret);
+        else for (Facility facility : ret)
+            facility.setLiked(null);
 
         return ret;
     }
@@ -115,6 +119,7 @@ public class ProductionConnector implements
     public List<Facility> getLikedFacilities() throws IOException {
         List<Facility> ret = new ArrayList<>();
         jsonParser.readList(Facility.class, restConnector.get(GET_LIKED_FACILITIES));
+        // TODO: BAD
         addImagesForEntities(ret);
         return ret;
     }

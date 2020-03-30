@@ -79,4 +79,8 @@ public class Connectors {
                 .parser(new JSONModeller())
                 .build();
     }
+
+    public static boolean userAuthorized() {
+        return authenticityToken != null;
+    }
 }
