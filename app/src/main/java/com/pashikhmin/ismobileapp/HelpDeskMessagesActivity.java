@@ -56,7 +56,10 @@ public class HelpDeskMessagesActivity extends AppCompatActivity implements Heade
     }
 
     private void onSendClick(View view) {
-        String messageText = ((EditText)findViewById(R.id.helpdesk_message_input)).getText().toString();
+        EditText  messageField = findViewById(R.id.helpdesk_message_input);
+        String messageText = messageField.getText().toString();
+        messageField.setText("");
+
         Message submittedMessage = new Message(issue_id, messageText);
         submittedMessage.setMine(true);
         new LoadTask<>(
