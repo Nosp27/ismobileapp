@@ -99,7 +99,7 @@ public class ProductionConnector implements
             return null;
         return Drawable.createFromStream(
                 httpConnector.connect(
-                        READ_IMAGE_SUFFIX + key, null, Redirect.FOLLOW
+                        ApiConnector.SERVER + READ_IMAGE_SUFFIX + key, null, Redirect.FOLLOW
                 ),
                 null
         );

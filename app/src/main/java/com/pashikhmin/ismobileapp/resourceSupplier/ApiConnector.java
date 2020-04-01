@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ApiConnector {
-    //    String SERVER = "http://89.169.47.184:8080";
-    String SERVER = "http://10.0.2.2:8080";
+//    String SERVER = "http://89.169.47.184:8080";
+//    String SERVER = "http://10.0.2.2:8080";
+    String SERVER = "http://23.111.202.14";
     String SECURE_PING = "/secure_ping";
     String GET_ALL_REGIONS = "/regions";
     String GET_ALL_CATEGORIES = "/categories";

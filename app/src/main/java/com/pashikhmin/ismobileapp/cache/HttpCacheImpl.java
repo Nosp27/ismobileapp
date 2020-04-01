@@ -22,11 +22,11 @@ public class HttpCacheImpl implements HttpConnector {
 
     @Override
     public InputStream connect(String path, String data, Redirect redirect) throws IOException {
-        return null;
+        return underlying.connect(path, data, redirect);
     }
 
     @Override
     public Map<String, List<String>> getHeaderFields(String path, String data, Redirect redirect) throws IOException {
-        return null;
+        return underlying.getHeaderFields(path, data, redirect);
     }
 }
