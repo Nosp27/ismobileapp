@@ -2,10 +2,9 @@ package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,24 +15,25 @@ import com.pashikhmin.ismobileapp.model.helpdesk.Message;
 import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
-import com.pashikhmin.ismobileapp.resourceSupplier.HelpDeskResourceSupplier;
+import com.pashikhmin.ismobileapp.resourceSupplier.ApiConnector;
 import com.pashikhmin.ismobileapp.viewmodel.IssueListAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmentRequred {
     private static final String TAG = "HelpDeskActivity";
     private static final int ADD_ACTIVITY_REQUEST_CODE = 799;
-    private HelpDeskResourceSupplier resourceSupplier;
+    private ApiConnector resourceSupplier;
     private List<Issue> loadedIssues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_loading);
-        resourceSupplier = (HelpDeskResourceSupplier) Connectors.api();
+        resourceSupplier = Connectors.api();
         LoadTask<List<Issue>> loadIssuesTask = new LoadTask<>(this::loadIssues, this::onIssuesLoaded);
         loadIssuesTask.execute();
     }
@@ -52,34 +52,35 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
         }
     }
 
-    private List<Message> loadMessages(Issue issue, Criteries... criteries) {
+    private Pair<Issue, List<Message>> loadMessages(Issue issue) {
         try {
             List<Message> messages = resourceSupplier.getIssueHistory(issue);
             Actor me = resourceSupplier.finger();
             for (Message message : messages)
                 message.setMine(me.getId() == message.getSenderId());
-            return messages;
+            return new Pair<>(issue, messages);
         } catch (IOException e) {
             Log.e(TAG, "Exception while loading message history", e);
             throw new RuntimeException(e);
         }
     }
 
-    private void onMessagesLoaded(LoadTaskResult<List<Message>> taskResult) {
+    private void onMessagesLoaded(LoadTaskResult<Pair<Issue, List<Message>>> taskResult) {
         if (!taskResult.successful()) {
             processTaskFail();
             return;
         }
-        setContentView(R.layout.help_desk_messages);
-        List<Message> result = taskResult.getResult();
-        LinearLayout messageContainer = findViewById(R.id.helpdesk_messages);
-        for (Message message : result) {
-            View messageView = getLayoutInflater().inflate(
-                    message.isMine() ? R.layout.help_desk_message_right : R.layout.help_desk_message_left, null
-            );
-            messageContainer.addView(messageView);
-            fillMessageListItem(messageView, message);
-        }
+
+        HashSet<Integer> myMessageIds = new HashSet<>();
+        Issue issue = taskResult.getResult().first;
+        ArrayList<Message> messages = new ArrayList<>(taskResult.getResult().second);
+        for(Message m : messages)
+            if (m.isMine()) myMessageIds.add(m.getId());
+        Intent transitIntent = new Intent(this, HelpDeskMessagesActivity.class);
+        transitIntent.putExtra("my_message_ids", myMessageIds);
+        transitIntent.putExtra("all_messages", messages);
+        transitIntent.putExtra("issue", issue.getId());
+        startActivity(transitIntent);
     }
 
     private void onIssuesLoaded(LoadTaskResult<List<Issue>> taskResult) {
@@ -88,15 +89,14 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
             return;
         }
         setContentView(R.layout.help_desk_issues);
-        loadedIssues = taskResult.getResult();
+        loadedIssues = new ArrayList<>(taskResult.getResult());
         findViewById(R.id.add_issue_btn).setOnClickListener(this::onAddIssueClick);
         setIssueListViewAdapter();
     }
 
     private void onIssueClick(Issue clicked) {
-        setContentView(R.layout.layout_loading);
-        LoadTask<List<Message>> loadMessagesTask = new LoadTask<>(
-                e -> loadMessages(clicked, e), this::onMessagesLoaded
+        LoadTask<Pair<Issue, List<Message>>> loadMessagesTask = new LoadTask<>(
+                e -> loadMessages(clicked), this::onMessagesLoaded
         );
         loadMessagesTask.execute();
     }
@@ -108,10 +108,6 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
             issueTopics.add(issue.getTopic());
         startAddIssueIntent.putExtra("issue_topics", issueTopics);
         startActivityForResult(startAddIssueIntent, ADD_ACTIVITY_REQUEST_CODE);
-    }
-
-    private void fillMessageListItem(View listItem, Message message) {
-        ((TextView) listItem.findViewById(R.id.bubble)).setText(message.getContent());
     }
 
     private void processTaskFail() {
@@ -139,7 +135,6 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
     }
 
     private void onIssueAdded(Issue issue) {
-        // TODO: add async task for uploading issue
         loadedIssues.add(issue);
         setIssueListViewAdapter();
     }
@@ -157,6 +152,6 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
 
     @Override
     public String topic(String tag) {
-        return "issues";
+        return getResources().getString(R.string.issues);
     }
 }

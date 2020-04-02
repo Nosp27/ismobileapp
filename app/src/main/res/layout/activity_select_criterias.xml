@@ -28,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
     >
         <TextView
-                android:text="Region"
+                android:text="@string/region_menu"
                 android:id="@+id/tv_select_regions"
                 android:layout_marginTop="12dp"
                 style="@style/label_style"
@@ -41,7 +41,7 @@
         />
 
         <TextView
-                android:text="Category"
+                android:text="@string/category_menu"
                 android:id="@+id/tv_select_categories"
                 style="@style/label_style"
                 android:layout_marginTop="12dp"
@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_select_regions"
-                android:text="Select"
+                android:text="@string/select"
                 style="@style/confirm_button_style_dark"
         />
     </LinearLayout>

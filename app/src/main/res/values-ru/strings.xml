@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Invest in UAE</string>
-    <string name="title_activity_investing_facilities">Investment Facilities</string>
-    <string name="title_activity_facility_detailed">FacilityDetailed</string>
-    <string name="auth_error">Wrong login or password</string>
-    <string name="unknown_error">Some internal error occurred</string>
+    <string name="app_name">Инвестиции в ОАЭ</string>
+    <string name="title_activity_investing_facilities">Объекты инвестиций</string>
+    <string name="title_activity_facility_detailed">Объект</string>
+    <string name="auth_error">Неверный логин или пароль</string>
+    <string name="unknown_error">Что-то пошло не так</string>
+    <string name="action_settings">Настройки</string>
     <string name="large_text">" Material is the metaphor. A material metaphor is the unifying theory of a rationalized
         space and a system of motion. The material is grounded in tactile reality, inspired by the study of paper and
         ink, yet technologically advanced and open to imagination and magic. Surfaces and edges of the material provide
@@ -50,32 +52,30 @@
         layout level, design your app layout to minimize opportunities for interference. For example, position the FAB
         to one side of stream of a cards so the FAB won’t interfere when a user tries to pick up one of cards. "
     </string>
-    <string name="action_settings">Settings</string>
-
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="helpdesk_unauthorized">Helpdesk (sign in needed)</string>
-    <string name="helpdesk_menu">Helpdesk</string>
-    <string name="subtitle">Ministry of economy</string>
-    <string name="facility_menu">Facility</string>
-    <string name="region_menu">Region</string>
-    <string name="category_menu">Category</string>
-    <string name="issue_menu">Issue</string>
-    <string name="user_menu">User</string>
-    <string name="select">Select</string>
-    <string name="oops_error">Oops! Error.</string>
-    <string name="try_again">Try Again</string>
-    <string name="new_issue">New Issue</string>
-    <string name="topic">Topic</string>
-    <string name="confirm">Confirm</string>
-    <string name="descripbe_question">Describe your question</string>
-    <string name="sign_in">Sign In</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="nothing_selected">Nothing selected</string>
-    <string name="opportunities">opportunities</string>
-    <string name="map">map</string>
-    <string name="issues">issues</string>
-    <string name="messages">messages</string>
-    <string name="project">project</string>
+    <string name="dummy_button">Кнопка-Заглушка</string>
+    <string name="dummy_content">Контент-Заглушка</string>
+    <string name="helpdesk_unauthorized">Поддержка (сначала авторизуйтесь)</string>
+    <string name="helpdesk_menu">Поддержка</string>
+    <string name="subtitle">Министерство экономики</string>
+    <string name="facility_menu">Объект</string>
+    <string name="region_menu">Регион</string>
+    <string name="category_menu">Категория</string>
+    <string name="issue_menu">Вопрос</string>
+    <string name="user_menu">Пользователь</string>
+    <string name="select">Выбрать</string>
+    <string name="oops_error">Упс.. Ошибка</string>
+    <string name="try_again">Обоновить</string>
+    <string name="new_issue">Новый вопрос</string>
+    <string name="topic">Тема</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="descripbe_question">Опишите Ваш вопрос</string>
+    <string name="sign_in">Войти</string>
+    <string name="email">Эл. почта</string>
+    <string name="password">Пароль</string>
+    <string name="nothing_selected">Ничего не выбрано</string>
+    <string name="opportunities">возможности</string>
+    <string name="map">карта</string>
+    <string name="issues">вопросы</string>
+    <string name="messages">сообщения</string>
+    <string name="project">проект</string>
 </resources>

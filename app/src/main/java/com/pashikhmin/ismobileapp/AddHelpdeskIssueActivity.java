@@ -9,7 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
+import com.pashikhmin.ismobileapp.network.connectors.Connectors;
+import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
+import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class AddHelpdeskIssueActivity extends AppCompatActivity {
@@ -28,13 +32,29 @@ public class AddHelpdeskIssueActivity extends AppCompatActivity {
 
         Issue resultIssue = new Issue(issueTopic);
         if (isValidIssue(resultIssue)) {
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("issue", resultIssue);
-            setResult(0, resultIntent);
-            finish();
+            new LoadTask<>(
+                    x -> {
+                        try {
+                            return Connectors.api().createIssue(resultIssue);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }, this::returnResult
+            ).execute();
         } else {
-            Toast.makeText(this, "Ivalid parameters for creating issue", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid parameters for creating issue", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void returnResult(LoadTaskResult<Issue> resultIssue) {
+        if(!resultIssue.successful()) {
+            setContentView(R.layout.error_screen);
+            return;
+        }
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("issue", resultIssue.getResult());
+        setResult(0, resultIntent);
+        finish();
     }
 
     private boolean isValidIssue(Issue issue) {

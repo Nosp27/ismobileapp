@@ -1,6 +1,7 @@
 package com.pashikhmin.ismobileapp.network.connectors;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import com.pashikhmin.ismobileapp.resourceSupplier.ApiConnector;
 import com.pashikhmin.ismobileapp.resourceSupplier.CredentialsResourceSupplier;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,7 +13,9 @@ import java.io.IOException;
 public class OktaApiConnectorTest {
     @Test
     public void fetchCookie() throws IOException {
-        CredentialsResourceSupplier crs = new OktaResourceSupplier(Connectors.createHttp(), Connectors.createRest());
+        HttpConnector httpConnector = Connectors.createHttp();
+        RESTConnector oktaRest = new RESTBuilder().server(Connectors.OKTA_URL).wrap(httpConnector).build();
+        CredentialsResourceSupplier crs = new OktaResourceSupplier(httpConnector, oktaRest);
         String cookie = crs.getCookie("dixid96666@winemail.net", "Password123");
         Assert.assertNotNull(cookie);
 

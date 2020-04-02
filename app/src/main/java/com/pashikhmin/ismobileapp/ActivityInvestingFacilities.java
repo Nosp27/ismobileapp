@@ -25,10 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityInvestingFacilities extends FragmentActivity implements HeaderFragmentRequred {
-    private final String opportunitiesTabTag = "opportunities";
-    private final String mapTabTag = "map";
-
-    private String tabTag = opportunitiesTabTag;
     private static final int DETAILED_FACILITY_REQUEST_CODE = 288;
     private static final String TAG = "ActivityInvestingFacilities";
     static final String FACILITY_TAG = "com.pashikhmin.ismobileapp.ActivityInvestingFacilities.FACILITY";
@@ -77,12 +73,12 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
         TabHost tabHost = findViewById(R.id.tabHost);
         tabHost.setup();
 
-        TabHost.TabSpec regionTab = tabHost.newTabSpec(opportunitiesTabTag);
+        TabHost.TabSpec regionTab = tabHost.newTabSpec(opportunitiesTabTag());
         regionTab.setContent(R.id.tabWithFacilitiesTable);
         regionTab.setIndicator("", getResources().getDrawable(R.drawable.invest_ops_selector, getTheme()));
         tabHost.addTab(regionTab);
 
-        TabHost.TabSpec mapTab = tabHost.newTabSpec(mapTabTag);
+        TabHost.TabSpec mapTab = tabHost.newTabSpec(mapTabTag());
         mapTab.setContent(R.id.tabWithMap);
         mapTab.setIndicator("", getResources().getDrawable(R.drawable.map_globe_selector, getTheme()));
         tabHost.addTab(mapTab);
@@ -92,9 +88,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
                     getResources().getColor(R.color.colorShade, getTheme())
             );
 
-        tabHost.setOnTabChangedListener(e -> tabTag = e);
         tabHost.setCurrentTab(0);
-        tabTag = tabHost.getCurrentTabTag();
     }
 
     void loadFacilities() {
@@ -178,11 +172,19 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
     public String topic(String tag) {
         switch (tag) {
             case "facility_list_layout_header":
-                return opportunitiesTabTag;
+                return opportunitiesTabTag();
             case "map_layout_header":
-                return mapTabTag;
+                return mapTabTag();
             default:
                 throw new RuntimeException("Unknown header fragment");
         }
+    }
+
+    private String opportunitiesTabTag() {
+        return getResources().getString(R.string.opportunities);
+    }
+
+    private String mapTabTag() {
+        return getResources().getString(R.string.map);
     }
 }

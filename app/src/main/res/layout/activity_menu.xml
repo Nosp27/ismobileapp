@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="Invest in UAE"
+            android:text="@string/app_name"
             android:fontFamily="@font/roboto_regular"
             android:textSize="14pt"
             android:textAlignment="center"
@@ -32,7 +32,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ministry of economy"
+            android:text="@string/subtitle"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_light"
@@ -55,37 +55,37 @@
     >
         <Button
                 android:id="@+id/button_menu_facility"
-                android:text="Facility"
+                android:text="@string/facility_menu"
                 android:drawableTop="@drawable/ic_facility_menu_icon"
                 style="@style/MenuButtonStyle"
         />
         <Button
                 android:id="@+id/button_menu_region"
-                android:text="Region"
+                android:text="@string/region_menu"
                 android:drawableTop="@drawable/ic_region_menu_icon"
                 style="@style/MenuButtonStyle"
         />
         <Button
                 android:id="@+id/button_menu_category"
-                android:text="Category"
+                android:text="@string/category_menu"
                 android:drawableTop="@drawable/ic_category_menu_icon"
                 style="@style/MenuButtonStyle"
         />
         <Button
                 android:id="@+id/button_menu_issue"
-                android:text="Issue"
+                android:text="@string/issue_menu"
                 android:drawableTop="@drawable/ic_issue_menu_icon"
                 style="@style/MenuButtonStyle"
         />
         <Button
                 android:id="@+id/button_menu_user"
-                android:text="User"
+                android:text="@string/user_menu"
                 android:drawableTop="@drawable/ic_user_menu_icon"
                 style="@style/MenuButtonStyle"
         />
         <Button
                 android:id="@+id/button_menu_helpdesk"
-                android:text="Helpdesk"
+                android:text="@string/helpdesk_menu"
                 android:drawableTop="@drawable/ic_helpdesk_menu_icon"
                 style="@style/MenuButtonStyle"
         />

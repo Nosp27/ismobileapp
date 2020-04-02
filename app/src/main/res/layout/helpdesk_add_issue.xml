@@ -6,7 +6,7 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Topic:"
+            android:text="@string/topic"
             style="@style/label_style"
     />
     <EditText
@@ -19,7 +19,7 @@
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Describe your question:"
+            android:text="@string/descripbe_question"
             style="@style/label_style"
     />
     <EditText
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            style="@style/confirm_button_style"
-            android:text="Confirm issue"
+            style="@style/confirm_button_style_dark"
+            android:text="@string/confirm"
     />
 </LinearLayout>

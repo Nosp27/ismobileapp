@@ -120,23 +120,13 @@ public class MainActivity extends AppCompatActivity implements HeaderFragmentReq
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
-                Connectors.setAuthenticityToken(data.getStringExtra("token"));
-            }
-        }
-    }
-
-    @Override
     public int resourceId(String tag) {
         return R.layout.header_fragment;
     }
 
     @Override
     public String topic(String tag) {
-        return "projects";
+        return getResources().getString(R.string.project);
     }
 
     private static class StoreListener<T extends Entity> implements EntityListener<T> {

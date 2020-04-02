@@ -3,10 +3,12 @@
     <color name="colorPrimary">#494959</color>
     <color name="colorPrimaryDark">#494959</color>
     <color name="colorAccent">#BBA041</color>
+    <color name="light_text">#828282</color>
     <color name="colorShade">#F2F2F2</color>
     <color name="transparent">#00000000</color>
     <color name="colorLight">#AAAAAA</color>
     <color name="colorBackground">#E6E6E6</color>
     <color name="white">#FFFFFF</color>
     <color name="black_overlay">#66000000</color>
+    <color name="colorDisabled">#828292</color>
 </resources>

@@ -23,12 +23,10 @@ import java.util.List;
 public class ProductionConnector implements
         ApiConnector,
         CredentialsResourceSupplier {
-    String server = ApiConnector.SERVER;
-
     HttpConnector httpConnector;
     JSONParser jsonParser;
     CredentialsResourceSupplier credentialsResourceSupplier;
-    CacheWarmer cacheWarmer;
+    CacheWarmer cacheWarmer; // TODO: warm caches
 
     RESTConnector restConnector;
 
@@ -42,19 +40,23 @@ public class ProductionConnector implements
     }
 
     String pingServer() throws IOException {
-        String pingPath = server + "/ping";
+        String pingPath = ApiConnector.SERVER + "/ping";
         restConnector.get(pingPath);
-        return server;
+        return ApiConnector.SERVER;
     }
 
     @Override
     public List<Region> getAllRegions() throws IOException {
-        return jsonParser.readList(Region.class, restConnector.get(GET_ALL_REGIONS));
+        List<Region> regions = jsonParser.readList(Region.class, restConnector.get(GET_ALL_REGIONS));
+        addImagesForEntities(regions);
+        return regions;
     }
 
     @Override
     public List<Category> getAllCategories() throws IOException {
-        return jsonParser.readList(Category.class, restConnector.get(GET_ALL_CATEGORIES));
+        List<Category> categories = jsonParser.readList(Category.class, restConnector.get(GET_ALL_CATEGORIES));
+        addImagesForEntities(categories);
+        return categories;
     }
 
     @Override
@@ -62,15 +64,19 @@ public class ProductionConnector implements
         List<Facility> ret = new ArrayList<>();
         JSONObject criteriesJson = JSONModeller.toJSON(criteries);
         if (criteriesJson == null)
-            return ret;
-        String postData = criteries.toString();
+            throw new IllegalArgumentException("Criterias must not be null");
+        String postData = criteriesJson.toString();
 
         ret.addAll(jsonParser.readList(
                 Facility.class,
                 restConnector.post(GET_CRITERIZED_FACILITIES, postData)
         ));
         addImagesForEntities(ret);
-        addLikesForFacilities(ret);
+
+        if (Connectors.userAuthorized())
+            addLikesForFacilities(ret);
+        else for (Facility facility : ret)
+            facility.setLiked(null);
 
         return ret;
     }
@@ -97,7 +103,7 @@ public class ProductionConnector implements
             return null;
         return Drawable.createFromStream(
                 httpConnector.connect(
-                        READ_IMAGE_SUFFIX + key, null, Redirect.FOLLOW
+                        ApiConnector.SERVER + READ_IMAGE_SUFFIX + key, null, Redirect.FOLLOW
                 ),
                 null
         );
@@ -117,6 +123,7 @@ public class ProductionConnector implements
     public List<Facility> getLikedFacilities() throws IOException {
         List<Facility> ret = new ArrayList<>();
         jsonParser.readList(Facility.class, restConnector.get(GET_LIKED_FACILITIES));
+        // TODO: BAD
         addImagesForEntities(ret);
         return ret;
     }
@@ -128,14 +135,24 @@ public class ProductionConnector implements
 
     @Override
     public List<Issue> getOpenedIssues() throws IOException {
-        //TODO: implement
-        throw new UnsupportedOperationException();
+        return jsonParser.readList(Issue.class, restConnector.get(LIST_ISSUES));
     }
 
     @Override
     public List<Message> getIssueHistory(Issue issue) throws IOException {
-        //TODO: implement
-        throw new UnsupportedOperationException();
+        return jsonParser.readList(Message.class, restConnector.get(ISSUE_MESSAGES + issue.getId()));
+    }
+
+    @Override
+    public void sendMessage(Message toSend) throws IOException {
+        restConnector.post(ApiConnector.WRITE_MESSAGE, JSONModeller.toJSON(toSend).toString());
+    }
+
+    @Override
+    public Issue createIssue(Issue issue) throws IOException {
+        return jsonParser.readObject(Issue.class, restConnector.post(
+                ApiConnector.CREATE_ISSUE, JSONModeller.toJSON(issue).toString())
+        );
     }
 
     @Override

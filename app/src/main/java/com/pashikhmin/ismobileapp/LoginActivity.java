@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             if (tvError.getVisibility() != View.VISIBLE)
                 tvError.setVisibility(View.VISIBLE);
             int errorTextResource;
-            if (res.getError() instanceof AuthenticationFailedException)
+            if (res.getError().getCause() instanceof AuthenticationFailedException)
                 errorTextResource = R.string.auth_error;
             else
                 errorTextResource = R.string.unknown_error;

@@ -10,18 +10,31 @@ public class Message implements Serializable {
     @JSONField
     private String content;
     @JSONField
-    private Actor sender;
+    private int actorId;
     @JSONField
-    private Issue issue;
+    private int issueId;
 
     private transient Boolean isMine;
 
     public Message() {
     }
 
-    public Message(String content, Actor sender) {
+    public Message(int issueId, String content) {
+        this.issueId = issueId;
         this.content = content;
-        this.sender = sender;
+    }
+
+    public Message(String content, Actor actor) {
+        this.content = content;
+        this.actorId = actor.getId();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getContent() {
@@ -33,25 +46,13 @@ public class Message implements Serializable {
     }
 
     public int getSenderId() {
-        return sender.getId();
+        return actorId;
     }
 
-    public Actor getSender() {
-        return sender;
+    public int getIssueId() {
+        return issueId;
     }
-
-    public void setSender(Actor sender) {
-        this.sender = sender;
-    }
-
-    public Issue getIssue() {
-        return issue;
-    }
-
-    public void setIssue(Issue issue) {
-        this.issue = issue;
-    }
-
+    
     public Boolean isMine() {
         return isMine;
     }

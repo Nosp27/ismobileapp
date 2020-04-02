@@ -22,7 +22,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Invest In UAE"
+            android:text="@string/app_name"
             android:layout_gravity="center|top"
             android:layout_marginTop="160dp"
             android:fontFamily="@font/britannic_bold_regular"

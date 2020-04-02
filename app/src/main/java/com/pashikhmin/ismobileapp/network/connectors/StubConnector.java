@@ -16,7 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class StubConnector implements ApiConnector, HelpDeskResourceSupplier, CredentialsResourceSupplier {
+public class StubConnector implements ApiConnector, CredentialsResourceSupplier {
     private List<Facility> recordedLikeList = new ArrayList<>();
 
     // Help Desk Data
@@ -114,6 +114,16 @@ public class StubConnector implements ApiConnector, HelpDeskResourceSupplier, Cr
         } else if (issue == issue2) {
             return messagesForIssue2;
         } else throw new IOException();
+    }
+
+    @Override
+    public Issue createIssue(Issue issue) throws IOException {
+        return issue;
+    }
+
+    @Override
+    public void sendMessage(Message message) throws IOException {
+
     }
 
     @Override

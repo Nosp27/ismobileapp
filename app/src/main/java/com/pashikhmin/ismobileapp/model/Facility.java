@@ -88,7 +88,7 @@ public class Facility implements Entity, Serializable {
 
     @Override
     public String getSubtitle() {
-        return Arrays.toString(new Double[]{lat, lng});
+        return getRegionTitle();
     }
 
     @Override
