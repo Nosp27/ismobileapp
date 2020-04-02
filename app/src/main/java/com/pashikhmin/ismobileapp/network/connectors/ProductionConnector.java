@@ -47,12 +47,16 @@ public class ProductionConnector implements
 
     @Override
     public List<Region> getAllRegions() throws IOException {
-        return jsonParser.readList(Region.class, restConnector.get(GET_ALL_REGIONS));
+        List<Region> regions = jsonParser.readList(Region.class, restConnector.get(GET_ALL_REGIONS));
+        addImagesForEntities(regions);
+        return regions;
     }
 
     @Override
     public List<Category> getAllCategories() throws IOException {
-        return jsonParser.readList(Category.class, restConnector.get(GET_ALL_CATEGORIES));
+        List<Category> categories = jsonParser.readList(Category.class, restConnector.get(GET_ALL_CATEGORIES));
+        addImagesForEntities(categories);
+        return categories;
     }
 
     @Override
