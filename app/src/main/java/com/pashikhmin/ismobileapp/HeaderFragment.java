@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,6 +30,7 @@ public class HeaderFragment extends OneShotFragment {
         if (tag != null)
             ((TextView) contentView.findViewById(R.id.tv_header)).setText(requester.topic(getTag()));
         ((TextView) contentView.findViewById(R.id.tv_user_name)).setText(requester.userName());
+        contentView.findViewById(R.id.back).setOnClickListener(e -> ((ComponentActivity) contentView.getContext()).onBackPressed());
         return contentView;
     }
 }

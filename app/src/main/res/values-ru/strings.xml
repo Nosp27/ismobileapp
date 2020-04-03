@@ -78,4 +78,6 @@
     <string name="issues">вопросы</string>
     <string name="messages">сообщения</string>
     <string name="project">проект</string>
+    <string name="loading">Что-то грузится</string>
+    <string name="notification">Уведомления</string>
 </resources>

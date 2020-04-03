@@ -78,4 +78,6 @@
     <string name="issues">issues</string>
     <string name="messages">messages</string>
     <string name="project">project</string>
+    <string name="loading">Loading something</string>
+    <string name="notification">Notifications</string>
 </resources>
