@@ -58,8 +58,8 @@
     <string name="helpdesk_menu">Поддержка</string>
     <string name="subtitle">Министерство экономики</string>
     <string name="facility_menu">Объект</string>
-    <string name="region_menu">Регион</string>
-    <string name="category_menu">Категория</string>
+    <string name="region">Регион</string>
+    <string name="categories">Категории</string>
     <string name="issue_menu">Вопрос</string>
     <string name="user_menu">Пользователь</string>
     <string name="select">Выбрать</string>
@@ -80,4 +80,10 @@
     <string name="project">проект</string>
     <string name="loading">Что-то грузится</string>
     <string name="notification">Уведомления</string>
+    <string name="description">Описание</string>
+    <string name="utility">Утилит-сть</string>
+    <string name="employees">Штат</string>
+    <string name="investment_size">Треб. Инвестиции</string>
+    <string name="profitability">Прибыльность</string>
+    <string name="undefined">Не указано</string>
 </resources>

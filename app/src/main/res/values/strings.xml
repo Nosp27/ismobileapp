@@ -58,8 +58,8 @@
     <string name="helpdesk_menu">Helpdesk</string>
     <string name="subtitle">Ministry of economy</string>
     <string name="facility_menu">Facility</string>
-    <string name="region_menu">Region</string>
-    <string name="category_menu">Category</string>
+    <string name="region">Region</string>
+    <string name="categories">Categories</string>
     <string name="issue_menu">Issue</string>
     <string name="user_menu">User</string>
     <string name="select">Select</string>
@@ -80,4 +80,10 @@
     <string name="project">project</string>
     <string name="loading">Loading something</string>
     <string name="notification">Notifications</string>
+    <string name="description">Description</string>
+    <string name="utility">Utility</string>
+    <string name="employees">Employees</string>
+    <string name="investment_size">Req. Investitions</string>
+    <string name="profitability">Profitability</string>
+    <string name="undefined">Not Stated</string>
 </resources>
