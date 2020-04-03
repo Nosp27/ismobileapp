@@ -86,7 +86,8 @@ public class Connectors {
         return new CacheBuilder()
                 .getMatcher(Matchers.allOf(
                         Matchers.not(Matchers.containsString("like")),
-                        Matchers.not(Matchers.containsString("favorites"))
+                        Matchers.not(Matchers.containsString("favorites")),
+                        Matchers.not(Matchers.containsString("help"))
                 ))
                 .postMatcher(Matchers.any(String.class));
     }
