@@ -121,8 +121,7 @@ public class ProductionConnector implements
 
     @Override
     public List<Facility> getLikedFacilities() throws IOException {
-        List<Facility> ret = new ArrayList<>();
-        jsonParser.readList(Facility.class, restConnector.get(GET_LIKED_FACILITIES));
+        List<Facility> ret = jsonParser.readList(Facility.class, restConnector.get(GET_LIKED_FACILITIES));
         // TODO: BAD
         addImagesForEntities(ret);
         return ret;

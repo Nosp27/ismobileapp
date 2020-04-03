@@ -22,7 +22,10 @@ import com.google.android.gms.maps.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 
 public class ActivityInvestingFacilities extends FragmentActivity implements HeaderFragmentRequred {
     private static final int DETAILED_FACILITY_REQUEST_CODE = 288;
@@ -41,32 +44,50 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
         connector = Connectors.api();
         setContentView(R.layout.layout_loading);
         mapTool = new MapTool(this);
-        loadFacilities();
+        loadFacilities(this::onPrimaryLoadFacilities);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (facilities != null)
+            loadFacilities(this::onRefineFacilities);
     }
 
     private void showErrorScreen() {
         setContentView(R.layout.error_screen);
         Button retryBtn = findViewById(R.id.retry_button);
-        retryBtn.setOnClickListener(e -> loadFacilities());
+
+        // TODO: validate
+        retryBtn.setOnClickListener(e -> loadFacilities(this::onPrimaryLoadFacilities));
     }
 
-    void onLoadFacilities(LoadTaskResult<List<Facility>> res) {
+    void onPrimaryLoadFacilities(LoadTaskResult<List<Facility>> res) {
         if (!res.successful()) {
             showErrorScreen();
             return;
         }
 
-        List<Facility> loadedFacilities = res.getResult();
         setContentView(R.layout.activity_investing_facilities);
-        this.facilities = loadedFacilities;
+        this.facilities = res.getResult();
         initFacilities();
 
         setupTabHost();
         setTitle("Investment Opportunities");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(map -> mapTool.initializeMap(map, facilities, this::loadFacilityOnInfoWindowClick));
+    }
+
+    void onRefineFacilities(LoadTaskResult<List<Facility>> res) {
+        if (!res.successful()) {
+            showErrorScreen();
+            return;
+        }
+
+        this.facilities = res.getResult();
+        initFacilities();
     }
 
     private void setupTabHost() {
@@ -91,9 +112,9 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
         tabHost.setCurrentTab(0);
     }
 
-    void loadFacilities() {
+    void loadFacilities(Consumer<LoadTaskResult<List<Facility>>> afterDone) {
         LoadTask<List<Facility>> facilityLoadTask =
-                new LoadTask<>(this::loadFacilitiesCallback, this::onLoadFacilities);
+                new LoadTask<>(this::loadFacilitiesCallback, afterDone);
         Intent intent = getIntent();
         Criteries criteries = (Criteries) intent.getSerializableExtra(MainActivity.MESSAGE_TAG);
         facilityLoadTask.execute(criteries);
@@ -101,11 +122,25 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
 
     private List<Facility> loadFacilitiesCallback(Criteries... criterias) {
         try {
-            return connector.getCriterizedFacilities(criterias[0]);
+            List<Facility> facilities = connector.getCriterizedFacilities(criterias[0]);
+
+            if (Connectors.userAuthorized()) {
+                Set<Integer> likedFacilitiesIds = likedFacilityIdSet(connector.getLikedFacilities());
+                for (Facility f : facilities)
+                    f.setLiked(likedFacilitiesIds.contains(f.getId()));
+            }
+            return facilities;
         } catch (IOException e) {
             Log.e(TAG, "loadFacilitiesCallback: loadFacilitiesCallback", e);
             throw new RuntimeException(e);
         }
+    }
+
+    private Set<Integer> likedFacilityIdSet(List<Facility> likedFacilities) {
+        Set<Integer> ret = new HashSet<>();
+        for (Facility f : likedFacilities)
+            ret.add(f.getId());
+        return ret;
     }
 
 
