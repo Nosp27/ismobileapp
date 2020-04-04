@@ -25,7 +25,7 @@ public class ApiCacheTest {
         ApiConnector stubConnector = new ConnectorBuilder()
                 .rest(new RESTCacheImpl(new RESTBuilder()
                         .wrap(stubHttpConnector)
-                        .build()))
+                        .build(), new CacheBuilder()))
                 .parser(new JSONModeller())
                 .build();
         stubHttpConnector.alert = false;

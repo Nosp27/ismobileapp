@@ -117,6 +117,11 @@ public class StubConnector implements ApiConnector, CredentialsResourceSupplier 
     }
 
     @Override
+    public List<Message> getNewMessages(int issue_id, long timestamp) {
+        return Collections.emptyList();
+    }
+
+    @Override
     public Issue createIssue(Issue issue) throws IOException {
         return issue;
     }

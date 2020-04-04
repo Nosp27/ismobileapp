@@ -1,15 +1,16 @@
 package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.pashikhmin.ismobileapp.model.helpdesk.Issue;
 import com.pashikhmin.ismobileapp.model.helpdesk.Message;
 import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
+import com.pashikhmin.ismobileapp.network.loadTask.MessageHistoryUpdater;
 import com.pashikhmin.ismobileapp.viewmodel.MessagesListAdapter;
 
 import java.io.IOException;
@@ -18,9 +19,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class HelpDeskMessagesActivity extends AppCompatActivity implements HeaderFragmentRequred  {
+public class HelpDeskMessagesActivity extends AppCompatActivity implements HeaderFragmentRequred {
     int issue_id;
-    List<Message> messageHistory;
+    MessageHistoryUpdater updater;
+    Handler messageUpdateHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +31,22 @@ public class HelpDeskMessagesActivity extends AppCompatActivity implements Heade
 
         Intent intent = getIntent();
         issue_id = intent.getIntExtra("issue", -1);
-        messageHistory = (ArrayList<Message>)intent.getSerializableExtra("all_messages");
-        Set<Integer> myMessageIds = (HashSet<Integer>)intent.getSerializableExtra("my_message_ids");
-        if(issue_id == -1)
+        List<Message> localMessageHistory = (ArrayList<Message>) intent.getSerializableExtra("all_messages");
+        Set<Integer> myMessageIds = (HashSet<Integer>) intent.getSerializableExtra("my_message_ids");
+        if (issue_id == -1)
             throw new RuntimeException("No issue provided");
-        if(messageHistory == null)
+        if (localMessageHistory == null)
             throw new RuntimeException("Null message history provided");
-        if(myMessageIds == null)
+        if (myMessageIds == null)
             throw new RuntimeException("Null my message ids provided");
-        for (Message m : messageHistory)
+        for (Message m : localMessageHistory)
             m.setMine(myMessageIds.contains(m.getId()));
-        renderMessages(messageHistory);
+        messageUpdateHandler = new Handler();
+        updater = new MessageHistoryUpdater(localMessageHistory, issue_id);
+        updater.setOnUpdate(() -> messageUpdateHandler.postAtFrontOfQueue(
+                () -> renderMessages(updater.getUpToDateHistory())
+        ));
+        renderMessages(localMessageHistory);
         findViewById(R.id.send_message).setOnClickListener(this::onSendClick);
     }
 
@@ -56,7 +63,7 @@ public class HelpDeskMessagesActivity extends AppCompatActivity implements Heade
     }
 
     private void onSendClick(View view) {
-        EditText  messageField = findViewById(R.id.helpdesk_message_input);
+        EditText messageField = findViewById(R.id.helpdesk_message_input);
         String messageText = messageField.getText().toString();
         messageField.setText("");
 
@@ -72,10 +79,8 @@ public class HelpDeskMessagesActivity extends AppCompatActivity implements Heade
                     }
                 },
                 loadTaskResult -> {
-                    if (loadTaskResult.successful()) {
-                        messageHistory.add(submittedMessage);
-                        renderMessages(messageHistory);
-                    } else throw new RuntimeException(loadTaskResult.getError());
+                    if (!loadTaskResult.successful())
+                        throw new RuntimeException(loadTaskResult.getError());
                 }
         ).execute();
     }
@@ -88,5 +93,11 @@ public class HelpDeskMessagesActivity extends AppCompatActivity implements Heade
     @Override
     public String topic(String tag) {
         return getResources().getString(R.string.messages);
+    }
+
+    @Override
+    protected void onDestroy() {
+        updater.stop();
+        super.onDestroy();
     }
 }

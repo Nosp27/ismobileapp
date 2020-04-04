@@ -4,6 +4,7 @@ import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.model.Facility;
 import com.pashikhmin.ismobileapp.model.Region;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import com.pashikhmin.ismobileapp.model.helpdesk.Message;
 import com.pashikhmin.ismobileapp.network.json.JSONField;
 import com.pashikhmin.ismobileapp.network.json.JSONModeller;
 import org.json.JSONException;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,6 +55,24 @@ public class JSONModellerTest {
         Assert.assertNotNull(region);
         Assert.assertEquals("SAS", region.getTitle());
         Assert.assertEquals(3, (int) region.getRegionId());
+    }
+
+    @Test
+    public void fromJSONMessage() throws JSONException {
+        String json =
+                "    {\n" +
+                        "        \"id\": 874,\n" +
+                        "        \"content\": \"Hello Pal\",\n" +
+                        "        \"issueId\": 750,\n" +
+                        "        \"actorId\": 1,\n" +
+                        "        \"sendTime\": 1586002350\n" +
+                        "    }";
+        Message message= JSONModeller.fromJSON(Message.class, new JSONObject(json));
+        Assert.assertNotNull(message);
+        Assert.assertEquals(750, message.getIssueId());
+        Assert.assertEquals("Hello Pal", message.getContent());
+        Assert.assertEquals(1, message.getSenderId());
+        Assert.assertEquals(1586002350, message.getSendTime());
     }
 
     @Test

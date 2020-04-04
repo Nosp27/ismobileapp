@@ -13,6 +13,8 @@ public class Message implements Serializable {
     private int actorId;
     @JSONField
     private int issueId;
+    @JSONField
+    private long sendTime;
 
     private transient Boolean isMine;
 
@@ -22,8 +24,10 @@ public class Message implements Serializable {
     public Message(int issueId, String content) {
         this.issueId = issueId;
         this.content = content;
+        this.sendTime = System.currentTimeMillis();
     }
 
+    // for testing
     public Message(String content, Actor actor) {
         this.content = content;
         this.actorId = actor.getId();
@@ -59,5 +63,13 @@ public class Message implements Serializable {
 
     public void setMine(Boolean mine) {
         isMine = mine;
+    }
+
+    public long getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(long sendTime) {
+        this.sendTime = sendTime;
     }
 }

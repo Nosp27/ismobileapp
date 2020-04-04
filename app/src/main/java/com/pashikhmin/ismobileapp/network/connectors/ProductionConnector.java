@@ -143,6 +143,13 @@ public class ProductionConnector implements
     }
 
     @Override
+    public List<Message> getNewMessages(int issue_id, long timestamp) throws IOException {
+        return jsonParser.readList(Message.class, restConnector.get(
+                String.format(ISSUE_NEW_MESSAGES, issue_id, timestamp)
+        ));
+    }
+
+    @Override
     public void sendMessage(Message toSend) throws IOException {
         restConnector.post(ApiConnector.WRITE_MESSAGE, JSONModeller.toJSON(toSend).toString());
     }
