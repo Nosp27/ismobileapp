@@ -116,7 +116,7 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
         LoadTask<List<Facility>> facilityLoadTask =
                 new LoadTask<>(this::loadFacilitiesCallback, afterDone);
         Intent intent = getIntent();
-        Criteries criteries = (Criteries) intent.getSerializableExtra(MainActivity.MESSAGE_TAG);
+        Criteries criteries = (Criteries) intent.getSerializableExtra(MainActivity.CRITERIAS_TAG);
         facilityLoadTask.execute(criteries);
     }
 
