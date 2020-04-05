@@ -33,7 +33,9 @@ public class MessageHistoryUpdater {
         for (Message m : messageHistory)
             allMessageIds.add(m.getId());
 
-        lastUpdateTime = messageHistory.get(messageHistory.size() - 1).getSendTime();
+        if (messageHistory.size() > 0)
+            lastUpdateTime = messageHistory.get(messageHistory.size() - 1).getSendTime();
+        else lastUpdateTime = 0;
 
         this.issue_id = issue_id;
         this.timeout = timeout;
@@ -51,17 +53,16 @@ public class MessageHistoryUpdater {
                     List<Message> newMessages = Connectors
                             .api()
                             .getNewMessages(issue_id, returnAndUpdateTime());
-                newMessages.sort(Comparator.comparing(Message::getSendTime));
-                synchronized (this) {
-                    for (Message m : newMessages)
-                        if (!allMessageIds.contains(m.getId())) {
-                            m.setMine(m.getSenderId() == Connectors.api().finger().getId());
-                            messageHistory.add(m);
-                            allMessageIds.add(m.getId());
-                        }
-                    if (onUpdate != null)
-                        onUpdate.run();
-                }
+                    newMessages.sort(Comparator.comparing(Message::getSendTime));
+                    synchronized (this) {
+                        for (Message m : newMessages)
+                            if (!allMessageIds.contains(m.getId())) {
+                                messageHistory.add(m);
+                                allMessageIds.add(m.getId());
+                            }
+                        if (onUpdate != null)
+                            onUpdate.run();
+                    }
                 } catch (IOException e) {
                     Log.e(TAG, "updateTask: Cannot load new messages", e);
                 }

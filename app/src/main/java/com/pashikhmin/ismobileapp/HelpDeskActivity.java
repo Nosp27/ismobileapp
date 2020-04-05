@@ -55,9 +55,6 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
     private Pair<Issue, List<Message>> loadMessages(Issue issue) {
         try {
             List<Message> messages = resourceSupplier.getIssueHistory(issue);
-            Actor me = resourceSupplier.finger();
-            for (Message message : messages)
-                message.setMine(me.getId() == message.getSenderId());
             return new Pair<>(issue, messages);
         } catch (IOException e) {
             Log.e(TAG, "Exception while loading message history", e);
@@ -71,13 +68,9 @@ public class HelpDeskActivity extends AppCompatActivity implements HeaderFragmen
             return;
         }
 
-        HashSet<Integer> myMessageIds = new HashSet<>();
         Issue issue = taskResult.getResult().first;
         ArrayList<Message> messages = new ArrayList<>(taskResult.getResult().second);
-        for(Message m : messages)
-            if (m.isMine()) myMessageIds.add(m.getId());
         Intent transitIntent = new Intent(this, HelpDeskMessagesActivity.class);
-        transitIntent.putExtra("my_message_ids", myMessageIds);
         transitIntent.putExtra("all_messages", messages);
         transitIntent.putExtra("issue", issue.getId());
         startActivity(transitIntent);

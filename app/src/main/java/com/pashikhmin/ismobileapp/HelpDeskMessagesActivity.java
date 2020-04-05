@@ -14,35 +14,29 @@ import com.pashikhmin.ismobileapp.network.loadTask.MessageHistoryUpdater;
 import com.pashikhmin.ismobileapp.viewmodel.MessagesListAdapter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class HelpDeskMessagesActivity extends AppCompatActivity implements HeaderFragmentRequred {
     int issue_id;
     MessageHistoryUpdater updater;
     Handler messageUpdateHandler;
+    List<Message> localMessageHistory;
+    MessagesListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help_desk_messages);
-
         Intent intent = getIntent();
         issue_id = intent.getIntExtra("issue", -1);
-        List<Message> localMessageHistory = (ArrayList<Message>) intent.getSerializableExtra("all_messages");
-        Set<Integer> myMessageIds = (HashSet<Integer>) intent.getSerializableExtra("my_message_ids");
+        localMessageHistory = (ArrayList<Message>) intent.getSerializableExtra("all_messages");
+        localMessageHistory.sort(Comparator.comparing(Message::getSendTime));
         if (issue_id == -1)
             throw new RuntimeException("No issue provided");
         if (localMessageHistory == null)
             throw new RuntimeException("Null message history provided");
-        if (myMessageIds == null)
-            throw new RuntimeException("Null my message ids provided");
-        for (Message m : localMessageHistory)
-            m.setMine(myMessageIds.contains(m.getId()));
-        messageUpdateHandler = new Handler();
         updater = new MessageHistoryUpdater(localMessageHistory, issue_id);
+        messageUpdateHandler = new Handler();
         updater.setOnUpdate(() -> messageUpdateHandler.postAtFrontOfQueue(
                 () -> renderMessages(updater.getUpToDateHistory())
         ));
@@ -52,14 +46,25 @@ public class HelpDeskMessagesActivity extends AppCompatActivity implements Heade
 
     private void renderMessages(List<Message> messageHistory) {
         ListView messageContainer = findViewById(R.id.helpdesk_messages);
-        MessagesListAdapter adapter = new MessagesListAdapter(
-                R.layout.help_desk_message_right,
-                R.layout.help_desk_message_left,
-                this,
-                R.layout.help_desk_message_right,
-                messageHistory
-        );
-        messageContainer.setAdapter(adapter);
+        if (messageContainer.getAdapter() != null
+                && messageHistory.size() == messageContainer.getAdapter().getCount()
+        )
+            return;
+        localMessageHistory.clear();
+        localMessageHistory.addAll(messageHistory);
+        if (adapter == null) {
+            adapter = new MessagesListAdapter(
+                    R.layout.help_desk_message_right,
+                    R.layout.help_desk_message_left,
+                    this,
+                    R.layout.help_desk_message_right,
+                    localMessageHistory
+            );
+            messageContainer.setAdapter(adapter);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
+        messageContainer.smoothScrollToPosition(adapter.getCount() - 1);
     }
 
     private void onSendClick(View view) {
@@ -68,7 +73,6 @@ public class HelpDeskMessagesActivity extends AppCompatActivity implements Heade
         messageField.setText("");
 
         Message submittedMessage = new Message(issue_id, messageText);
-        submittedMessage.setMine(true);
         new LoadTask<>(
                 x -> {
                     try {
