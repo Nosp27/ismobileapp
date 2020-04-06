@@ -13,7 +13,7 @@
             android:id="@+id/issue_topic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22pt"
+            android:textSize="12pt"
     />
     <TextView
             android:layout_marginTop="30dp"
@@ -26,7 +26,7 @@
             android:id="@+id/issue_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22pt"
+            android:textSize="12pt"
     />
     <Button
             android:id="@+id/add_issue_btn"

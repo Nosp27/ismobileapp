@@ -61,13 +61,13 @@
         />
         <Button
                 android:id="@+id/button_menu_region"
-                android:text="@string/region_menu"
+                android:text="@string/region"
                 android:drawableTop="@drawable/ic_region_menu_icon"
                 style="@style/MenuButtonStyle"
         />
         <Button
                 android:id="@+id/button_menu_category"
-                android:text="@string/category_menu"
+                android:text="@string/categories"
                 android:drawableTop="@drawable/ic_category_menu_icon"
                 style="@style/MenuButtonStyle"
         />

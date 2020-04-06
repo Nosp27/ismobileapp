@@ -12,7 +12,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/helpdesk_custom_bubble"
-            android:padding="5dp"
-            android:textSize="6pt"
+            android:padding="7dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="7pt"
     />
 </androidx.constraintlayout.widget.ConstraintLayout>

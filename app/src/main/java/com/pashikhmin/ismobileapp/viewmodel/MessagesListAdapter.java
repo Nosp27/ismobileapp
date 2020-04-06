@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.pashikhmin.ismobileapp.R;
 import com.pashikhmin.ismobileapp.model.helpdesk.Message;
 import org.jetbrains.annotations.NotNull;
@@ -35,11 +37,23 @@ public class MessagesListAdapter extends ArrayAdapter<Message> {
         Message message = messages.get(position);
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(
-                    message.isMine() ? myMessageResource : otherMessageResource,
+                    myMessageResource,
                     parent,
                     false);
 
-        ((TextView) convertView.findViewById(R.id.bubble)).setText(message.getContent());
+        TextView bubble = convertView.findViewById(R.id.bubble);
+        ConstraintLayout.LayoutParams lp = ((ConstraintLayout.LayoutParams) bubble.getLayoutParams());
+        if(message.getId() == 879)
+            convertView.setClickable(false);
+        if (message.getMine()) {
+            lp.endToEnd = 0;
+            lp.startToStart = -1;
+        } else {
+            lp.startToStart = 0;
+            lp.endToEnd = -1;
+        }
+        bubble.setLayoutParams(lp);
+        bubble.setText(message.getContent());
         convertView.setClickable(false);
         return convertView;
     }

@@ -116,4 +116,20 @@ public class Facility implements Entity, Serializable {
     public synchronized void setLiked(Boolean liked) {
         this.liked = liked;
     }
+
+    public String getUtility() {
+        return utility;
+    }
+
+    public Integer getEmployees() {
+        return employees;
+    }
+
+    public Double getInvestmentSize() {
+        return investmentSize;
+    }
+
+    public Double getProfitability() {
+        return profitability;
+    }
 }

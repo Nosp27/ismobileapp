@@ -44,6 +44,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         }
         me = res.getResult();
         setContentView(R.layout.activity_user_details);
+        findViewById(R.id.back).setOnClickListener(e -> onBackPressed());
         ((TextView) findViewById(R.id.tv_user_name)).setText(me.getFullName());
     }
 

@@ -121,8 +121,7 @@ public class ProductionConnector implements
 
     @Override
     public List<Facility> getLikedFacilities() throws IOException {
-        List<Facility> ret = new ArrayList<>();
-        jsonParser.readList(Facility.class, restConnector.get(GET_LIKED_FACILITIES));
+        List<Facility> ret = jsonParser.readList(Facility.class, restConnector.get(GET_LIKED_FACILITIES));
         // TODO: BAD
         addImagesForEntities(ret);
         return ret;
@@ -141,6 +140,13 @@ public class ProductionConnector implements
     @Override
     public List<Message> getIssueHistory(Issue issue) throws IOException {
         return jsonParser.readList(Message.class, restConnector.get(ISSUE_MESSAGES + issue.getId()));
+    }
+
+    @Override
+    public List<Message> getNewMessages(int issue_id, long timestamp) throws IOException {
+        return jsonParser.readList(Message.class, restConnector.get(
+                String.format(ISSUE_NEW_MESSAGES, issue_id, timestamp)
+        ));
     }
 
     @Override

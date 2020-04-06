@@ -1,9 +1,11 @@
 package com.pashikhmin.ismobileapp.network.connectors;
 
+import com.pashikhmin.ismobileapp.cache.CacheBuilder;
 import com.pashikhmin.ismobileapp.cache.RESTCacheImpl;
 
 public class RESTBuilder {
     private boolean cached = false;
+    private CacheBuilder cacheBuilder;
     private HttpConnector underlying;
     private String server;
 
@@ -12,8 +14,9 @@ public class RESTBuilder {
         return this;
     }
 
-    public RESTBuilder cache() {
+    public RESTBuilder cache(CacheBuilder cacheBuilder) {
         cached = true;
+        this.cacheBuilder = cacheBuilder;
         return this;
     }
 
@@ -26,6 +29,6 @@ public class RESTBuilder {
         RESTConnector straight = new RESTConnectorImpl(server, underlying);
         if(!cached)
             return straight;
-        return new RESTCacheImpl(straight);
+        return new RESTCacheImpl(straight, cacheBuilder);
     }
 }

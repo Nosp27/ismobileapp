@@ -6,7 +6,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Button;
 import android.widget.Spinner;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.pashikhmin.ismobileapp.model.Category;
 import com.pashikhmin.ismobileapp.model.Criteries;
@@ -26,7 +25,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements HeaderFragmentRequred {
     private static final String TAG = "MainActivity";
-    public static final String MESSAGE_TAG = "com.pashikhmin.ismobileapp.MainActivity.MESSAGE";
+    public static final String CRITERIAS_TAG = "criterias";
 
     private ApiConnector connector;
     private StoreListener<Region> regionListener;
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements HeaderFragmentReq
 
     void selectRegions(Criteries criteries) {
         Intent showFacilitiesIntent = new Intent(this, ActivityInvestingFacilities.class);
-        showFacilitiesIntent.putExtra(MESSAGE_TAG, criteries);
+        showFacilitiesIntent.putExtra(CRITERIAS_TAG, criteries);
         startActivity(showFacilitiesIntent);
     }
 

@@ -1,7 +1,9 @@
 package com.pashikhmin.ismobileapp.network.connectors;
 
+import com.pashikhmin.ismobileapp.cache.CacheBuilder;
 import com.pashikhmin.ismobileapp.network.json.JSONModeller;
 import com.pashikhmin.ismobileapp.resourceSupplier.ApiConnector;
+import org.hamcrest.Matchers;
 
 public class Connectors {
     //    static final String API_ADDRESS = "http://89.169.47.184:8080";
@@ -55,7 +57,7 @@ public class Connectors {
         return new RESTBuilder()
                 .server(ApiConnector.SERVER)
                 .wrap(createHttp())
-                .cache()
+                .cache(createCacheBuilder())
                 .build();
     }
 
@@ -65,7 +67,7 @@ public class Connectors {
         RESTConnector cachedRestConnector = new RESTBuilder()
                 .wrap(httpConnector)
                 .server(ApiConnector.SERVER)
-                .cache()
+                .cache(createCacheBuilder())
                 .build();
         return new ConnectorBuilder()
                 .imageLoader(cachedHttpConnector)
@@ -78,6 +80,16 @@ public class Connectors {
                 .rest(cachedRestConnector)
                 .parser(new JSONModeller())
                 .build();
+    }
+
+    public static CacheBuilder createCacheBuilder() {
+        return new CacheBuilder()
+                .getMatcher(Matchers.allOf(
+                        Matchers.not(Matchers.containsString("like")),
+                        Matchers.not(Matchers.containsString("favorites")),
+                        Matchers.not(Matchers.containsString("help"))
+                ))
+                .postMatcher(Matchers.any(String.class));
     }
 
     public static boolean userAuthorized() {

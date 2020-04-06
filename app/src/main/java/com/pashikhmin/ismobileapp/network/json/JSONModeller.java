@@ -27,12 +27,12 @@ public class JSONModeller implements JSONParser{
                         else if (field_value instanceof JSONObject && ((JSONObject) field_value).length() > 1)
                             field_value = fromJSON(field.getType(), (JSONObject) field_value);
 
-                        field.set(ret, field_value);
                         String processMethod = field.getAnnotation(JSONField.class).processResultMethod();
                         if (!processMethod.isEmpty()) {
-                            Method process = neededClass.getMethod(processMethod);
-                            process.invoke(ret);
-                        }
+                            Method process = neededClass.getMethod(processMethod, Object.class);
+                            field.set(ret, process.invoke(ret, field_value));
+                        } else
+                            field.set(ret, field_value);
                     }
                 }
             return ret;

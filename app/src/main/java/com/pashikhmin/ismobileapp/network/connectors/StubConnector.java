@@ -25,12 +25,12 @@ public class StubConnector implements ApiConnector, CredentialsResourceSupplier 
     private static final Issue issue1 = new Issue("Want to invest in Rosneft");
     private static final Issue issue2 = new Issue("Cannot load my favorite facilities");
     private static final List<Message> messagesForIssue1 = Arrays.asList(
-            new Message("Hello! This is a test message from test manager", manager),
-            new Message("Hello, this is a test response from investor", investor)
+            new Message("Hello! This is a test message from test manager", false),
+            new Message("Hello, this is a test response from investor", true)
     );
     private static final List<Message> messagesForIssue2 = Arrays.asList(
-            new Message("Test message for issue2. Sorry for those not loaded facilies", manager),
-            new Message("Ok.", investor)
+            new Message("Test message for issue2. Sorry for those not loaded facilies", false),
+            new Message("Ok.", true)
     );
 
     protected StubConnector() {
@@ -114,6 +114,11 @@ public class StubConnector implements ApiConnector, CredentialsResourceSupplier 
         } else if (issue == issue2) {
             return messagesForIssue2;
         } else throw new IOException();
+    }
+
+    @Override
+    public List<Message> getNewMessages(int issue_id, long timestamp) {
+        return Collections.emptyList();
     }
 
     @Override

@@ -28,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
     >
         <TextView
-                android:text="@string/region_menu"
+                android:text="@string/region"
                 android:id="@+id/tv_select_regions"
                 android:layout_marginTop="12dp"
                 style="@style/label_style"
@@ -41,7 +41,7 @@
         />
 
         <TextView
-                android:text="@string/category_menu"
+                android:text="@string/categories"
                 android:id="@+id/tv_select_categories"
                 style="@style/label_style"
                 android:layout_marginTop="12dp"
