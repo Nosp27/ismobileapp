@@ -133,6 +133,11 @@ public class ProductionConnector implements
     }
 
     @Override
+    public void sendFirebaseToken(String token) throws IOException {
+        restConnector.post(ApiConnector.SEND_FIREBASE_TOKEN, token);
+    }
+
+    @Override
     public List<Issue> getOpenedIssues() throws IOException {
         return jsonParser.readList(Issue.class, restConnector.get(LIST_ISSUES));
     }

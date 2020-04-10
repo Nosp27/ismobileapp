@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "229011308240",
+    "firebase_url": "https://ismobileapp.firebaseio.com",
+    "project_id": "ismobileapp",
+    "storage_bucket": "ismobileapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229011308240:android:1dfb798efa4dfda614a8d5",
+        "android_client_info": {
+          "package_name": "com.pashikhmin.ismobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229011308240-ohqrsh65kosdjtepq2omao3a1k8omun8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5VyCM9gTr7P2xAQ0x9WpQ_QVgDA96DDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "229011308240-ohqrsh65kosdjtepq2omao3a1k8omun8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

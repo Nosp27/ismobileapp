@@ -137,6 +137,11 @@ public class StubConnector implements ApiConnector, CredentialsResourceSupplier 
     }
 
     @Override
+    public void sendFirebaseToken(String token) throws IOException {
+
+    }
+
+    @Override
     public String getCookie(String username, String password) throws IOException {
         if (username.equals("user") && password.equals("password"))
             return "some stub cookie";

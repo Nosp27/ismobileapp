@@ -31,6 +31,7 @@ public interface ApiConnector {
     String WRITE_MESSAGE = "/help/message/send";
     String ISSUE_MESSAGES = "/help/issue/messages/";
     String ISSUE_NEW_MESSAGES = "/help/issue/new_messages/%s/%s";
+    String SEND_FIREBASE_TOKEN = "/actor/nre_token";
 
     List<Region> getAllRegions() throws IOException;
 
@@ -55,4 +56,6 @@ public interface ApiConnector {
     void sendMessage(Message message) throws IOException;
 
     Actor finger() throws IOException;
+
+    void sendFirebaseToken(String token) throws IOException;
 }
