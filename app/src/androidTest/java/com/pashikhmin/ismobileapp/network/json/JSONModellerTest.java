@@ -64,14 +64,14 @@ public class JSONModellerTest {
                         "        \"id\": 874,\n" +
                         "        \"content\": \"Hello Pal\",\n" +
                         "        \"issueId\": 750,\n" +
-                        "        \"actorId\": 1,\n" +
+                        "        \"mine\": true,\n" +
                         "        \"sendTime\": 1586002350\n" +
                         "    }";
         Message message= JSONModeller.fromJSON(Message.class, new JSONObject(json));
         Assert.assertNotNull(message);
         Assert.assertEquals(750, message.getIssueId());
         Assert.assertEquals("Hello Pal", message.getContent());
-        Assert.assertEquals(1, message.getSenderId());
+        Assert.assertTrue(message.getMine());
         Assert.assertEquals(1586002350, message.getSendTime());
     }
 
