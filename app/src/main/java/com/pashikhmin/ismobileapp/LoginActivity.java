@@ -7,6 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 import com.pashikhmin.ismobileapp.network.exceptions.AuthenticationFailedException;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
@@ -14,6 +19,7 @@ import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
 import com.pashikhmin.ismobileapp.resourceSupplier.CredentialsResourceSupplier;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -41,8 +47,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private String executeIntrospection(final String login, final String password) {
         try {
-            return resourceSupplier.getCookie(login, password);
-        } catch (IOException e) {
+            String authCookie = resourceSupplier.getCookie(login, password);
+            Task<InstanceIdResult> task = FirebaseInstanceId.getInstance().getInstanceId();
+            Tasks.await(task);
+            String token = task.getResult().getToken();
+            Connectors.api().sendFirebaseToken(token);
+            return authCookie;
+        } catch (InterruptedException | ExecutionException | IOException e) {
             Log.e(TAG, "loadFacilitiesCallback: loadRegionsAndCategoriesCallback", e);
             throw new RuntimeException(e);
         }
