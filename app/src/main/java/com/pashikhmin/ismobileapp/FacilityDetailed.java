@@ -43,6 +43,8 @@ public class FacilityDetailed extends AppCompatActivity implements HeaderFragmen
         ((ImageView) findViewById(R.id.detailed_facility_image)).setImageDrawable(facility.getImage());
         ((TextView) findViewById(R.id.facility_description)).setText(facility.getDescription());
         LinearLayout propertyContainer = findViewById(R.id.property_layout);
+        if(propertyContainer.getChildCount() > 0)
+            propertyContainer.removeAllViews();
         for (Pair<String, String> prop : facilityProperties(facility)) {
             View propertyToAdd = getLayoutInflater()
                     .inflate(R.layout.facility_detailed_property, propertyContainer, false);

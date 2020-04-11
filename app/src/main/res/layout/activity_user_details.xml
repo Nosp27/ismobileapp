@@ -49,41 +49,48 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
     >
-    <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:padding="10dp"
-            android:weightSum="10"
-            android:id="@+id/property_layout"
-    >
         <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:weightSum="10"
+                android:id="@+id/property_layout"
         >
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/notification"
-                    style="@style/label_style"
-                    android:textColor="@color/colorLight"
-                    android:drawablePadding="18dp"
-                    android:drawableStart="@drawable/ic_notification_gray_bell"
-                    android:layout_weight="8"
-                    android:gravity="center_vertical|start"
-            />
-            <Switch
-                    android:id="@+id/notification_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-            />
+            <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:weightSum="10"
+            >
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/notification"
+                        style="@style/label_style"
+                        android:textColor="@color/colorLight"
+                        android:drawablePadding="18dp"
+                        android:drawableStart="@drawable/ic_notification_gray_bell"
+                        android:layout_weight="8"
+                        android:gravity="center_vertical|start"
+                />
+                <ProgressBar
+                        android:id="@+id/pb_loading"
+                        android:layout_margin="5dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:visibility="gone"
+                />
+                <Switch
+                        android:id="@+id/notification_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

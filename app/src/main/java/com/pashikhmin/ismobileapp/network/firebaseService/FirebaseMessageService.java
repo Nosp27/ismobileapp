@@ -4,6 +4,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.pashikhmin.ismobileapp.UserDetailsActivity;
 import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 
 import java.io.IOException;
@@ -17,6 +18,9 @@ public class FirebaseMessageService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String token) {
+        if (!getSharedPreferences("ismobileapp", MODE_PRIVATE).getBoolean("notification", true))
+            return;
+
         try {
             Log.i(TAG, "Trying to send new token: " + token);
             Connectors.api().sendFirebaseToken(token);
