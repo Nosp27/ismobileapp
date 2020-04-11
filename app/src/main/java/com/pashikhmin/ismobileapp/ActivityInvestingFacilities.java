@@ -216,6 +216,8 @@ public class ActivityInvestingFacilities extends FragmentActivity implements Hea
     }
 
     private String opportunitiesTabTag() {
+        if(getIntent().hasExtra("custom_header"))
+            return getIntent().getStringExtra("custom_header");
         return getResources().getString(R.string.opportunities);
     }
 

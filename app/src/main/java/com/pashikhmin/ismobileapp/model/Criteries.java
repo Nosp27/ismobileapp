@@ -9,4 +9,6 @@ public class Criteries implements Serializable {
     public Integer[] regions;
     @JSONField
     public Integer[] categories;
+
+    public boolean onlyLiked;
 }

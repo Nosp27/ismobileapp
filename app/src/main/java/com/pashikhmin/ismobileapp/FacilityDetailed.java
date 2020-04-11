@@ -14,6 +14,9 @@ import com.pashikhmin.ismobileapp.network.loadTask.SubmitLikesTask;
 import org.w3c.dom.Text;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class FacilityDetailed extends AppCompatActivity implements HeaderFragmentRequred {
     private Facility facility;
@@ -22,7 +25,15 @@ public class FacilityDetailed extends AppCompatActivity implements HeaderFragmen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        facility = (Facility) getIntent().getSerializableExtra(ActivityInvestingFacilities.FACILITY_TAG);
+        Future<Facility> future =
+                Executors
+                .newSingleThreadExecutor()
+                .submit(() -> (Facility) getIntent().getSerializableExtra(ActivityInvestingFacilities.FACILITY_TAG));
+        try {
+            facility = future.get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         if (facility == null)
             return;
         setContentView(R.layout.activity_facility_detailed);

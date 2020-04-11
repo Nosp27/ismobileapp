@@ -60,8 +60,8 @@
                 style="@style/MenuButtonStyle"
         />
         <Button
-                android:id="@+id/button_menu_region"
-                android:text="@string/region"
+                android:id="@+id/button_menu_favorites"
+                android:text="@string/favorites"
                 android:drawableTop="@drawable/ic_region_menu_icon"
                 style="@style/MenuButtonStyle"
         />

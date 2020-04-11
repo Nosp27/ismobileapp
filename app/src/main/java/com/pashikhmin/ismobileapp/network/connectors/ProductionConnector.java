@@ -61,6 +61,9 @@ public class ProductionConnector implements
 
     @Override
     public List<Facility> getCriterizedFacilities(Criteries criteries) throws IOException {
+        if (criteries.onlyLiked)
+            return getLikedFacilities();
+
         List<Facility> ret = new ArrayList<>();
         JSONObject criteriesJson = JSONModeller.toJSON(criteries);
         if (criteriesJson == null)

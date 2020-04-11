@@ -86,4 +86,5 @@
     <string name="investment_size">Req. Investitions</string>
     <string name="profitability">Profitability</string>
     <string name="undefined">Not Stated</string>
+    <string name="favorites">Favorites</string>
 </resources>
