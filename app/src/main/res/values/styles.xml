@@ -37,6 +37,14 @@
     <style name="light_label_style" parent="label_style">
         <item name="android:textColor">@color/white</item>
     </style>
+    <style name="about_label" parent="label_style">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">10pt</item>
+    </style>
+    <style name="about_label_header" parent="label_style">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">10pt</item>
+    </style>
     <style name="confirm_button_style" parent="Base.Widget.AppCompat.ActionButton">
         <item name="android:background">@drawable/ic_button</item>
         <item name="android:backgroundTint">@color/colorShade</item>

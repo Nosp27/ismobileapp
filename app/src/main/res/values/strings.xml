@@ -89,4 +89,16 @@
     <string name="favorites">Favorites</string>
     <string name="given_name">Given Name</string>
     <string name="family_name">Family Name</string>
+    <string name="about_header_1">Connected</string>
+    <string name="about_1">Accesss to over 1.5 billion consumers through free-trade agreements.</string>
+    <string name="about_header_2">Talented</string>
+    <string name="about_2">The most educated workforce in the world.</string>
+    <string name="about_header_3">Easy</string>
+    <string name="about_3">The Lowest business costs in the G7, and low risk.</string>
+    <string name="about_header_4">Innovation</string>
+    <string name="about_4">Funding programs and incentives that bring innovation to market.</string>
+    <string name="about_header_5">Fun</string>
+    <string name="about_5">The best quality of life in the world.</string>
+    <string name="about_main_header">Why Invest In UAE?</string>
+    <string name="about">About</string>
 </resources>

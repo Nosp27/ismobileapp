@@ -60,7 +60,7 @@
     <string name="facility_menu">Объект</string>
     <string name="region">Регион</string>
     <string name="categories">Категории</string>
-    <string name="issue_menu">Вопрос</string>
+    <string name="issue_menu">Обновления</string>
     <string name="user_menu">Пользователь</string>
     <string name="select">Выбрать</string>
     <string name="oops_error">Упс.. Ошибка</string>
@@ -89,4 +89,16 @@
     <string name="favorites">Избранные</string>
     <string name="given_name">Имя</string>
     <string name="family_name">Фамилия</string>
+    <string name="about_header_1">Сплоченность</string>
+    <string name="about_1">Доступ к 1.5 миллиардам потребителей с помощью свободных торговых соглашений</string>
+    <string name="about_header_2">Талант</string>
+    <string name="about_2">Самая образованная рабочая сила в мире</string>
+    <string name="about_header_3">Простота</string>
+    <string name="about_3">Наименее затратный бизнес в G7, низкие риски</string>
+    <string name="about_header_4">Инновации</string>
+    <string name="about_4">Спосорство программ и инициатив, которые приносят инновации на рынок</string>
+    <string name="about_header_5">Радость</string>
+    <string name="about_5">Лучшее качество жизни в мире</string>
+    <string name="about_main_header">Почему стоит инвестировать в ОАЭ?</string>
+    <string name="about">Почему ОАЭ?</string>
 </resources>

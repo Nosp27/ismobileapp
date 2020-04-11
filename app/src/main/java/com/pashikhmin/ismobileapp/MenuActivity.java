@@ -21,6 +21,8 @@ import com.pashikhmin.ismobileapp.model.Criteries;
 import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -43,24 +45,31 @@ public class MenuActivity extends AppCompatActivity {
         Button helpdeskButton = findViewById(R.id.button_menu_helpdesk);
         Button userButton = findViewById(R.id.button_menu_user);
         Button favoritesButton = findViewById(R.id.button_menu_favorites);
+        Button aboutButton = findViewById(R.id.button_menu_about);
+
+        List<Button> requireLogin = Arrays.asList(
+                favoritesButton, helpdeskButton
+        );
 
         facilitiesButton.setOnClickListener(e -> transitToActivity(MainActivity.class));
         userButton.setOnClickListener(e -> transitToActivity(UserDetailsActivity.class));
         favoritesButton.setOnClickListener(e -> transitToFavoriteInvestingFacilities());
+        aboutButton.setOnClickListener(e -> transitToActivity(AboutActivity.class));
+        helpdeskButton.setOnClickListener(e -> transitToActivity(HelpDeskActivity.class));
 
 
-        if (Connectors.userAuthorized()) {
-            helpdeskButton.setOnClickListener(e -> transitToActivity(HelpDeskActivity.class));
-            helpdeskButton.setEnabled(true);
-            helpdeskButton.setBackgroundTintList(ColorStateList.valueOf(
-                    getResources().getColor(R.color.white, getTheme())
-            ));
-        }
-        else{
-            helpdeskButton.setEnabled(false);
-            helpdeskButton.setBackgroundTintList(ColorStateList.valueOf(
-                    getResources().getColor(R.color.colorDisabled, getTheme())
-            ));
+        for(Button btn : requireLogin) {
+            if (Connectors.userAuthorized()) {
+                btn.setEnabled(true);
+                btn.setBackgroundTintList(ColorStateList.valueOf(
+                        getResources().getColor(R.color.white, getTheme())
+                ));
+            } else {
+                btn.setEnabled(false);
+                btn.setBackgroundTintList(ColorStateList.valueOf(
+                        getResources().getColor(R.color.colorDisabled, getTheme())
+                ));
+            }
         }
     }
 
