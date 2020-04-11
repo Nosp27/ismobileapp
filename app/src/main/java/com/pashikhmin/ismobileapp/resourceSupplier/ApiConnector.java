@@ -15,8 +15,8 @@ import java.util.Map;
 
 public interface ApiConnector {
 //    String SERVER = "http://89.169.47.184:8080";
-//    String SERVER = "http://10.0.2.2:8080";
-    String SERVER = "http://nosp.top";
+    String SERVER = "http://10.0.2.2:8080";
+//    String SERVER = "http://nosp.top";
     String SECURE_PING = "/secure_ping";
     String GET_ALL_REGIONS = "/regions";
     String GET_ALL_CATEGORIES = "/categories";
@@ -32,6 +32,7 @@ public interface ApiConnector {
     String ISSUE_MESSAGES = "/help/issue/messages/";
     String ISSUE_NEW_MESSAGES = "/help/issue/new_messages/%s/%s";
     String SEND_FIREBASE_TOKEN = "/actor/new_token";
+    String UPDATE_FEED = "/actor/update_feed";
 
     List<Region> getAllRegions() throws IOException;
 

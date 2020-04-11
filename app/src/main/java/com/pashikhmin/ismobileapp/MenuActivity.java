@@ -46,9 +46,10 @@ public class MenuActivity extends AppCompatActivity {
         Button userButton = findViewById(R.id.button_menu_user);
         Button favoritesButton = findViewById(R.id.button_menu_favorites);
         Button aboutButton = findViewById(R.id.button_menu_about);
+        Button issueButton = findViewById(R.id.button_menu_issue);
 
         List<Button> requireLogin = Arrays.asList(
-                favoritesButton, helpdeskButton
+                favoritesButton, helpdeskButton, issueButton
         );
 
         facilitiesButton.setOnClickListener(e -> transitToActivity(MainActivity.class));
@@ -56,6 +57,7 @@ public class MenuActivity extends AppCompatActivity {
         favoritesButton.setOnClickListener(e -> transitToFavoriteInvestingFacilities());
         aboutButton.setOnClickListener(e -> transitToActivity(AboutActivity.class));
         helpdeskButton.setOnClickListener(e -> transitToActivity(HelpDeskActivity.class));
+        issueButton.setOnClickListener(e -> transitToUpdateFeedOfInvestingFacilities());
 
 
         for(Button btn : requireLogin) {
@@ -85,6 +87,16 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ActivityInvestingFacilities.class);
         intent.putExtra(MainActivity.CRITERIAS_TAG, criteries);
         intent.putExtra("custom_header", getString(R.string.favorites).toLowerCase());
+        startActivity(intent);
+    }
+
+    private void transitToUpdateFeedOfInvestingFacilities() {
+        Criteries criteries = new Criteries();
+        criteries.onlyUpdates = true;
+
+        Intent intent = new Intent(this, ActivityInvestingFacilities.class);
+        intent.putExtra(MainActivity.CRITERIAS_TAG, criteries);
+        intent.putExtra("custom_header", getString(R.string.updates).toLowerCase());
         startActivity(intent);
     }
 }

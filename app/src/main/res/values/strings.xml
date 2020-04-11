@@ -101,4 +101,6 @@
     <string name="about_5">The best quality of life in the world.</string>
     <string name="about_main_header">Why Invest In UAE?</string>
     <string name="about">About</string>
+    <string name="updates">updates</string>
+    <string name="not_authorized">User is not authorized</string>
 </resources>

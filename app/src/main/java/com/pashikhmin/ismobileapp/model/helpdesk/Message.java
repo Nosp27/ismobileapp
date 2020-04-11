@@ -1,8 +1,12 @@
 package com.pashikhmin.ismobileapp.model.helpdesk;
 
+import android.icu.text.SimpleDateFormat;
 import com.pashikhmin.ismobileapp.network.json.JSONField;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Message implements Serializable {
     @JSONField
@@ -58,5 +62,11 @@ public class Message implements Serializable {
 
     public long getSendTime() {
         return sendTime;
+    }
+
+    public String getTimestampFormatted() {
+        String pattern = "dd MMM HH:mm";
+        SimpleDateFormat simpleDateFormat =new SimpleDateFormat(pattern, Locale.getDefault());
+        return simpleDateFormat.format(new Date(sendTime));
     }
 }

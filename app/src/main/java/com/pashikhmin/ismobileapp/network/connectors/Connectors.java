@@ -87,7 +87,8 @@ public class Connectors {
                 .getMatcher(Matchers.allOf(
                         Matchers.not(Matchers.containsString("like")),
                         Matchers.not(Matchers.containsString("favorites")),
-                        Matchers.not(Matchers.containsString("help"))
+                        Matchers.not(Matchers.containsString("help")),
+                        Matchers.not(Matchers.containsString("update_feed"))
                 ))
                 .postMatcher(Matchers.any(String.class));
     }

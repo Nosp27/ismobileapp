@@ -54,8 +54,6 @@ public class HelpDeskMessagesActivity extends AppCompatActivity implements Heade
         localMessageHistory.addAll(messageHistory);
         if (adapter == null) {
             adapter = new MessagesListAdapter(
-                    R.layout.help_desk_message_right,
-                    R.layout.help_desk_message_left,
                     this,
                     R.layout.help_desk_message_right,
                     localMessageHistory

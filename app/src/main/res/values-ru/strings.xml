@@ -101,4 +101,6 @@
     <string name="about_5">Лучшее качество жизни в мире</string>
     <string name="about_main_header">Почему стоит инвестировать в ОАЭ?</string>
     <string name="about">Почему ОАЭ?</string>
+    <string name="updates">обновления</string>
+    <string name="not_authorized">Пользователь не авторизован</string>
 </resources>

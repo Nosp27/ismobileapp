@@ -11,4 +11,5 @@ public class Criteries implements Serializable {
     public Integer[] categories;
 
     public boolean onlyLiked;
+    public boolean onlyUpdates;
 }

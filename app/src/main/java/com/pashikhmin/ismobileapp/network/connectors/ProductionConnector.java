@@ -64,6 +64,9 @@ public class ProductionConnector implements
         if (criteries.onlyLiked)
             return getLikedFacilities();
 
+        if(criteries.onlyUpdates)
+            return getUpdateFeed();
+
         List<Facility> ret = new ArrayList<>();
         JSONObject criteriesJson = JSONModeller.toJSON(criteries);
         if (criteriesJson == null)
@@ -81,6 +84,12 @@ public class ProductionConnector implements
         else for (Facility facility : ret)
             facility.setLiked(null);
 
+        return ret;
+    }
+
+    private List<Facility> getUpdateFeed() throws IOException {
+        List<Facility> ret = jsonParser.readList(Facility.class, restConnector.get(ApiConnector.UPDATE_FEED));
+        addImagesForEntities(ret);
         return ret;
     }
 

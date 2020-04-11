@@ -36,23 +36,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
     />
-    <TextView
-            android:id="@+id/notification_counter"
-            android:text="2"
-            android:layout_width="13.81dp"
-            android:layout_height="13.67dp"
-            android:textSize="5pt"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:background="@drawable/ic_red_circle"
-            app:layout_constraintTop_toTopOf="@id/btn_notification"
-            app:layout_constraintEnd_toEndOf="@id/btn_notification"
-    />
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:background="@color/transparent"
             android:drawableStart="@drawable/ic_arrow_left"
             android:paddingStart="22dp"
