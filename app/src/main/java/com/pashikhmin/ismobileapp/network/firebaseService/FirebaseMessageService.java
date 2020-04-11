@@ -3,6 +3,7 @@ package com.pashikhmin.ismobileapp.network.firebaseService;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 
 import java.io.IOException;
