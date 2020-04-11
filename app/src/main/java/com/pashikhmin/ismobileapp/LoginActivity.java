@@ -1,6 +1,7 @@
 package com.pashikhmin.ismobileapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -23,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+    private SharedPreferences prefs;
     CredentialsResourceSupplier resourceSupplier;
     String cookie;
 
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prefs = getSharedPreferences(UserDetailsActivity.SHARED_PROPERTIES_NAME, MODE_PRIVATE);
         resourceSupplier = ((CredentialsResourceSupplier) Connectors.api());
         setTitle("Need Login");
         setContentView(R.layout.activity_login);
@@ -48,10 +51,12 @@ public class LoginActivity extends AppCompatActivity {
     private String executeIntrospection(final String login, final String password) {
         try {
             String authCookie = resourceSupplier.getCookie(login, password);
-            Task<InstanceIdResult> task = FirebaseInstanceId.getInstance().getInstanceId();
-            Tasks.await(task);
-            String token = task.getResult().getToken();
-            Connectors.api().sendFirebaseToken(token);
+            if (prefs.getBoolean(UserDetailsActivity.NOTIFICATION_TAG, true)) {
+                Task<InstanceIdResult> task = FirebaseInstanceId.getInstance().getInstanceId();
+                Tasks.await(task);
+                String token = task.getResult().getToken();
+                Connectors.api().sendFirebaseToken(token);
+            }
             return authCookie;
         } catch (InterruptedException | ExecutionException | IOException e) {
             Log.e(TAG, "loadFacilitiesCallback: loadRegionsAndCategoriesCallback", e);

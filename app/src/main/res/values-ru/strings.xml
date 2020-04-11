@@ -87,4 +87,6 @@
     <string name="profitability">Прибыльность</string>
     <string name="undefined">Не указано</string>
     <string name="favorites">Избранные</string>
+    <string name="given_name">Имя</string>
+    <string name="family_name">Фамилия</string>
 </resources>

@@ -87,4 +87,6 @@
     <string name="profitability">Profitability</string>
     <string name="undefined">Not Stated</string>
     <string name="favorites">Favorites</string>
+    <string name="given_name">Given Name</string>
+    <string name="family_name">Family Name</string>
 </resources>
