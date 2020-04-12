@@ -57,6 +57,8 @@ public class FacilityDetailed extends AppCompatActivity implements HeaderFragmen
         if(propertyContainer.getChildCount() > 0)
             propertyContainer.removeAllViews();
         for (Pair<String, String> prop : facilityProperties(facility)) {
+            if(prop.second == null)
+                continue;
             View propertyToAdd = getLayoutInflater()
                     .inflate(R.layout.facility_detailed_property, propertyContainer, false);
             propertyContainer.addView(propertyToAdd);
@@ -67,11 +69,11 @@ public class FacilityDetailed extends AppCompatActivity implements HeaderFragmen
 
     private List<Pair<String, String>> facilityProperties(Facility f) {
         List<Pair<String, String>> ret = new LinkedList<>();
-        ret.add(new Pair<>(strById(R.string.region), coalesce(f.getRegionTitle())));
-        ret.add(new Pair<>(strById(R.string.utility), coalesce(f.getUtility())));
-        ret.add(new Pair<>(strById(R.string.employees), coalesce(f.getEmployees())));
-        ret.add(new Pair<>(strById(R.string.investment_size), coalesce(f.getInvestmentSizeStr())));
-        ret.add(new Pair<>(strById(R.string.profitability), coalesce(f.getProfitability()) + " %"));
+        Context ctx = this;
+        ret.add(new Pair<>(strById(R.string.region), f.getRegionTitle()));
+        ret.add(new Pair<>(strById(R.string.employees), f.getEmployeesStr(ctx)));
+        ret.add(new Pair<>(strById(R.string.investment_size), f.getInvestmentSizeStr(ctx)));
+        ret.add(new Pair<>(strById(R.string.profitability), f.getProfitabilityStr(ctx)));
         return ret;
     }
 

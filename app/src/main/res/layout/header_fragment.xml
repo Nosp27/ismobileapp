@@ -10,10 +10,13 @@
             android:id="@+id/tv_header"
             android:text="SAMPLE TEXT"
             android:layout_marginTop="12dp"
+            android:layout_marginStart="42dp"
+            android:layout_marginEnd="12dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="@id/btn_notification"
             app:layout_constraintStart_toStartOf="parent"
             style="@style/light_label_style"
+            android:textSize="10pt"
     />
     <TextView
             android:id="@+id/tv_user_name"
@@ -23,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="@id/btn_notification"
             app:layout_constraintStart_toStartOf="parent"
             style="@style/light_label_style"
-            android:textSize="12pt"
+            android:textSize="8pt"
     />
     <ImageButton
             android:id="@+id/btn_notification"

@@ -1,5 +1,6 @@
 package com.pashikhmin.ismobileapp.model;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import com.pashikhmin.ismobileapp.network.connectors.Connectors;
 import com.pashikhmin.ismobileapp.network.json.JSONField;
@@ -134,7 +135,21 @@ public class Facility implements Entity, Serializable {
         return profitability;
     }
 
-    public String getInvestmentSizeStr() {
+    public String getInvestmentSizeStr(Context ctx) {
+        if(investmentSize == null || investmentSize == 0)
+            return null;
         return String.format(Locale.getDefault(), "$%.1f", investmentSize);
+    }
+
+    public String getEmployeesStr(Context ctx) {
+        if(employees == null || employees == 0)
+            return null;
+        return String.format(Locale.getDefault(), "%d", employees);
+    }
+
+    public String getProfitabilityStr(Context ctx) {
+        if(profitability == null || profitability == 0)
+            return null;
+        return String.format(Locale.getDefault(), "%.2f %s", profitability, "%");
     }
 }
