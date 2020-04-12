@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,6 +27,7 @@ import com.pashikhmin.ismobileapp.network.loadTask.LoadTask;
 import com.pashikhmin.ismobileapp.network.loadTask.LoadTaskResult;
 
 import java.io.IOException;
+import java.net.CookieManager;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -82,6 +84,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         LinearLayout propertyContainer = findViewById(R.id.property_layout);
 
         initNotificationSetting();
+        initLogout();
 
         LinkedHashMap<String, String> properties = new LinkedHashMap<>();
         properties.put(getString(R.string.given_name), me.getGivenName());
@@ -100,6 +103,16 @@ public class UserDetailsActivity extends AppCompatActivity {
                 }
         );
 
+    }
+
+    private void initLogout() {
+        findViewById(R.id.logout).setOnClickListener(
+                e -> {
+                    CookieManager.setDefault(new CookieManager());
+                    Connectors.setAuthenticityToken(null);
+                    onBackPressed();
+                }
+        );
     }
 
     private void initNotificationSetting() {
