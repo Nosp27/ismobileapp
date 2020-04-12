@@ -70,7 +70,7 @@ public class FacilityDetailed extends AppCompatActivity implements HeaderFragmen
         ret.add(new Pair<>(strById(R.string.region), coalesce(f.getRegionTitle())));
         ret.add(new Pair<>(strById(R.string.utility), coalesce(f.getUtility())));
         ret.add(new Pair<>(strById(R.string.employees), coalesce(f.getEmployees())));
-        ret.add(new Pair<>(strById(R.string.region), "$ " + coalesce(f.getInvestmentSize())));
+        ret.add(new Pair<>(strById(R.string.investment_size), coalesce(f.getInvestmentSizeStr())));
         ret.add(new Pair<>(strById(R.string.profitability), coalesce(f.getProfitability()) + " %"));
         return ret;
     }

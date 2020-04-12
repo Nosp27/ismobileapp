@@ -6,6 +6,7 @@ import com.pashikhmin.ismobileapp.network.json.JSONField;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Locale;
 
 public class Facility implements Entity, Serializable {
     @JSONField
@@ -131,5 +132,9 @@ public class Facility implements Entity, Serializable {
 
     public Double getProfitability() {
         return profitability;
+    }
+
+    public String getInvestmentSizeStr() {
+        return String.format(Locale.getDefault(), "$%.1f", investmentSize);
     }
 }
