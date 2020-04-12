@@ -50,6 +50,11 @@ public class HttpCacheImpl implements HttpConnector {
         return underlying.getHeaderFields(path, data, redirect);
     }
 
+    @Override
+    public void addHeaders(Map<String, String> headers) {
+        underlying.addHeaders(headers);
+    }
+
     byte[] readStream(InputStream is) throws IOException {
         ArrayList<Byte> buffer = new ArrayList<>();
         int b;

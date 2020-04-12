@@ -182,4 +182,9 @@ public class ProductionConnector implements
     public String getCookie(String username, String password) throws IOException {
         return credentialsResourceSupplier.getCookie(username, password);
     }
+
+    @Override
+    public String signIn(Actor actor, String password) throws IOException {
+        return credentialsResourceSupplier.signIn(actor, password);
+    }
 }

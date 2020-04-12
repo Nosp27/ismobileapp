@@ -147,4 +147,9 @@ public class StubConnector implements ApiConnector, CredentialsResourceSupplier 
             return "some stub cookie";
         throw new IOException("Wrong credentials provided");
     }
+
+    @Override
+    public String signIn(Actor actor, String password) throws IOException {
+        return "";
+    }
 }

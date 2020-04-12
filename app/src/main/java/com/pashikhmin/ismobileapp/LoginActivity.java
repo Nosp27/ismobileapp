@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         setTitle("Need Login");
         setContentView(R.layout.activity_login);
         findViewById(R.id.to_app).setOnClickListener(e -> onSubmitClick());
+        findViewById(R.id.sign_up).setOnClickListener(e -> onSignUpClicked());
     }
 
     private void onSubmitClick() {
@@ -87,5 +89,22 @@ public class LoginActivity extends AppCompatActivity {
         resultIntent.putExtra("token", cookie);
         setResult(RESULT_OK, resultIntent);
         finish();
+    }
+
+    private void onSignUpClicked() {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1 && data != null && data.hasExtra("token")) {
+                cookie = data.getStringExtra("token");
+                toApp();
+            }
+        }
     }
 }

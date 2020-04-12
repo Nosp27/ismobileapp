@@ -8,4 +8,5 @@ import java.util.Map;
 public interface HttpConnector {
     InputStream connect(String path, String data, Redirect redirect) throws IOException;
     Map<String, List<String>> getHeaderFields(String path, String data, Redirect redirect) throws IOException;
+    void addHeaders(Map<String, String> headers);
 }

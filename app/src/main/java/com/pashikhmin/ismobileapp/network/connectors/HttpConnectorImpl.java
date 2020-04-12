@@ -2,8 +2,10 @@ package com.pashikhmin.ismobileapp.network.connectors;
 
 import com.pashikhmin.ismobileapp.network.exceptions.LoginRequiredException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -32,8 +34,15 @@ public class HttpConnectorImpl implements HttpConnector {
         return connect0(path, content, redirect).getHeaderFields();
     }
 
+
     void addHeader(String name, String value) {
         headers.put(name, value);
+    }
+
+    @Override
+    public void addHeaders(Map<String, String> headers) {
+        if (headers != null)
+            this.headers.putAll(headers);
     }
 
     private HttpURLConnection connect0(String path, String content, Redirect redirect) throws IOException {
@@ -55,12 +64,15 @@ public class HttpConnectorImpl implements HttpConnector {
             }
             responseCode = connection.getResponseCode();
         } while (responseCode / 100 == 3 && redirect.equals(Redirect.FOLLOW));
-        if(redirect == Redirect.RETURN)
+        if (redirect == Redirect.RETURN)
             return connection;
         if (connection.getHeaderField("Content-Type").contains("text/html") || responseCode == 403) {
             throw new LoginRequiredException();
         }
         if (connection.getResponseCode() != 200) {
+            String error = new BufferedReader(new InputStreamReader(connection.getErrorStream())).readLine();
+            if(error != null)
+                throw new IOException(error);
             throw new IOException("Got response code " + connection.getResponseCode());
         }
 

@@ -103,4 +103,7 @@
     <string name="about">Почему ОАЭ?</string>
     <string name="updates">обновления</string>
     <string name="not_authorized">Пользователь не авторизован</string>
+    <string name="confirm_password">Повторите пароль</string>
+    <string name="passwords_differ">Пароли не совпадают</string>
+    <string name="sign_up">Регистрация</string>
 </resources>

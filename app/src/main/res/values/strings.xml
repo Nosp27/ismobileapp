@@ -103,4 +103,7 @@
     <string name="about">About</string>
     <string name="updates">updates</string>
     <string name="not_authorized">User is not authorized</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="passwords_differ">Passwords differ</string>
+    <string name="sign_up">Sign Up</string>
 </resources>

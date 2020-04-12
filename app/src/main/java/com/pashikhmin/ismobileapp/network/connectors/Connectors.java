@@ -75,8 +75,15 @@ public class Connectors {
                         new OktaResourceSupplier(httpConnector, new RESTBuilder()
                                 .wrap(httpConnector)
                                 .server(OKTA_URL)
-                                .build()
-                        ))
+                                .build(),
+                                new RESTBuilder()
+                                        .wrap(new HttpBuilder()
+                                                .addHeader(
+                                                        "Authorization",
+                                                        "SSWS 004rWl1hAYO-NgtL6YqrV6TV-_L0sglsht-Zv7tG0Y"
+                                                ).build())
+                                        .server(OKTA_URL)
+                                        .build()))
                 .rest(cachedRestConnector)
                 .parser(new JSONModeller())
                 .build();

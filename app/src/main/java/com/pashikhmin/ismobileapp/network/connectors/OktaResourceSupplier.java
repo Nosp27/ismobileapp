@@ -1,6 +1,9 @@
 package com.pashikhmin.ismobileapp.network.connectors;
 
+import com.pashikhmin.ismobileapp.model.helpdesk.Actor;
 import com.pashikhmin.ismobileapp.network.exceptions.AuthenticationFailedException;
+import com.pashikhmin.ismobileapp.network.json.JSONModeller;
+import com.pashikhmin.ismobileapp.network.json.JSONParser;
 import com.pashikhmin.ismobileapp.resourceSupplier.ApiConnector;
 import com.pashikhmin.ismobileapp.resourceSupplier.CredentialsResourceSupplier;
 import org.json.JSONException;
@@ -20,13 +23,24 @@ public class OktaResourceSupplier implements CredentialsResourceSupplier {
 
     private HttpConnector httpConnector;
     private RESTConnector oktaRestConnector;
+    private RESTConnector apiVerifiedConnector;
+    private JSONParser parser;
 
+    private static final String CLIENT_ID = "0oa11tnym3wzviaV34x6";
     private static final String SESSION_TOKEN_URL = "/api/v1/authn";
+    private static final String REGISTER_URL = "/api/v1/users?activate=true";
     private static final String AUTHORIZE_URL = "/oauth2/v1/authorize";
+    private static final String ASSIGN_USER_URL = "/api/v1/apps/%s/users";
 
     OktaResourceSupplier(HttpConnector connector, RESTConnector restConnector) {
+        this(connector, restConnector, null);
+    }
+
+    OktaResourceSupplier(HttpConnector connector, RESTConnector restConnector, RESTConnector apiVerifiedConnector) {
+        parser = new JSONModeller();
         httpConnector = connector;
         oktaRestConnector = restConnector;
+        this.apiVerifiedConnector = apiVerifiedConnector;
     }
 
     @Override
@@ -35,6 +49,54 @@ public class OktaResourceSupplier implements CredentialsResourceSupplier {
         String cookie = introspectToken(sessionToken);
         validateCookie(cookie);
         return cookie;
+    }
+
+    @Override
+    public String signIn(Actor actor, String password) throws IOException {
+        try {
+            JSONObject profile = new JSONObject();
+            profile.put("firstName", actor.getGivenName());
+            profile.put("lastName", actor.getFamilyName());
+            profile.put("email", actor.getEmail());
+            profile.put("login", actor.getEmail());
+
+            JSONObject passwordJson = new JSONObject();
+            passwordJson.put("value", password);
+
+            JSONObject credentials = new JSONObject();
+            credentials.put("password", passwordJson);
+
+            JSONObject ret = new JSONObject();
+            ret.put("profile", profile);
+            ret.put("credentials", credentials);
+
+            JSONObject newUser = new JSONObject(apiVerifiedConnector.post(REGISTER_URL, ret.toString()));
+            String newUserId = newUser.getString("id");
+            actor.setUsername(newUserId);
+            assignUserToApp(actor, password);
+            return getCookie(actor.getEmail(), password);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void assignUserToApp(Actor actor, String password) throws IOException {
+        try {
+            JSONObject passwordJson = new JSONObject();
+            passwordJson.put("value", password);
+
+            JSONObject credentials = new JSONObject();
+            credentials.put("userName", actor.getEmail());
+            credentials.put("password", passwordJson);
+
+            JSONObject ret = new JSONObject();
+            ret.put("id", actor.getUsername());
+            ret.put("credentials", credentials);
+
+            apiVerifiedConnector.post(String.format(ASSIGN_USER_URL, CLIENT_ID), ret.toString());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String getSessionToken(String username, String password) throws IOException {
@@ -52,8 +114,8 @@ public class OktaResourceSupplier implements CredentialsResourceSupplier {
             );
         } catch (IOException e) {
             String message = e.getMessage();
-            if (message!=null && message.contains("401"))
-                throw  new AuthenticationFailedException();
+            if (message != null && message.contains("401"))
+                throw new AuthenticationFailedException();
             throw e;
         }
 
